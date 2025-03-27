@@ -1,0 +1,56 @@
+const mongoose = require("mongoose");
+
+const { Schema } = mongoose;
+
+const conteudoSchema = new Schema({
+    areaConhecimento: { type: String, required: true },
+    resumoConteudo: { type: String, required: true },
+    link: { type: String }
+});
+
+const diaSchema = new Schema({
+    conteudos: [conteudoSchema]
+});
+
+const semanaSchema = new Schema({
+    dias: [diaSchema]
+});
+
+const cronogramaSchema = new Schema({
+    nome: {
+        type: String,
+        required: true
+    },
+    userCriador: {
+        type: String,
+        required: true
+    },
+    pasta: {
+        type: String,
+        required: true,
+    },
+    quantidadeSemanas: {
+        type: Number,
+        required: true
+    },
+    semanas: [semanaSchema]
+
+}, { timestamps: true })
+
+cronogramaSchema.pre('save', function (next) {
+    if (this.semanas.length === 0) {
+        for (let i = 0; i < this.quantidadeSemanas; i++) {
+            this.semanas.push({
+                dias: Array.from({ length: 7 }, () => ({
+                    conteudos: []
+                }))
+            });
+        }
+    }
+    next();
+});
+
+const CronogramaModel = mongoose.model("CronogramaModel", cronogramaSchema);
+
+module.exports = CronogramaModel;
+
