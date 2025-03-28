@@ -36,7 +36,7 @@ module.exports = {
             cronograma.quantidadeSemanas = cronograma.semanas.length;
 
             await cronograma.save();
-            return res.status(200).json(novaSemana); // Retorna só a semana adicionada
+            return res.status(200).json({ msg: "Semana criado com sucesso", novaSemana });
         } catch (error) {
             return res.status(400).json({ msg: "Erro ao adicionar semana", error });
         }
@@ -58,6 +58,53 @@ module.exports = {
             return res.status(400).json({ msg: "Erro ao remover semana", error });
         }
     },
+    async adicionarDia(req, res) {
+        const { cronogramaId, semanaId } = req.params;
+
+        try {
+            const cronograma = await CronogramaModel.findById(cronogramaId);
+            if (!cronograma) return res.status(404).json({ msg: "Cronograma não encontrado" });
+
+            const semana = cronograma.semanas.id(semanaId);
+            if (!semana) return res.status(404).json({ msg: "Semana não encontrada" });
+
+            if (semana.dias.length >= 7) {
+                return res.status(400).json({ msg: "Uma semana não pode ter mais de 7 dias" });
+            }
+
+            semana.dias.push({ conteudos: [] });
+            await cronograma.save();
+
+            return res.status(201).json(semana.dias[semana.dias.length - 1]);
+        } catch (error) {
+            return res.status(400).json({ msg: "Erro ao adicionar dia", error: error.message });
+        }
+    },
+    async removerDia(req, res) {
+        const { cronogramaId, semanaId, diaId } = req.params;
+
+        try {
+            const cronograma = await CronogramaModel.findById(cronogramaId);
+            if (!cronograma) return res.status(404).json({ msg: "Cronograma não encontrado" });
+
+            const semana = cronograma.semanas.id(semanaId);
+            if (!semana) return res.status(404).json({ msg: "Semana não encontrada" });
+
+            if (semana.dias.length <= 1) {
+                return res.status(400).json({ msg: "Uma semana deve ter pelo menos 1 dia" });
+            }
+
+            const diaIndex = semana.dias.findIndex(d => d._id.toString() === diaId);
+            if (diaIndex === -1) return res.status(404).json({ msg: "Dia não encontrado" });
+
+            const diaRemovido = semana.dias.splice(diaIndex, 1)[0];
+            await cronograma.save();
+
+            return res.status(200).json({ msg: "Dia removido", dia: diaRemovido });
+        } catch (error) {
+            return res.status(400).json({ msg: "Erro ao remover dia", error: error.message });
+        }
+    },
 
     async adicionarConteudo(req, res) {
         const { cronogramaId, semanaId, diaId } = req.params;
@@ -77,11 +124,10 @@ module.exports = {
             const dia = semana.dias.find(d => d._id.toString() === diaId);
             if (!dia) return res.status(404).json({ msg: "Dia não encontrado" });
 
-            const novoConteudo = { ...conteudo, _id: new mongoose.Types.ObjectId() };
-            dia.conteudos.push(novoConteudo);
+            dia.conteudos.push(conteudo);
 
             await cronograma.save();
-            return res.status(201).json(novoConteudo);
+            return res.status(201).json({ msg: "Conteúdo criado com suceso", conteudo });
         } catch (error) {
             return res.status(400).json({ msg: "Erro ao adicionar conteúdo", error });
         }
@@ -108,5 +154,6 @@ module.exports = {
             return res.status(400).json({ msg: "Erro ao remover conteúdo", error });
         }
     },
+
 
 }
