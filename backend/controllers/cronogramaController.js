@@ -14,7 +14,6 @@ module.exports = {
                 userCriador,
                 pasta,
                 quantidadeSemanas,
-                semanas
             })
             return res.status(200).json({ msg: "Cronograma criado com sucesso", cronograma });
         } catch (error) {
@@ -127,7 +126,7 @@ module.exports = {
             dia.conteudos.push(conteudo);
 
             await cronograma.save();
-            return res.status(201).json({ msg: "Conteúdo criado com suceso", conteudo });
+            return res.status(201).json({ msg: "Conteúdo criado com sucesso", conteudo });
         } catch (error) {
             return res.status(400).json({ msg: "Erro ao adicionar conteúdo", error });
         }
