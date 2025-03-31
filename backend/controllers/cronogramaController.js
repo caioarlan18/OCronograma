@@ -153,6 +153,26 @@ module.exports = {
             return res.status(400).json({ msg: "Erro ao remover conteúdo", error });
         }
     },
+    async read(req, res) {
+        try {
+            const cronogramas = await CronogramaModel.find();
+            return res.status(200).json(cronogramas);
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
 
+        }
+    },
+    async readOne(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do cronograma" });
+        const cronograma = await CronogramaModel.findById(id);
+        if (!cronograma) return res.status(400).json({ msg: "Cronograma não encontrado" });
+        try {
+            return res.status(200).json(cronograma);
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+    }
 
 }

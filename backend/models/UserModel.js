@@ -32,8 +32,12 @@ const userSchema = new Schema({
         type: Date,
         required: false
     },
+    status: {
+        type: String,
+        required: true
+    },
     cronogramaAssociado: [cronogramaAssociadoSchema]
-})
+}, { timestamps: true })
 
 const UserModel = mongoose.model("UserModel", userSchema);
 

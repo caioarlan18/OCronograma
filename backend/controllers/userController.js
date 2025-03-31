@@ -1,9 +1,12 @@
 const userModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
+const axios = require('axios');
+const moment = require('moment');
 
 module.exports = {
+
+
     async register(req, res) {
         const { nome, email, senha, role, validade } = req.body;
         const userExists = await userModel.findOne({ email: email })
@@ -20,8 +23,9 @@ module.exports = {
                 nome,
                 email,
                 senha: senhaHash,
-                role,
-                validade
+                role: "aluno",
+                validade,
+                status: "ativo"
             })
             return res.status(200).json({ msg: "Conta criada com sucesso" });
         } catch (error) {
@@ -49,7 +53,7 @@ module.exports = {
             }, secret);
             return res.status(200).json({ msg: "Logado com sucesso", token, id: user._id });
         } catch (err) {
-            return res.statys(400).json({ msg: "Falha ao logar " + err });
+            return res.status(400).json({ msg: "Falha ao logar " + err });
         }
     },
     async checkToken(req, res, next) {
@@ -67,7 +71,7 @@ module.exports = {
     },
     async logged(req, res) {
         const id = req.params.id
-        const user = await userModel.findOne({ _id: id }, '-password')
+        const user = await userModel.findOne({ _id: id }, '-senha')
         if (!user) {
             return res.status(401).json({ msg: 'Acesso negado' })
         }
@@ -81,40 +85,130 @@ module.exports = {
         if (!usuario) {
             return res.status(404).json({ msg: 'E-mail não encontrado' });
         }
+        try {
+            await axios.post("https://hook.eu2.make.com/hn41bov9iciu9aqn3thwrsagpxncyf1m", { email: usuario.email, nome: usuario.nome });
 
-        const link = `http://localhost:3000/redefinir-senha/${usuario._id}`;
-
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'seuemail@gmail.com',
-                pass: 'suasenha'
-            }
-        });
-
-        await transporter.sendMail({
-            from: 'seuemail@gmail.com',
-            to: email,
-            subject: 'Redefinir sua senha',
-            html: `<p>Clique no link para redefinir sua senha: <a href="${link}">${link}</a></p>`
-        });
-
-        res.json({ msg: 'E-mail de redefinição de senha enviado com sucesso.' });
+            res.status(200).json({ mensagem: "E-mail de recuperação enviado." });
+        } catch (error) {
+            res.status(500).json({ erro: "Erro ao enviar solicitação.", error });
+        }
     },
     async redefinirSenha(req, res) {
         const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
         const { novaSenha } = req.body;
+        if (!novaSenha) return res.status(400).json({ msg: "Escolha sua nova senha" });
+        const user = await userModel.findById(id);
+        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+        const checkSenha = await bcrypt.compare(novaSenha, user.senha);
+        if (checkSenha) return res.status(400).json({ msg: "Escolha outra senha, essa é sua senha atual" });
+        const salt = await bcrypt.genSalt(12);
+        const novaSenhaHash = await bcrypt.hash(novaSenha, salt);
+        try {
+            user.senha = novaSenhaHash;
+            await user.save();
+            return res.status(200).json({ msg: "Senha atualizada com sucesso" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Erro", error });
+        }
+    },
+    async editarUsuario(req, res) {
+        const { nome, email, validade } = req.body;
+        if (!nome || !email || !validade) return res.status(400).json({ msg: "Os campos devem estar preenchidos" });
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
+        const user = await userModel.findById(id);
+        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
 
-        const usuario = await userModel.findById(id);
-        if (!usuario) {
-            return res.status(404).json({ msg: 'Usuário não encontrado' });
+        try {
+            user.nome = nome;
+            user.email = email;
+            user.validade = validade;
+            await user.save();
+            res.status(200).json({ msg: "Usuário editado com sucesso" });
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
         }
 
-        const senhaCriptografada = await bcrypt.hash(novaSenha, 10);
-        usuario.senha = senhaCriptografada;
+    },
+    async promoverUsuario(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
+        const user = await userModel.findById(id);
+        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+        if (user.role === "adm2") return res.status(400).json({ msg: "Usuário já estava promovido" });
+        try {
+            user.role = "adm2";
+            await user.save();
+            res.status(200).json({ msg: "Usuário promovido com sucesso" });
 
-        await usuario.save();
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
 
-        res.json({ msg: 'Senha redefinida com sucesso!' });
+        }
+    },
+    async rebaixarUsuario(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
+        const user = await userModel.findById(id);
+        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+        if (user.role === "aluno") return res.status(400).json({ msg: "Usuário já estava rebaixado" });
+        try {
+            user.role = "aluno";
+            await user.save();
+            res.status(200).json({ msg: "Usuário rebaixado com sucesso" });
+
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+    },
+    async excluirUsuario(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
+        const user = await userModel.findById(id);
+        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+        try {
+            await userModel.deleteOne(user);
+            res.status(200).json({ msg: "Usuário deletado com sucesso" });
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+
+    },
+    async usuarioExpirou() {
+        const usuarios = await userModel.find();
+        usuarios.forEach(async (usuario) => {
+            if (usuario.validade && moment(usuario.validade).isBefore(moment())) {
+                usuario.status = 'inativo';
+                await usuario.save();
+            } else {
+                usuario.status = "ativo";
+                await usuario.save();
+            }
+        });
+    },
+    async read(req, res) {
+        try {
+            const users = await userModel.find();
+            return res.status(200).json(users);
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+    },
+    async readOne(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
+        const user = await userModel.findById(id);
+        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+        try {
+            return res.status(200).json(user);
+        } catch (error) {
+            res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
     }
+
 }

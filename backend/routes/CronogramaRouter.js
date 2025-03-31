@@ -15,4 +15,9 @@ router.delete("/cronograma/:cronogramaId/semana/:semanaId/dia/:diaId", Cronogram
 router.post("/cronograma/:cronogramaId/semana/:semanaId/dia/:diaId", CronogramaController.adicionarConteudo);
 //remover conteudo
 router.delete("/cronograma/:cronogramaId/semana/:semanaId/dia/:diaId/conteudo/:conteudoId", CronogramaController.removerConteudo);
+//mostrar cronogramas
+router.get("/cronograma/read", CronogramaController.read);
+//mostrar 1 cronograma
+router.get("/cronograma/read/:id", CronogramaController.readOne);
+
 module.exports = router;
