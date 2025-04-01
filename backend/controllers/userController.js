@@ -88,9 +88,9 @@ module.exports = {
         try {
             await axios.post("https://hook.eu2.make.com/hn41bov9iciu9aqn3thwrsagpxncyf1m", { email: usuario.email, nome: usuario.nome });
 
-            res.status(200).json({ mensagem: "E-mail de recuperação enviado." });
+            return res.status(200).json({ mensagem: "E-mail de recuperação enviado." });
         } catch (error) {
-            res.status(500).json({ erro: "Erro ao enviar solicitação.", error });
+            return res.status(500).json({ erro: "Erro ao enviar solicitação.", error });
         }
     },
     async redefinirSenha(req, res) {
@@ -113,21 +113,21 @@ module.exports = {
         }
     },
     async editarUsuario(req, res) {
-        const { nome, email, validade } = req.body;
-        if (!nome || !email || !validade) return res.status(400).json({ msg: "Os campos devem estar preenchidos" });
+        const { novoNome, novoEmail, novaValidade } = req.body;
+        if (!novoNome || !novoEmail || !novaValidade) return res.status(400).json({ msg: "Os campos devem estar preenchidos" });
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
         const user = await userModel.findById(id);
         if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
 
         try {
-            user.nome = nome;
-            user.email = email;
-            user.validade = validade;
+            user.nome = novoNome;
+            user.email = novoEmail;
+            user.validade = novaValidade;
             await user.save();
-            res.status(200).json({ msg: "Usuário editado com sucesso" });
+            return res.status(200).json({ msg: "Usuário editado com sucesso" });
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
         }
 
     },
@@ -140,10 +140,10 @@ module.exports = {
         try {
             user.role = "adm2";
             await user.save();
-            res.status(200).json({ msg: "Usuário promovido com sucesso" });
+            return res.status(200).json({ msg: "Usuário promovido com sucesso" });
 
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
     },
@@ -156,10 +156,10 @@ module.exports = {
         try {
             user.role = "aluno";
             await user.save();
-            res.status(200).json({ msg: "Usuário rebaixado com sucesso" });
+            return res.status(200).json({ msg: "Usuário rebaixado com sucesso" });
 
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
     },
@@ -170,9 +170,9 @@ module.exports = {
         if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
         try {
             await userModel.deleteOne(user);
-            res.status(200).json({ msg: "Usuário deletado com sucesso" });
+            return res.status(200).json({ msg: "Usuário deletado com sucesso" });
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
 
@@ -194,7 +194,7 @@ module.exports = {
             const users = await userModel.find();
             return res.status(200).json(users);
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
     },
@@ -206,7 +206,7 @@ module.exports = {
         try {
             return res.status(200).json(user);
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
     }

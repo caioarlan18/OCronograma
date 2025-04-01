@@ -158,8 +158,7 @@ module.exports = {
             const cronogramas = await CronogramaModel.find();
             return res.status(200).json(cronogramas);
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
-
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
         }
     },
     async readOne(req, res) {
@@ -170,8 +169,19 @@ module.exports = {
         try {
             return res.status(200).json(cronograma);
         } catch (error) {
-            res.status(500).json({ msg: "Ocorreu um erro", error });
-
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+        }
+    },
+    async removerCronograma(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do cronograma" });
+        const cronograma = await CronogramaModel.findById(id);
+        if (!cronograma) return res.status(400).json({ msg: "Usuário não encontrado" })
+        try {
+            await CronogramaModel.deleteOne(cronograma);
+            return res.status(200).json({ msg: "Cronograma deletado com sucesso" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
         }
     }
 

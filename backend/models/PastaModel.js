@@ -13,7 +13,7 @@ const pastaSchema = new Schema({
         required: true
     },
     cronogramas: [cronogramaSchema]
-})
+}, { timestamps: true });
 
 const PastaModel = mongoose.model("PastaModel", pastaSchema);
 
