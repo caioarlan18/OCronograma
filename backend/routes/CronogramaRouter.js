@@ -21,5 +21,11 @@ router.get("/cronograma/read", CronogramaController.read);
 router.get("/cronograma/read/:id", CronogramaController.readOne);
 //excluir cronograma
 router.delete("/cronograma/delete/:id", CronogramaController.removerCronograma);
+//mover cronograma
+router.put("/cronograma/mover/:idCronograma/:idPastaNova", CronogramaController.mover);
+//renderizar cronograma
+router.get("/cronograma/renderizar/:pastaId", CronogramaController.renderizarCronograma);
+//clonar cronograma
+router.post("/cronograma/clonar/:id", CronogramaController.clonar);
 
 module.exports = router;
