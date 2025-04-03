@@ -27,5 +27,10 @@ router.put("/cronograma/mover/:idCronograma/:idPastaNova", CronogramaController.
 router.get("/cronograma/renderizar/:pastaId", CronogramaController.renderizarCronograma);
 //clonar cronograma
 router.post("/cronograma/clonar/:id", CronogramaController.clonar);
-
+//atualizar nome do cronograma
+router.put("/cronograma/atualizar-nome/:id", CronogramaController.atualizarNome);
+//atualizar conteudo
+router.put("/cronograma/:cronogramaId/semana/:semanaId/dia/:diaId/conteudo/:conteudoId", CronogramaController.atualizarConteudo);
+//associar usuarios
+router.patch("/cronograma/:idCronograma/associar-usuarios", CronogramaController.associarUsuarios);
 module.exports = router;

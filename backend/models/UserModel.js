@@ -1,16 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const cronogramaAssociadoSchema = new Schema({
-    nome: {
-        type: String,
-        required: true
-    },
-    id: {
-        type: String,
-        required: true
-    }
-})
+
 const userSchema = new Schema({
     nome: {
         type: String,
@@ -36,7 +27,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    cronogramaAssociado: [cronogramaAssociadoSchema]
+    cronogramaAssociado: {
+        type: String,
+        required: false
+    }
 }, { timestamps: true })
 
 const UserModel = mongoose.model("UserModel", userSchema);

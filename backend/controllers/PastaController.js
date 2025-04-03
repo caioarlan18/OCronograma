@@ -1,5 +1,5 @@
 const pastaModel = require("../models/PastaModel");
-
+const cronogramaModel = require("../models/CronogramaModel");
 module.exports = {
     async criarPasta(req, res) {
         const { nome } = req.body;
@@ -61,6 +61,10 @@ module.exports = {
         try {
             const pasta = await pastaModel.findById(id);
             if (!pasta) return res.status(404).json({ msg: "Pasta não encontrada" });
+            pasta.cronogramas.forEach(async (item) => {
+                const cronograma = await cronogramaModel.findById(item._id);
+                await cronogramaModel.deleteOne(cronograma);
+            })
             await pastaModel.deleteOne(pasta);
             return res.status(200).json({ msg: "Pasta deletada com sucesso" });
         } catch (error) {

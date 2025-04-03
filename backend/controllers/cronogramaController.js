@@ -1,5 +1,6 @@
 const CronogramaModel = require("../models/CronogramaModel");
 const pastaModel = require("../models/PastaModel");
+const userModel = require("../models/UserModel");
 module.exports = {
 
     async criarCronograma(req, res) {
@@ -255,6 +256,74 @@ module.exports = {
         } catch (error) {
             return res.status(500).json({ msg: "Ocorreu um erro", error });
 
+        }
+    },
+    async atualizarNome(req, res) {
+        const { id } = req.params;
+        if (!id) return res.status(400).json({ msg: "Faltando id do cronograma" });
+        const { novoNome } = req.body;
+        if (!novoNome) return res.status(400).json({ msg: "Faltando dados para atualizar" });
+        try {
+            const cronograma = await CronogramaModel.findById(id);
+            cronograma.nome = novoNome;
+            await cronograma.save();
+            return res.status(200).json({ msg: "Nome do cronograma atualizado com sucesso" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+
+    },
+    async atualizarConteudo(req, res) {
+        const { cronogramaId, semanaId, diaId, conteudoId } = req.params;
+        const dadosAtualizados = req.body;
+
+        try {
+            const cronograma = await CronogramaModel.findById(cronogramaId);
+            if (!cronograma) return res.status(404).json({ msg: "Cronograma não encontrado" });
+
+            const semana = cronograma.semanas.find(s => s._id.toString() === semanaId);
+            if (!semana) return res.status(404).json({ msg: "Semana não encontrada" });
+
+            const dia = semana.dias.find(d => d._id.toString() === diaId);
+            if (!dia) return res.status(404).json({ msg: "Dia não encontrado" });
+
+            const conteudo = dia.conteudos.find(c => c._id.toString() === conteudoId);
+            if (!conteudo) return res.status(404).json({ msg: "Conteúdo não encontrado" });
+
+            Object.keys(dadosAtualizados).forEach((key) => {
+                conteudo[key] = dadosAtualizados[key];
+            });
+
+            await cronograma.save();
+
+            return res.status(200).json({ msg: "Conteúdo atualizado com sucesso!", conteudo });
+        } catch (error) {
+            return res.status(500).json({ msg: "Erro ao atualizar conteúdo", error });
+        }
+    },
+    async associarUsuarios(req, res) {
+        const { idCronograma } = req.params;
+        const { idUsuarios } = req.body;
+
+        if (!idUsuarios || !Array.isArray(idUsuarios) || idUsuarios.length === 0) {
+            return res.status(400).json({ msg: "É necessário enviar pelo menos um usuário." });
+        }
+
+        try {
+            const cronograma = await CronogramaModel.findById(idCronograma);
+            if (!cronograma) {
+                return res.status(404).json({ msg: "Cronograma não encontrado." });
+            }
+
+            await userModel.updateMany(
+                { _id: { $in: idUsuarios } },
+                { $set: { cronogramaAssociado: idCronograma } }
+            );
+
+            return res.status(200).json({ msg: "Usuários associados com sucesso!" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Erro ao associar usuários.", error });
         }
     }
 
