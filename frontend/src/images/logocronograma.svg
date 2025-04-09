@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="339.197" height="55" viewBox="0 0 339.197 55">
+  <defs>
+    <linearGradient id="linear-gradient" y1="55.98" x2="1" y2="55.98" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#8e2de2"/>
+      <stop offset="1" stop-color="#4a00e0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="1.04" y1="34.873" x2="0.253" y2="35.778" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="0.334" y1="37.892" x2="1.002" y2="37.099" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-4" y1="29.087" x2="1" y2="29.087" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f0c"/>
+      <stop offset="1" stop-color="#339"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-5" x1="0.826" y1="29.646" x2="0.099" y2="30.506" xlink:href="#linear-gradient-4"/>
+  </defs>
+  <g id="Grupo_703" data-name="Grupo 703" transform="translate(-790.832 -230.554)">
+    <g id="Grupo_701" data-name="Grupo 701">
+      <path id="Caminho_490" data-name="Caminho 490" d="M803.377,265.934l13.551-7.6,8.042-17.957L814.394,256.57Z" fill="url(#linear-gradient)"/>
+      <g id="Grupo_699" data-name="Grupo 699">
+        <path id="Caminho_491" data-name="Caminho 491" d="M831.029,270.121c-8.482,9.915-21.592,12.449-28.974,6.169a10.734,10.734,0,0,1-1.872-1.983c7.6,4.187,18.838.992,26.55-7.932,7.6-8.923,9.034-20.6,3.746-27.432a15.769,15.769,0,0,1,2.2,1.543c7.381,6.279,6.83,19.72-1.542,29.635Z" fill="url(#linear-gradient-2)"/>
+        <path id="Caminho_492" data-name="Caminho 492" d="M835.436,253.706a28.093,28.093,0,0,1-5.288,12.339,28.481,28.481,0,0,1-13.44,10.135c-5.4,1.763-12.339,1.652-16.636-1.873,7.6,4.186,18.839.992,26.551-7.932,7.6-8.924,9.033-20.6,3.745-27.432,3.856,3.2,5.619,10.246,5.068,14.763Z" fill="url(#linear-gradient-3)"/>
+      </g>
+      <g id="Grupo_700" data-name="Grupo 700">
+        <path id="Caminho_493" data-name="Caminho 493" d="M838.08,245.884a14.91,14.91,0,0,0-4.407-6.61,13.482,13.482,0,0,0-6.279-3.085c-7.712-1.873-17.517,1.873-24.457,9.915-6.941,8.153-9.034,18.288-6.06,25.669a14.834,14.834,0,0,0,4.077,5.729,14.673,14.673,0,0,0,7.271,3.3,16.617,16.617,0,0,1-11.348-3.966c-8.593-7.381-8.042-23.245,1.763-34.7s25.118-14.211,33.822-6.83a17.23,17.23,0,0,1,5.618,10.576Z" fill="url(#linear-gradient-4)"/>
+        <path id="Caminho_494" data-name="Caminho 494" d="M838.08,245.884a14.91,14.91,0,0,0-4.407-6.61,13.482,13.482,0,0,0-6.279-3.085c-7.712-1.873-17.517,1.873-24.457,9.915-6.941,8.153-9.034,18.288-6.06,25.669a14.834,14.834,0,0,0,4.077,5.729,14.673,14.673,0,0,0,7.271,3.3,16.747,16.747,0,0,1-13.331-9.034,21.44,21.44,0,0,1-.881-16.305,34.128,34.128,0,0,1,9.034-13.881,31.747,31.747,0,0,1,11.017-7.161,21.014,21.014,0,0,1,13-.661,15.162,15.162,0,0,1,9.7,8.263,29.976,29.976,0,0,1,1.212,3.746Z" fill="url(#linear-gradient-5)"/>
+      </g>
+    </g>
+    <g id="Grupo_702" data-name="Grupo 702" style="mix-blend-mode: normal;isolation: isolate">
+      <text id="CRONOGRAMA" transform="translate(844.029 271.554)" fill="#4d02e0" font-size="39.33" font-family="Poppins-Italic, Poppins" font-style="italic" style="mix-blend-mode: normal;isolation: isolate"><tspan x="0" y="0">CRONOGRAMA</tspan></text>
+    </g>
+  </g>
+</svg>
