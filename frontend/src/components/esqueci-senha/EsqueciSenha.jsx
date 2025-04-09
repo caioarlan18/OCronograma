@@ -1,24 +1,29 @@
 import styles from '../login/Login.module.css';
-import logoCronograma from '../../images/logocronograma.svg';
+import logoCronograma from '../../images/logocronograma.png';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import api from "../../axiosConfig/axios";
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 export function EsqueciSenha() {
+    const navigate = useNavigate();
     const params = useParams();
     const [email, setEmail] = useState(params.email)
     async function enviarRedefinir() {
         try {
-            const response = await api.post("/esqueci-senha", {
+            await api.post("/esqueci-senha", {
                 email
             })
-            alert(response.data.msg);
+            navigate("/email-enviado");
+
         } catch (error) {
-            alert(error.response.data.msg);
+            toast.error(error.response.data.msg);
         }
 
     }
     return (
         <div className={styles.login}>
+
             <div className={styles.login1}>
                 <img src={logoCronograma} alt="logo-cronograma" />
             </div>

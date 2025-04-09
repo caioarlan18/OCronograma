@@ -1,9 +1,10 @@
 import styles from '../login/Login.module.css';
-import logoCronograma from '../../images/logocronograma.svg';
+import logoCronograma from '../../images/logocronograma.png';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import api from "../../axiosConfig/axios";
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 export function RedefinirSenha() {
     const navigate = useNavigate();
     const params = useParams();
@@ -15,10 +16,10 @@ export function RedefinirSenha() {
                 novaSenha: senha
             })
             setSenha("");
-            alert(response.data.msg);
+            toast.success(response.data.msg);
             navigate("/")
         } catch (error) {
-            alert(error.response.data.msg);
+            toast.error(error.response.data.msg);
         }
 
     }

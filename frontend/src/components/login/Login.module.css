@@ -33,6 +33,7 @@
 }
 
 .maintxt p {
+    margin-top: 7px;
     color: #939393;
     font-family: poppins;
     font-weight: 400;
@@ -131,6 +132,23 @@
     font-weight: 500;
     border: 0;
     background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    border-radius: 14px;
+    height: 57px;
+    cursor: pointer;
+}
+
+.bttobg {
+    margin-top: 30px;
+}
+
+.bttobg button {
+    width: 100%;
+    font-family: poppins;
+    font-size: 13.35px;
+    color: #525252;
+    font-weight: 500;
+    border: 0;
+    background-color: #DAD9EA;
     border-radius: 14px;
     height: 57px;
     cursor: pointer;
