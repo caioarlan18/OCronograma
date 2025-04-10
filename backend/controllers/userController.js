@@ -97,7 +97,8 @@ module.exports = {
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
         const { novaSenha } = req.body;
-        if (!novaSenha) return res.status(400).json({ msg: "Escolha sua nova senha" });
+        const regexNumero = /\d/;
+        if (!novaSenha || novaSenha.length < 8 || !regexNumero.test(novaSenha)) return res.status(400).json({ msg: "A senha tem que ter pelo menos 8 carácteres e pelo menos 1 dígito numérico" });
         const user = await userModel.findById(id);
         if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
         const checkSenha = await bcrypt.compare(novaSenha, user.senha);

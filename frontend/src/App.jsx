@@ -8,6 +8,7 @@ import { VerifyToken } from './components/private-route/VerifyToken';
 import { PainelAluno } from './components/painel-aluno/PainelAluno';
 import { VerifyLogged } from './components/private-route/VerifyLogged';
 import { EmailEnviado } from './components/esqueci-senha/EmailEnviado';
+import { PainelAdm } from './components/painel-adm/PainelAdm';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
           <Route path='/redefinir-senha/:id' element={<RedefinirSenha />} />
           <Route path='/painel-aluno' element={<VerifyToken><PainelAluno /></VerifyToken>} />
           <Route path='/email-enviado' element={<EmailEnviado />} />
+          <Route path='/painel-adm' element={<PainelAdm />} />
         </Routes>
       </Router>
     </>

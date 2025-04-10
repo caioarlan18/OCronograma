@@ -10,6 +10,9 @@ export function PainelAluno() {
         async function getUserData() {
             try {
                 const response = await api.get(`/user/read/${id}`);
+                if (response.data.role != "aluno") {
+                    return navigate("/painel-adm")
+                }
                 setUser(response.data);
             } catch (error) {
                 toast.error(error);

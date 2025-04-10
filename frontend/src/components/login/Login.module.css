@@ -105,10 +105,28 @@
 }
 
 .logpass2 input {
+    appearance: none;
     border: 1px solid #DADADA;
     border-radius: 2px;
     width: 16px;
     height: 16px;
+
+}
+
+.logpass2 input:checked {
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+}
+
+.logpass2 input:checked::after {
+    content: "✔";
+    display: flex;
+    color: white;
+    font-size: 14px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    top: -3px;
+
 
 }
 
