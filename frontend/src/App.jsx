@@ -8,7 +8,9 @@ import { VerifyToken } from './components/private-route/VerifyToken';
 import { PainelAluno } from './components/painel-aluno/PainelAluno';
 import { VerifyLogged } from './components/private-route/VerifyLogged';
 import { EmailEnviado } from './components/esqueci-senha/EmailEnviado';
-import { PainelAdm } from './components/painel-adm/PainelAdm';
+import { PainelAdmFeed } from './components/painel-adm/painel-adm-feed/PainelAdmFeed';
+import { CriarCronograma1 } from './components/painel-adm/criar cronograma/etapa1/CriarCronograma1';
+import { VerifyAdm } from './components/private-route/VerifyAdm';
 
 function App() {
 
@@ -40,7 +42,8 @@ function App() {
           <Route path='/redefinir-senha/:id' element={<RedefinirSenha />} />
           <Route path='/painel-aluno' element={<VerifyToken><PainelAluno /></VerifyToken>} />
           <Route path='/email-enviado' element={<EmailEnviado />} />
-          <Route path='/painel-adm' element={<PainelAdm />} />
+          <Route path='/painel-adm-feed' element={<VerifyAdm><PainelAdmFeed /></VerifyAdm>} />
+          <Route path='/criar-cronograma1' element={<VerifyAdm><CriarCronograma1 /></VerifyAdm>} />
         </Routes>
       </Router>
     </>

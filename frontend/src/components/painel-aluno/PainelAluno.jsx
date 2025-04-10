@@ -10,9 +10,6 @@ export function PainelAluno() {
         async function getUserData() {
             try {
                 const response = await api.get(`/user/read/${id}`);
-                if (response.data.role != "aluno") {
-                    return navigate("/painel-adm")
-                }
                 setUser(response.data);
             } catch (error) {
                 toast.error(error);
@@ -20,15 +17,43 @@ export function PainelAluno() {
         }
         getUserData();
     }, [id])
+
+    useEffect(() => {
+        if (!user || !user.role) return;
+        if (user.role === "adm" || user.role === "adm2") {
+            return navigate("/painel-adm-feed")
+        } else if (user.role === "aluno") {
+            return;
+        }
+        else {
+            toast.error("Cargo inválido, entre em contato com um administrador");
+            localStorage.removeItem("id");
+            localStorage.removeItem("token");
+            sessionStorage.removeItem("id");
+            sessionStorage.removeItem("token");
+            navigate("/")
+        }
+    }, [user])
+
     function logout() {
         localStorage.removeItem("id");
         localStorage.removeItem("token");
+        sessionStorage.removeItem("id");
+        sessionStorage.removeItem("token");
+        toast.success("Até logo! Você saiu da sua conta.")
         navigate("/");
     }
     return (
-        <div>
-            <h1>Olá {user.nome} seu email é {user.email}</h1>
-            <button onClick={logout}>deslogar</button>
-        </div>
+        <>
+            {user.role === "aluno" && user.status === "ativo" &&
+
+                <div>
+                    <h1>Olá {user.nome} seu email é {user.email}</h1>
+                    <button onClick={logout}>deslogar</button>
+                </div>
+            }
+        </>
+
+
     )
 }

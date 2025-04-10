@@ -5,8 +5,8 @@ export function VerifyLogged({ children }) {
     const [isAuth, setIsAuth] = useState(true);
     useEffect(() => {
         async function verifyLogged() {
-            const id = localStorage.getItem("id");
-            const token = localStorage.getItem("token");
+            const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             if (!id || !token) {
                 setIsAuth(false);
             } else {

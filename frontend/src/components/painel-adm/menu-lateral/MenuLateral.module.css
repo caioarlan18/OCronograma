@@ -4,9 +4,10 @@
     background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: space-between;
     align-items: left;
     padding: 100px 0px 0px 50px;
+    box-sizing: border-box;
 
 }
 
@@ -33,12 +34,6 @@
 
 }
 
-.ativo a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    font-family: poppins;
-}
 
 .ativo img {
     width: 23px;
@@ -52,6 +47,12 @@
 
 }
 
+.sidebar2 a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: poppins;
+}
 
 .sidebar2 {
     margin-top: 105px;
@@ -66,15 +67,30 @@
 
 }
 
-.sidebar3 img {
+.sidebar3 img,
+.logout img {
     width: 23px;
     height: 23px;
 }
 
-.sidebar3 a {
+.sidebar3 p,
+.logout h1 {
     font-family: poppins;
     font-weight: 400;
     font-size: 17px;
     color: white;
     text-decoration: none;
+}
+
+.logout {
+    background-color: #4D02E0;
+    border-radius: 0px 07px 07px 0px;
+    margin-left: -50px;
+    display: flex;
+    width: 50%;
+    align-items: center;
+    margin-bottom: 97px;
+    gap: 20px;
+    padding: 16px 0px 15px 70px;
+    cursor: pointer;
 }
