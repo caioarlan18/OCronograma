@@ -36,7 +36,7 @@ export function Redirecionamento() {
     }, [user])
     return (
         <div>
-            <h1>Redirecionando</h1>
+            <h1>Redirecionando...</h1>
         </div>
     )
 }

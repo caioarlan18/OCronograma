@@ -48,7 +48,7 @@ export function MenuLateral({ ativo }) {
 
             <div className={styles.logout} onClick={logout}>
                 <img src={iconelogout} alt="" />
-                <h1 >Deslogar</h1>
+                <h1>Deslogar</h1>
             </div>
         </div>
     )
