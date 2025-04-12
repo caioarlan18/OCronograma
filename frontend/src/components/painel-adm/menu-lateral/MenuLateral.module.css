@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: left;
-    padding: 100px 0px 0px 50px;
+    padding: 100px 0px 0px 37px;
     box-sizing: border-box;
 
 }
@@ -14,11 +14,12 @@
 .sidebar img {
     width: 259px;
     height: 38px;
-
+    display: flex;
+    align-items: center;
 }
 
 .sidebar1 {
-    padding: 15px 0px 15px 20px;
+    padding: 7.04px 0px 7.04px 11.77px;
 
 }
 
@@ -43,7 +44,7 @@
 .ativo2 {
     background-color: #F902CA;
     border-radius: 7px 0px 0px 7px;
-    padding: 15px 0px 15px 20px;
+    padding: 7.04px 0px 7.04px 11.77px;
 
 }
 
@@ -55,7 +56,7 @@
 }
 
 .sidebar2 {
-    margin-top: 105px;
+    margin-top: 90px;
 }
 
 .sidebar3 {
@@ -76,9 +77,9 @@
 .sidebar3 p,
 .logout h1 {
     font-family: poppins;
-    font-weight: 400;
+    font-weight: 300;
     font-size: 17px;
-    color: white;
+    color: #F7FBFE;
     text-decoration: none;
 }
 

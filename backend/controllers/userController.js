@@ -8,12 +8,12 @@ module.exports = {
 
 
     async register(req, res) {
-        const { nome, email, senha, role, validade } = req.body;
+        const { nome, email, senha, validade } = req.body;
         const userExists = await userModel.findOne({ email: email })
         if (userExists) {
             return res.status(400).json({ msg: "Já existe uma conta cadastrada nesse email" });
         }
-        if (!nome || !email || !senha || !role || !validade) {
+        if (!nome || !email || !senha || !validade) {
             return res.status(400).json({ msg: "Está faltando dados para criar o usuário" });
         }
         const salt = await bcrypt.genSalt(12);

@@ -38,7 +38,7 @@ export function MenuLateral({ ativo }) {
                         <p >Gerenciar Cronogramas</p>
 
                     </Link>
-                    <Link className={ativo === 4 ? styles.ativo : styles.sidebar3}>
+                    <Link to={"/gerenciar-usuarios"} className={ativo === 4 ? styles.ativo : styles.sidebar3}>
                         <img src={iconeuser} alt="" />
                         <p >Gerenciar Usuários</p>
                     </Link>

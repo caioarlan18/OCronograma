@@ -10,7 +10,7 @@ export function VerifyLogged({ children }) {
             if (!id || !token) {
                 setIsAuth(false);
             } else {
-                navigate("/painel-aluno")
+                navigate("/redirecionamento")
 
             }
         }

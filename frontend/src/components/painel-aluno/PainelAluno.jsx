@@ -18,23 +18,6 @@ export function PainelAluno() {
         getUserData();
     }, [id])
 
-    useEffect(() => {
-        if (!user || !user.role) return;
-        if (user.role === "adm" || user.role === "adm2") {
-            return navigate("/painel-adm-feed")
-        } else if (user.role === "aluno") {
-            return;
-        }
-        else {
-            toast.error("Cargo inválido, entre em contato com um administrador");
-            localStorage.removeItem("id");
-            localStorage.removeItem("token");
-            sessionStorage.removeItem("id");
-            sessionStorage.removeItem("token");
-            navigate("/")
-        }
-    }, [user])
-
     function logout() {
         localStorage.removeItem("id");
         localStorage.removeItem("token");

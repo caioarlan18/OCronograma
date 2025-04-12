@@ -28,7 +28,7 @@ export function Login() {
                 localStorage.setItem("token", token);
             }
 
-            navigate("/painel-aluno");
+            navigate("/redirecionamento");
         } catch (error) {
             toast.error(error.response.data.msg)
         }
