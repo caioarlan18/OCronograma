@@ -1,5 +1,13 @@
-.sidebar {
+/* Novo container para manter o espaço */
+.sidebarContainer {
     width: clamp(250px, 30%, 357px);
+    min-height: 100vh;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sidebar {
+    width: 100%;
     min-height: 100vh;
     background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
     display: flex;
@@ -8,7 +16,10 @@
     align-items: left;
     padding: 100px 0px 0px 37px;
     box-sizing: border-box;
-
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+    height: 100vh;
 }
 
 .sidebar img {
@@ -20,7 +31,6 @@
 
 .sidebar1 {
     padding: 7.04px 0px 7.04px 11.77px;
-
 }
 
 .ativo {
@@ -32,9 +42,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-
 }
-
 
 .ativo img {
     width: 23px;
@@ -45,7 +53,6 @@
     background-color: #F902CA;
     border-radius: 7px 0px 0px 7px;
     padding: 7.04px 0px 7.04px 11.77px;
-
 }
 
 .sidebar2 a {
@@ -65,7 +72,6 @@
     margin-bottom: 30px;
     gap: 20px;
     padding: 15px 0px 15px 20px;
-
 }
 
 .sidebar3 img,

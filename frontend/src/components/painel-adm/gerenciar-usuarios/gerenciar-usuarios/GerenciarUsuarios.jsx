@@ -4,12 +4,16 @@ import { CriarUsuarioPopup } from '../criar-usuario/CriarUsuarioPopup';
 import styles from './GerenciarUsuarios.module.css';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
+import { EditarUsuarioPopup } from '../editar-usuario/EditarUsuario';
 
 export function GerenciarUsuarios() {
-    const [aberto, setAberto] = useState(false);
+    const [abertoCriar, setAbertoCriar] = useState(false);
+    const [abertoEditar, setAbertoEditar] = useState(false);
+    const [idUsuarioEditar, setIdUsuarioEditar] = useState("");
     const [usuarios, setUsuarios] = useState([]);
+    const [userRole, setUserRole] = useState("");
     function abrir() {
-        setAberto(true);
+        setAbertoCriar(true);
     }
     useEffect(() => {
         async function loadUsers() {
@@ -21,18 +25,19 @@ export function GerenciarUsuarios() {
             }
         }
         loadUsers();
-    }, [aberto])
+    }, [abertoCriar, abertoEditar])
     function formatarData(dataISO) {
         const data = new Date(dataISO);
-        const dia = String(data.getDate()).padStart(2, '0');
-        const mes = String(data.getMonth() + 1).padStart(2, '0');
-        const ano = data.getFullYear();
+        const dia = String(data.getUTCDate()).padStart(2, '0');
+        const mes = String(data.getUTCMonth() + 1).padStart(2, '0');
+        const ano = data.getUTCFullYear();
         return `${dia}/${mes}/${ano}`;
     }
     return (
         <div className={styles.gerenciar}>
             <MenuLateral ativo={4} />
-            <CriarUsuarioPopup abrir={aberto} fechar={() => setAberto(false)} />
+            <CriarUsuarioPopup abrir={abertoCriar} fechar={() => setAbertoCriar(false)} />
+            <EditarUsuarioPopup abrir={abertoEditar} fechar={() => setAbertoEditar(false)} idUser={idUsuarioEditar} roleUser={userRole} />
             <div className={styles.gerenciar1}>
                 <div className={styles.gerenciar2}>
                     <input type="text" placeholder='Pesquise o usuário por nome ou email' />
@@ -62,7 +67,11 @@ export function GerenciarUsuarios() {
                                     <td data-label="Data de criação">{formatarData(usuario.createdAt)}</td>
                                     <td data-label="Cronogramas vinculados">{usuario.cronogramaAssociado || "Nenhum"}</td>
                                     <td data-label="Ações">
-                                        <button className={styles.botao}>Editar</button>
+                                        <button className={styles.botao} onClick={() => {
+                                            setAbertoEditar(true);
+                                            setIdUsuarioEditar(usuario._id);
+                                            setUserRole(usuario.role);
+                                        }}>Editar</button>
                                     </td>
                                 </tr>
                             ))}

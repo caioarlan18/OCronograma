@@ -19,36 +19,35 @@ export function MenuLateral({ ativo }) {
         navigate("/");
     }
     return (
-        <div className={styles.sidebar}>
-            <div className={styles.sidebarr}>
-                <Link to={'/painel-adm-feed'}>
-                    <div className={ativo === 1 ? styles.ativo2 : styles.sidebar1}>
-                        <img src={logocronogramabranco} alt="logo-cronograma-branco" />
+        <div className={styles.sidebarContainer}>
+            <div className={styles.sidebar}>
+                <div className={styles.sidebarr}>
+                    <Link to={'/painel-adm-feed'}>
+                        <div className={ativo === 1 ? styles.ativo2 : styles.sidebar1}>
+                            <img src={logocronogramabranco} alt="logo-cronograma-branco" />
+                        </div>
+                    </Link>
+
+                    <div className={styles.sidebar2}>
+                        <Link to={"/criar-cronograma1"} className={ativo === 2 ? styles.ativo : styles.sidebar3}>
+                            <img src={iconemais} alt="" />
+                            <p>Criar Cronograma</p>
+                        </Link>
+                        <Link className={ativo === 3 ? styles.ativo : styles.sidebar3}>
+                            <img src={iconecamadas} alt="" />
+                            <p>Gerenciar Cronogramas</p>
+                        </Link>
+                        <Link to={"/gerenciar-usuarios"} className={ativo === 4 ? styles.ativo : styles.sidebar3}>
+                            <img src={iconeuser} alt="" />
+                            <p>Gerenciar Usuários</p>
+                        </Link>
                     </div>
-                </Link>
-
-
-                <div className={styles.sidebar2}>
-                    <Link to={"/criar-cronograma1"} className={ativo === 2 ? styles.ativo : styles.sidebar3}>
-                        <img src={iconemais} alt="" />
-                        <p >Criar Cronograma</p>
-                    </Link>
-                    <Link className={ativo === 3 ? styles.ativo : styles.sidebar3}>
-                        <img src={iconecamadas} alt="" />
-                        <p >Gerenciar Cronogramas</p>
-
-                    </Link>
-                    <Link to={"/gerenciar-usuarios"} className={ativo === 4 ? styles.ativo : styles.sidebar3}>
-                        <img src={iconeuser} alt="" />
-                        <p >Gerenciar Usuários</p>
-                    </Link>
                 </div>
-            </div>
 
-
-            <div className={styles.logout} onClick={logout}>
-                <img src={iconelogout} alt="" />
-                <h1>Deslogar</h1>
+                <div className={styles.logout} onClick={logout}>
+                    <img src={iconelogout} alt="" />
+                    <h1>Deslogar</h1>
+                </div>
             </div>
         </div>
     )
