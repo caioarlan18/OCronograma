@@ -25,6 +25,7 @@ export function GerenciarUsuarios() {
                 setUsuarios(response.data);
             } catch (error) {
                 toast.error(error.response.data.msg);
+
             }
         }
         loadUsers();
