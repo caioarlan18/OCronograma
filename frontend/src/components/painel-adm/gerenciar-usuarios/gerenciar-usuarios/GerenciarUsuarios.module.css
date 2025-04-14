@@ -6,7 +6,7 @@
 }
 
 .gerenciar1 {
-    padding: 115px 0px 0px 130px;
+    padding: 115px 0px 130px 130px;
     width: clamp(300px, 50%, 1280px);
 
 }
@@ -17,7 +17,6 @@
     background-position: 25px center;
     text-indent: 50px;
     width: clamp(320px, 30vw, 448px);
-
     height: 54px;
     color: #939393;
     font-size: 14px;
@@ -43,13 +42,16 @@
 }
 
 .container {
-    overflow-x: auto;
+    overflow: auto;
     margin-top: 60px;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 50px #0000001A;
     border-radius: 15px 0px 0px 0px;
     width: 100%;
 
+    padding-right: 4px;
+    scrollbar-width: 11px;
+    scrollbar-color: #FFFFFF #DAD9EA;
 }
 
 .header h1 {

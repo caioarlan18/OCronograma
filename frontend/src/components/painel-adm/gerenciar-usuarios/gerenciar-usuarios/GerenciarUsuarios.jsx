@@ -12,9 +12,12 @@ export function GerenciarUsuarios() {
     const [idUsuarioEditar, setIdUsuarioEditar] = useState("");
     const [usuarios, setUsuarios] = useState([]);
     const [userRole, setUserRole] = useState("");
+    const [busca, setBusca] = useState("");
+
     function abrir() {
         setAbertoCriar(true);
     }
+
     useEffect(() => {
         async function loadUsers() {
             try {
@@ -25,7 +28,8 @@ export function GerenciarUsuarios() {
             }
         }
         loadUsers();
-    }, [abertoCriar, abertoEditar])
+    }, [abertoCriar, abertoEditar]);
+
     function formatarData(dataISO) {
         const data = new Date(dataISO);
         const dia = String(data.getUTCDate()).padStart(2, '0');
@@ -33,20 +37,34 @@ export function GerenciarUsuarios() {
         const ano = data.getUTCFullYear();
         return `${dia}/${mes}/${ano}`;
     }
+
+    const usuariosFiltrados = usuarios.filter(usuario =>
+        usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
+        usuario.email.toLowerCase().includes(busca.toLowerCase())
+    );
+
     return (
         <div className={styles.gerenciar}>
             <MenuLateral ativo={4} />
             <CriarUsuarioPopup abrir={abertoCriar} fechar={() => setAbertoCriar(false)} />
             <EditarUsuarioPopup abrir={abertoEditar} fechar={() => setAbertoEditar(false)} idUser={idUsuarioEditar} roleUser={userRole} />
+
             <div className={styles.gerenciar1}>
                 <div className={styles.gerenciar2}>
-                    <input type="text" placeholder='Pesquise o usuário por nome ou email' />
+                    <input
+                        type="text"
+                        placeholder='Pesquise o usuário por nome ou email'
+                        value={busca}
+                        onChange={(e) => setBusca(e.target.value)}
+                    />
                     <button onClick={abrir}>+ Criar usuário</button>
                 </div>
+
                 <div className={styles.container}>
                     <div className={styles.header}>
                         <h1>Gerencie Usuários</h1>
                     </div>
+
                     <table className={styles.tabela}>
                         <thead>
                             <tr>
@@ -59,7 +77,7 @@ export function GerenciarUsuarios() {
                             </tr>
                         </thead>
                         <tbody>
-                            {usuarios.map((usuario, index) => (
+                            {usuariosFiltrados.map((usuario, index) => (
                                 <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
                                     <td data-label="Nome do usuário">{usuario.nome}</td>
                                     <td data-label="Email do usuário">{usuario.email}</td>

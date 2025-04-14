@@ -13,7 +13,20 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
     const [email, setEmail] = useState("");
     const [validade, setValidade] = useState("");
     const [status, setStatus] = useState("");
-
+    const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+    const [user, setUser] = useState([]);
+    const [cargo, setCargo] = useState(roleUser);
+    useEffect(() => {
+        async function getUserData() {
+            try {
+                const response = await api.get(`/user/read/${id}`);
+                setUser(response.data);
+            } catch (error) {
+                toast.error(error);
+            }
+        }
+        getUserData();
+    }, [id])
     useEffect(() => {
         async function getUser() {
             try {
@@ -31,23 +44,33 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
 
     async function saveUser(e) {
         e.preventDefault();
-        try {
-            const response = await api.put(`/user/editar/${idUser}`, {
-                novoNome: nome,
-                novoEmail: email,
-                novaValidade: validade
-            });
-            toast.success(response.data.msg);
-            fechar();
-        } catch (error) {
-            toast.error(error.response.data.msg);
-
+        if (idUser === id && roleUser === "adm2") {
+            toast.error("Você (adm2) não pode editar você mesmo")
+        } else if (user.role != "adm1" && roleUser === "adm1") {
+            toast.error("Não é possível editar um administrador master")
         }
+        else {
+            try {
+                const response = await api.put(`/user/editar/${idUser}`, {
+                    novoNome: nome,
+                    novoEmail: email,
+                    novaValidade: validade
+                });
+                toast.success(response.data.msg);
+                fechar();
+            } catch (error) {
+                toast.error(error.response.data.msg);
+
+            }
+        }
+
     }
     async function deleteUser(e) {
         e.preventDefault();
 
-        if (roleUser === "adm1") {
+        if (idUser === id) {
+            toast.error("Não é possível deleter você mesmo")
+        } else if (roleUser === "adm1") {
             toast.error("Não é possível deleter um administrador master");
         } else {
             const resultado = await Swal.fire({
@@ -78,11 +101,37 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
         }
 
     }
-    async function promoverAdm() {
+    async function promoverAdm(e) {
+        e.preventDefault();
+        if (user.role != "adm1") {
+            toast.error("Só o admnistrador master pode promover um usuário");
+        } else {
+            try {
+                const response = await api.patch(`/user/promover/${idUser}`);
+                toast.success(response.data.msg);
+                setCargo("adm2");
+            } catch (error) {
+                toast.error(error.response.data.msg);
+
+            }
+        }
 
     }
-    async function rebaixarAdm() {
+    async function rebaixarAdm(e) {
+        e.preventDefault();
+        if (user.role != "adm1") {
+            toast.error("Só o admnistrador master pode rebaixar um usuário");
+        } else {
+            try {
+                const response = await api.patch(`/user/rebaixar/${idUser}`);
+                toast.success(response.data.msg);
+                setCargo("aluno");
 
+            } catch (error) {
+                toast.error(error.response.data.msg);
+
+            }
+        }
     }
 
     return (
@@ -140,11 +189,11 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
                     <button className={styles.submitButton} onClick={saveUser} >Salvar alterações do Usuário</button>
                     <button className={styles.excluirButton} onClick={deleteUser} >Excluir</button>
                     {
-                        roleUser === "aluno"
-                            ? <button className={styles.promoverButton}>Promover Administrador</button>
-                            : roleUser === "adm2"
-                                ? <button className={styles.promoverButton}>Rebaixar</button>
-                                : <button className={styles.promoverButton}>Moderador Master</button>
+                        cargo === "aluno"
+                            ? <button className={styles.promoverButton} onClick={promoverAdm}>Promover Administrador</button>
+                            : cargo === "adm2"
+                                ? <button className={styles.promoverButton} onClick={rebaixarAdm}>Rebaixar</button>
+                                : <button className={styles.promoverButton} onClick={(e) => e.preventDefault()}>Moderador Master</button>
                     }
 
                 </form>

@@ -187,6 +187,7 @@ module.exports = {
             } else {
                 usuario.status = "ativo";
                 await usuario.save();
+
             }
         });
     },
