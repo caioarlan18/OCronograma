@@ -15,7 +15,10 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
     const [status, setStatus] = useState("");
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
-    const [cargo, setCargo] = useState(roleUser);
+    const [cargo, setCargo] = useState("");
+    useEffect(() => {
+        if (roleUser) setCargo(roleUser)
+    }, [roleUser])
     useEffect(() => {
         async function getUserData() {
             try {
