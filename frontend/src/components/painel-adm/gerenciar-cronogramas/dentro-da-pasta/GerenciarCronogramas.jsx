@@ -27,7 +27,7 @@ export function GerenciarCronogramas() {
             <MenuLateral ativo={3} />
             <div className={styles.gcro1}>
                 <div className={styles.gcro2}>
-                    <input type="text" placeholder='Pesquise a pasta...' value={busca} onChange={(e) => setBusca(e.target.value)} />
+                    <input type="text" placeholder='Pesquise o cronograma...' value={busca} onChange={(e) => setBusca(e.target.value)} />
                 </div>
                 <div className={styles.gcro3}>
                     <div className={styles.cardpastas} >
