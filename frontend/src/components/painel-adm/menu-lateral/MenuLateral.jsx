@@ -33,7 +33,7 @@ export function MenuLateral({ ativo }) {
                             <img src={iconemais} alt="" />
                             <p>Criar Cronograma</p>
                         </Link>
-                        <Link className={ativo === 3 ? styles.ativo : styles.sidebar3}>
+                        <Link to={"/gerenciar-cronogramas"} className={ativo === 3 ? styles.ativo : styles.sidebar3}>
                             <img src={iconecamadas} alt="" />
                             <p>Gerenciar Cronogramas</p>
                         </Link>

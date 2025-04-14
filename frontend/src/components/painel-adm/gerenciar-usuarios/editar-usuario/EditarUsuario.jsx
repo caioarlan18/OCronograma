@@ -22,6 +22,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
     useEffect(() => {
         async function getUserData() {
             try {
+
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
