@@ -5,11 +5,12 @@ import api from './../../../../axiosConfig/axios';
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 import pastaAberta from '../../../../images/iconepastaaberta.svg';
+import { EditarPastaPopup } from "../editar-pasta/EditarPastaPopup";
 export function GerenciarCronogramas() {
     const params = useParams();
     const [pasta, setPasta] = useState([]);
     const [busca, setBusca] = useState("");
-
+    const [abrir, setAbrir] = useState(false);
     useEffect(() => {
         async function getPasta() {
             try {
@@ -21,13 +22,16 @@ export function GerenciarCronogramas() {
             }
         }
         getPasta();
-    }, [params.idPasta]);
+    }, [params.idPasta, abrir]);
     return (
         <div className={styles.gcro}>
             <MenuLateral ativo={3} />
+            <EditarPastaPopup abrir={abrir} fechar={() => setAbrir(false)} pastaId={pasta._id} />
             <div className={styles.gcro1}>
                 <div className={styles.gcro2}>
                     <input type="text" placeholder='Pesquise o cronograma...' value={busca} onChange={(e) => setBusca(e.target.value)} />
+                    <button onClick={() => setAbrir(true)}>Editar pasta</button>
+
                 </div>
                 <div className={styles.gcro3}>
                     <div className={styles.cardpastas} >

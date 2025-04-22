@@ -19,6 +19,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
     useEffect(() => {
         if (roleUser) setCargo(roleUser)
     }, [roleUser])
+
+    //usuario adm
     useEffect(() => {
         async function getUserData() {
             try {
@@ -31,6 +33,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
         }
         getUserData();
     }, [id])
+
+    //usuario a ser editado
     useEffect(() => {
         async function getUser() {
             try {

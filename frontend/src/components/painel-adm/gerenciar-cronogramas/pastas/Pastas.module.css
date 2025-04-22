@@ -27,6 +27,18 @@
 
 }
 
+.gerenciarCronogramas1 button {
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    width: 177px;
+    height: 32px;
+    border: 0;
+    cursor: pointer;
+    font-family: poppins;
+    color: #FFFFFF;
+    font-weight: 500;
+    margin-left: 37px;
+}
+
 .gerenciarCronogramas3 {
     margin-top: 60px;
     display: flex;

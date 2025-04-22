@@ -22,7 +22,7 @@ export function GerenciarUsuarios() {
         async function loadUsers() {
             try {
                 const response = await api.get("/user/read");
-                setUsuarios(response.data);
+                setUsuarios(response.data.reverse());
             } catch (error) {
                 toast.error(error.response.data.msg);
 

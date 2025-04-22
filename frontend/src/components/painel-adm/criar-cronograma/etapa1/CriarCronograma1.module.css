@@ -164,3 +164,22 @@
     outline: none;
 
 }
+
+.campo3 span {
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #111111;
+}
+
+.campo3 button {
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    width: 150px;
+    height: 20px;
+    border: 0;
+    cursor: pointer;
+    font-family: poppins;
+    color: #FFFFFF;
+    font-weight: 500;
+
+
+}

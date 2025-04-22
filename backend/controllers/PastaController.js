@@ -3,10 +3,14 @@ const cronogramaModel = require("../models/CronogramaModel");
 module.exports = {
     async criarPasta(req, res) {
         const { nome } = req.body;
+
         if (!nome) return res.status(400).json({ msg: "Faltando nome para criar a pasta" });
+        const nomef = nome.toUpperCase();
+        const pastaExists = await pastaModel.findOne({ nome: nomef })
+        if (pastaExists) return res.status(400).json({ msg: "Já existe uma pasta com esse nome" });
 
         try {
-            const pasta = await pastaModel.create({ nome });
+            const pasta = await pastaModel.create({ nome: nomef });
             return res.status(201).json({ msg: "Pasta criada com sucesso", pasta });
         } catch (error) {
             return res.status(500).json({ msg: "Erro interno do servidor", error });
@@ -47,7 +51,7 @@ module.exports = {
             const pasta = await pastaModel.findById(id);
             if (!pasta) return res.status(404).json({ msg: "Pasta não encontrada" });
 
-            pasta.nome = novoNome;
+            pasta.nome = novoNome.toUpperCase();
             await pasta.save();
 
             return res.status(200).json({ msg: "Nome atualizado com sucesso", pasta });
