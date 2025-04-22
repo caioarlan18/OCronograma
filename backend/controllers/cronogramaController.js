@@ -222,11 +222,11 @@ module.exports = {
     },
     async renderizarCronograma(req, res) {
         const { pastaId } = req.params;
-        if (!pastaId) return res.status(400).json({ msg: "É preciso estar logado" });
+        if (!pastaId) return res.status(400).json({ msg: "Pasta não existe" });
         try {
             const pasta = await pastaModel.findById(pastaId);
-            const cronogramasIds = pasta.cronogramas;
-            const renderizarCronogramas = await pastaModel.find({
+            const cronogramasIds = pasta.cronogramas.map(item => item.idCronograma);
+            const renderizarCronogramas = await CronogramaModel.find({
                 _id: { $in: cronogramasIds }
             });
             return res.status(200).json(renderizarCronogramas);

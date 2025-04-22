@@ -16,6 +16,7 @@ import { VerifyAluno } from './components/private-route/VerifyAluno';
 import { GerenciarUsuarios } from './components/painel-adm/gerenciar-usuarios/gerenciar-usuarios/GerenciarUsuarios';
 import { Pastas } from './components/painel-adm/gerenciar-cronogramas/pastas/Pastas';
 import { GerenciarCronogramas } from './components/painel-adm/gerenciar-cronogramas/dentro-da-pasta/GerenciarCronogramas';
+import { CriarCronograma2 } from './components/painel-adm/criar-cronograma/etapa2/CriarCronograma2';
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
           <Route path='/gerenciar-usuarios' element={<VerifyAdm><GerenciarUsuarios /></VerifyAdm>} />
           <Route path='/gerenciar-cronogramas' element={<VerifyAdm><Pastas /></VerifyAdm>} />
           <Route path='/gerenciar-cronogramas/:idPasta' element={<VerifyAdm><GerenciarCronogramas /></VerifyAdm>} />
+          <Route path='/criar-cronograma2/:idCronograma' element={<VerifyAdm><CriarCronograma2 /></VerifyAdm>} />
         </Routes>
       </Router>
     </>

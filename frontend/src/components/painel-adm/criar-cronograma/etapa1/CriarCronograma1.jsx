@@ -5,13 +5,16 @@ import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import Select from 'react-select';
 import { CriarPastaPopup } from "../../gerenciar-cronogramas/criar-pasta/CriarPastaPopup";
-
+import { useNavigate } from "react-router-dom";
 export function CriarCronograma1() {
     const [nome, setNome] = useState("");
     const [semanas, setSemanas] = useState(4);
     const [pastas, setPastas] = useState([]);
     const [pastaSelecionada, setPastaSelecionada] = useState(null);
     const [abrir, setAbrir] = useState(false);
+    const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+    const [user, setUser] = useState();
+    const navigate = useNavigate();
     const increment = () => setSemanas((v) => v + 1);
     const decrement = () => setSemanas((v) => v > 0 ? v - 1 : 0);
     //pegar informação da pasta
@@ -30,6 +33,32 @@ export function CriarCronograma1() {
         }
         getPastas();
     }, [abrir]);
+    useEffect(() => {
+        async function getUser() {
+            try {
+                const response = await api.get(`/user/read/${id}`);
+                setUser(response.data);
+            } catch (error) {
+                toast.error(error.response.data.msg);
+
+            }
+        }
+        getUser();
+    }, [id])
+    async function criarCronograma() {
+        try {
+            const response = await api.post("/cronograma", {
+                nome: nome,
+                userCriador: user.nome,
+                pastaId: pastaSelecionada.value,
+                quantidadeSemanas: semanas,
+            })
+            toast.success(response.data.msg);
+            navigate(`/criar-cronograma2/${response.data.cronograma._id}`)
+        } catch (error) {
+            toast.error(error.response.data.msg, error.response.data.error)
+        }
+    }
     //estilização do reac-select
     const customStyles = {
         control: (provided) => ({
@@ -155,7 +184,7 @@ export function CriarCronograma1() {
                 </div>
 
                 <div className={styles.criar}>
-                    <button type="button">Criar</button>
+                    <button type="button" onClick={criarCronograma}>Criar</button>
                 </div>
             </div>
         </div>
