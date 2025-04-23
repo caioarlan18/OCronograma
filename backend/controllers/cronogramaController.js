@@ -250,7 +250,7 @@ module.exports = {
                 semanas: cronograma.semanas
             });
             const pasta = await pastaModel.findById(cronograma.pasta);
-            pasta.cronogramas.push({ idCronograma: cronograma._id });
+            pasta.cronogramas.push({ idCronograma: cronogramaClone._id });
             await pasta.save();
             res.status(200).json({ msg: "Cronograma clonado com sucesso", cronogramaClone });
         } catch (error) {

@@ -6,12 +6,20 @@ import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 import pastaAberta from '../../../../images/iconepastaaberta.svg';
 import { EditarPastaPopup } from "../editar-pasta/EditarPastaPopup";
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { MoverCronogramaPopup } from "../mover/MoverCronogramaPopup";
+import Swal from 'sweetalert2';
+
 export function GerenciarCronogramas() {
     const params = useParams();
     const [pasta, setPasta] = useState([]);
     const [busca, setBusca] = useState("");
     const [abrir, setAbrir] = useState(false);
+    const [abrirMover, setAbrirMover] = useState(false);
+    const [idCro, setIdCro] = useState("");
     const [cronogramas, setCronogramas] = useState([]);
+    const [trigger, setTrigger] = useState(false);
+
     useEffect(() => {
         async function getPasta() {
             try {
@@ -29,14 +37,14 @@ export function GerenciarCronogramas() {
         async function renderCronogramas() {
             try {
                 const response = await api.get(`/cronograma/renderizar/${params.idPasta}`)
-                setCronogramas(response.data);
+                setCronogramas(response.data.reverse());
             } catch (error) {
                 toast.error(error.response.data.msg)
 
             }
         }
         renderCronogramas()
-    }, [params.idPasta])
+    }, [params.idPasta, trigger, abrirMover])
 
     function formatarData(dataISO) {
         const data = new Date(dataISO);
@@ -49,11 +57,53 @@ export function GerenciarCronogramas() {
     const cronogramasFiltrados = cronogramas.filter(cronograma =>
         cronograma.nome.toLowerCase().includes(busca.toLowerCase())
     );
-    console.log(cronogramas)
+    async function duplicar(id) {
+        try {
+            const response = await api.post(`/cronograma/clonar/${id}`);
+            toast.success(response.data.msg);
+            setTrigger(prev => !prev);
+        } catch (error) {
+            toast.error(error.response.data.msg)
+
+        }
+    }
+    async function excluir(id) {
+        try {
+            const resultado = await Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Essa ação irá excluir o cronograma permanentemente.',
+                icon: 'warning',
+                iconColor: '#E30613',
+                showCancelButton: true,
+                confirmButtonColor: '#E30613',
+                cancelButtonColor: '#4D02E0',
+                confirmButtonText: 'Sim, excluir',
+                cancelButtonText: 'Cancelar',
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup');
+                    popup.style.fontFamily = 'Poppins, sans-serif';
+                }
+            });
+            if (resultado.isConfirmed) {
+                const response = await api.delete(`/cronograma/delete/${id}`);
+                toast.success(response.data.msg);
+                setTrigger(prev => !prev);
+            }
+
+        } catch (error) {
+            toast.error(error.response.data.msg)
+
+        }
+    }
+
+    async function mover() {
+        setAbrirMover(true);
+    }
     return (
         <div className={styles.gcro}>
             <MenuLateral ativo={3} />
             <EditarPastaPopup abrir={abrir} fechar={() => setAbrir(false)} pastaId={pasta._id} />
+            <MoverCronogramaPopup abrir={abrirMover} fechar={() => setAbrirMover(false)} idCro={idCro} />
             <div className={styles.gcro1}>
                 <div className={styles.gcro2}>
                     <input type="text" placeholder='Pesquise o cronograma...' value={busca} onChange={(e) => setBusca(e.target.value)} />
@@ -86,7 +136,23 @@ export function GerenciarCronogramas() {
                                         <td data-label="usuario criador">{cronograma.userCriador}</td>
                                         <td data-label="Data de atualização">{formatarData(cronograma.updatedAt)}</td>
                                         <td data-label="Ações">
-                                            <button className={styles.botao}>Editar</button>
+                                            <DropdownMenu.Root>
+                                                <DropdownMenu.Trigger asChild>
+                                                    <button className={styles.botao}>Opções</button>
+                                                </DropdownMenu.Trigger>
+
+                                                <DropdownMenu.Portal>
+                                                    <DropdownMenu.Content className={styles.menuSuspenso} sideOffset={5}>
+                                                        <DropdownMenu.Item className={`${styles.opcao} ${styles.editar}`}>Editar</DropdownMenu.Item>
+                                                        <DropdownMenu.Item className={styles.opcao} onClick={() => duplicar(cronograma._id)}>Duplicar</DropdownMenu.Item>
+                                                        <DropdownMenu.Item className={styles.opcao} onClick={() => {
+                                                            mover()
+                                                            setIdCro(cronograma._id)
+                                                        }}>Mover</DropdownMenu.Item>
+                                                        <DropdownMenu.Item className={`${styles.opcao} ${styles.excluir}`} onClick={() => excluir(cronograma._id)}>Excluir</DropdownMenu.Item>
+                                                    </DropdownMenu.Content>
+                                                </DropdownMenu.Portal>
+                                            </DropdownMenu.Root>
                                         </td>
                                     </tr>
                                 ))}
