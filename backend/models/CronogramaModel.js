@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const conteudoSchema = new Schema({
-    areaConhecimento: { type: String, required: true },
-    resumoConteudo: { type: String, required: true },
+    areaConhecimento: { type: String },
+    resumoConteudo: { type: String },
     link: { type: String }
 });
 

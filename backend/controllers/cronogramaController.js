@@ -114,9 +114,9 @@ module.exports = {
         const { cronogramaId, semanaId, diaId } = req.params;
         const conteudo = req.body;
 
-        if (!conteudo.areaConhecimento || !conteudo.resumoConteudo) {
-            return res.status(400).json({ msg: "Área e resumo são obrigatórios!" });
-        }
+        // if (!conteudo.areaConhecimento || !conteudo.resumoConteudo) {
+        //     return res.status(400).json({ msg: "Área e resumo são obrigatórios!" });
+        // }
 
         try {
             const cronograma = await CronogramaModel.findById(cronogramaId);

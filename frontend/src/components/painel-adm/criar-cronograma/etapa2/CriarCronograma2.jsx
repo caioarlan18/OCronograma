@@ -10,67 +10,86 @@ export function CriarCronograma2() {
     const [selectedWeek, setSelectedWeek] = useState(0);
     const [selectedDay, setSelectedDay] = useState(0);
     const [cronograma, setCronograma] = useState(null);
-    const selectedWeekData = cronograma?.semanas?.[selectedWeek];
-    const selectedDayData = selectedWeekData?.dias?.[selectedDay];
+    const [area, setArea] = useState("");
+    const [resumo, setResumo] = useState("");
+    const [links, setLinks] = useState("");
+    const [materias, setMaterias] = useState([]);
     const [trigger, setTrigger] = useState(false);
 
+    const selectedWeekData = cronograma?.semanas?.[selectedWeek];
+    const selectedDayData = selectedWeekData?.dias?.[selectedDay];
     const semanaId = selectedWeekData?._id;
     const diaId = selectedDayData?._id;
+
     useEffect(() => {
         async function getCronograma() {
             try {
                 const response = await api.get(`/cronograma/read/${params.idCronograma}`);
                 setCronograma(response.data);
+                setMaterias(response.data?.semanas?.[selectedWeek]?.dias?.[selectedDay]?.conteudos || []);
             } catch (error) {
                 toast.error(error.response?.data?.msg || 'Erro ao carregar cronograma');
             }
         }
         getCronograma();
-    }, [params.idCronograma, trigger]);
+    }, [params.idCronograma, trigger, selectedWeek, selectedDay]);
+
+    const handleInputChange = (event, index, field) => {
+        const newMaterias = [...materias];
+        newMaterias[index] = {
+            ...newMaterias[index],
+            [field]: event.target.value,
+        };
+        setMaterias(newMaterias);
+    };
+
+    const handleSaveMateria = async (index) => {
+        try {
+            const updatedContent = {
+                areaConhecimento: materias[index].areaConhecimento,
+                resumoConteudo: materias[index].resumoConteudo,
+                link: materias[index].link,
+            };
+            const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${materias[index]._id}`, updatedContent);
+            setTrigger(prev => !prev);
+            toast.success(response.data.msg);
+        } catch (error) {
+            toast.error(error.response?.data?.msg);
+        }
+    };
 
     async function excluirSemana(id) {
         try {
             const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${id}`);
             setTrigger(prev => !prev);
-            if (selectedWeek === 0) {
-                setSelectedWeek(0)
-            } else {
-                setSelectedWeek(selectedWeek - 1)
-            }
-
+            setSelectedWeek(prev => (prev === 0 ? 0 : prev - 1));
             toast.success(response.data.msg);
         } catch (error) {
             toast.error(error.response?.data?.msg);
-
         }
     }
+
     async function excluirDia(id) {
         try {
-            const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${id}`)
+            const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${id}`);
             setTrigger(prev => !prev);
-            if (selectedDay === 0) {
-                setSelectedDay(0)
-            } else {
-                setSelectedDay(selectedDay - 1)
-            }
-
+            setSelectedDay(prev => (prev === 0 ? 0 : prev - 1));
             toast.success(response.data.msg);
         } catch (error) {
             toast.error(error.response?.data?.msg);
-
         }
     }
+
     async function criarSemana() {
         try {
             const response = await api.post(`/cronograma/${params.idCronograma}/semana/`);
             setTrigger(prev => !prev);
             toast.success(response.data.msg);
-
         } catch (error) {
             toast.error(error.response?.data?.msg);
-
         }
     }
+
     async function criarDia() {
         try {
             const response = await api.post(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia`);
@@ -78,9 +97,47 @@ export function CriarCronograma2() {
             toast.success(response.data.msg);
         } catch (error) {
             toast.error(error.response?.data?.msg);
-
         }
     }
+
+    async function criarMateria() {
+        try {
+            const response = await api.post(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}`, {
+                areaConhecimento: area,
+                resumoConteudo: resumo,
+                link: links
+            });
+            setTrigger(prev => !prev);
+            toast.success(response.data.msg);
+        } catch (error) {
+            toast.error(error.response?.data?.msg);
+        }
+    }
+
+    async function removerConteudo(id) {
+        try {
+            const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${id}`);
+            setTrigger(prev => !prev);
+            toast.success(response.data.msg);
+        } catch (error) {
+            toast.error(error.response?.data?.msg);
+        }
+    }
+
+    async function atualizarConteudo(id) {
+        try {
+            const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${id}`, {
+                areaConhecimento: area,
+                resumoConteudo: resumo,
+                link: links
+            });
+            setTrigger(prev => !prev);
+            toast.success(response.data.msg);
+        } catch (error) {
+            toast.error(error.response?.data?.msg);
+        }
+    }
+
     return (
         <div className={styles.cronograma2a}>
             <MenuLateral ativo={2} />
@@ -111,7 +168,7 @@ export function CriarCronograma2() {
                             </button>
                         ))}
                         <button className={styles.addWeekButton} onClick={criarSemana}>
-                            <span className={styles.plusIcon} >+</span>
+                            <span className={styles.plusIcon}>+</span>
                         </button>
                     </div>
 
@@ -133,45 +190,65 @@ export function CriarCronograma2() {
                                     </button>
                                 ))}
                                 <button className={styles.addDayButton} onClick={criarDia}>
-                                    <span className={styles.plusIcon} >+</span>
+                                    <span className={styles.plusIcon}>+</span>
                                 </button>
                             </div>
                         )}
 
                         {/* Conteúdo da Matéria */}
                         <div className={styles.subjectGroup}>
-                            {(cronograma?.semanas?.[selectedWeek]?.dias?.[selectedDay]?.conteudos || []).map((conteudo, i) => (
+                            {materias.map((conteudo, i) => (
                                 <div className={styles.subjectContent} key={i}>
+                                    <span className={styles.removerConteudo} onClick={() => removerConteudo(conteudo._id)}>x</span>
                                     <h2 className={styles.subjectTitle}>Matéria {i + 1}</h2>
 
                                     <div className={styles.subjectFields}>
                                         <div className={styles.field}>
                                             <label className={styles.fieldTitle}>Área do Conhecimento</label>
-                                            <input type="text" defaultValue={conteudo.areaConhecimento} />
+                                            <input
+                                                type="text"
+                                                value={conteudo.areaConhecimento || ""}
+                                                onChange={(e) => handleInputChange(e, i, 'areaConhecimento')}
+                                            />
                                         </div>
 
                                         <div className={styles.field}>
                                             <label className={styles.fieldTitle}>Resumo do Conteúdo</label>
-                                            <textarea defaultValue={conteudo.resumoConteudo}></textarea>
+                                            <textarea
+                                                value={conteudo.resumoConteudo || ""}
+                                                onChange={(e) => handleInputChange(e, i, 'resumoConteudo')}
+                                            />
                                         </div>
 
                                         <div className={styles.field}>
                                             <label className={styles.fieldTitle}>Links</label>
-                                            <input type="url" defaultValue={conteudo.link} />
+                                            <input
+                                                type="url"
+                                                value={conteudo.link || ""}
+                                                onChange={(e) => handleInputChange(e, i, 'link')}
+                                            />
                                         </div>
 
-                                        <button className={styles.saveButton}>Salvar</button>
+                                        <button className={styles.saveButton} onClick={() => handleSaveMateria(i)}>
+                                            Salvar
+                                        </button>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Botão Atribuir */}
-                    <button className={styles.atribuirButton}>
-                        Atribuir Usuário
-                        <span className={styles.arrowIcon}>&gt;</span>
-                    </button>
+                    {/* Botões Atribuir e Criar Matéria */}
+                    <div className={styles.teste}>
+                        <button className={styles.materiaButton} onClick={criarMateria}>
+                            Criar Matéria
+                            <span className={styles.arrowIcon}>+</span>
+                        </button>
+                        <button className={styles.atribuirButton}>
+                            Atribuir Usuário
+                            <span className={styles.arrowIcon}>&gt;</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
