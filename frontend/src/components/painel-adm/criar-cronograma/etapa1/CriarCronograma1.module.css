@@ -126,20 +126,6 @@
     display: block;
 }
 
-.campo3 select {
-    display: block;
-    margin-top: 11px;
-    width: 100%;
-    border-radius: 13px;
-    border: 0.5px solid #DADADA;
-    height: 55px;
-    text-indent: 19.85px;
-    color: #474948;
-    font-family: poppins;
-    font-weight: 500;
-    font-size: 13.35px;
-    outline: none;
-}
 
 .criar {
     margin-top: 30px;

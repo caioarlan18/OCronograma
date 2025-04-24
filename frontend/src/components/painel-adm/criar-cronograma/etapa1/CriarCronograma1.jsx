@@ -56,7 +56,7 @@ export function CriarCronograma1() {
             toast.success(response.data.msg);
             navigate(`/criar-cronograma2/${response.data.cronograma._id}`)
         } catch (error) {
-            toast.error(error.response.data.msg, error.response.data.error)
+            toast.error("Faltando dados");
         }
     }
     //estilização do reac-select

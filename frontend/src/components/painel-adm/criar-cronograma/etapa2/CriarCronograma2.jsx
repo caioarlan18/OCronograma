@@ -4,9 +4,10 @@ import styles from './CriarCronograma2.module.css';
 import { useParams } from 'react-router-dom';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
-
+import { useNavigate } from 'react-router-dom';
 export function CriarCronograma2() {
     const params = useParams();
+    const navigate = useNavigate();
     const [selectedWeek, setSelectedWeek] = useState(0);
     const [selectedDay, setSelectedDay] = useState(0);
     const [cronograma, setCronograma] = useState(null);
@@ -124,19 +125,6 @@ export function CriarCronograma2() {
         }
     }
 
-    async function atualizarConteudo(id) {
-        try {
-            const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${id}`, {
-                areaConhecimento: area,
-                resumoConteudo: resumo,
-                link: links
-            });
-            setTrigger(prev => !prev);
-            toast.success(response.data.msg);
-        } catch (error) {
-            toast.error(error.response?.data?.msg);
-        }
-    }
 
     return (
         <div className={styles.cronograma2a}>
@@ -244,7 +232,7 @@ export function CriarCronograma2() {
                             Criar Matéria
                             <span className={styles.arrowIcon}>+</span>
                         </button>
-                        <button className={styles.atribuirButton}>
+                        <button className={styles.atribuirButton} onClick={() => navigate(`/criar-cronograma3/${params.idCronograma}`)}>
                             Atribuir Usuário
                             <span className={styles.arrowIcon}>&gt;</span>
                         </button>

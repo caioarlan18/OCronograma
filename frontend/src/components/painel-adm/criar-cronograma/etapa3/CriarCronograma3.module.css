@@ -1,0 +1,125 @@
+.cronograma3 {
+    display: flex;
+    background-color: #F7FBFE;
+
+}
+
+.cronograma3a {
+    padding: 150px 75px 75px 75px;
+
+}
+
+.cronograma3b {
+    background-color: white;
+    padding: 37px 35px 50px 35px;
+    box-shadow: 0px 0px 50px #0000001A;
+    border-radius: 15px;
+    margin-top: 60px;
+
+}
+
+.titleContainer {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 500;
+    color: #1E1E1E;
+    font-family: poppins;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #1E1E1E;
+    font-weight: 400;
+    font-family: poppins;
+}
+
+.header {
+
+    margin-bottom: 42px;
+}
+
+
+.header h1 {
+    font-family: poppins;
+    font-weight: 500;
+    font-size: 34px;
+    color: #1E1E1E;
+    text-align: center;
+    color: #1E1E1E;
+}
+
+.header p {
+    font-family: poppins;
+    font-weight: 400;
+    font-size: 14px;
+    color: #939393;
+    text-align: center;
+    margin-top: 7px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+
+}
+
+
+
+.submitButton {
+    font-size: 13.35px;
+    font-weight: 500;
+    font-family: poppins;
+    height: 57px;
+    color: #FFFFFF;
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+}
+
+.campo3 {
+    width: 100%;
+}
+
+.select {
+    margin-top: 11px;
+    font-family: poppins;
+    outline: none;
+    width: 100%;
+}
+
+
+
+.campo3 label {
+    color: #939393;
+    font-family: poppins;
+    font-size: 14.46px;
+    font-weight: 500;
+}
+
+.campo3 span {
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #111111;
+}
+
+.campo3 button {
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    width: 150px;
+    height: 20px;
+    border: 0;
+    cursor: pointer;
+    font-family: poppins;
+    color: #FFFFFF;
+    font-weight: 500;
+
+
+}

@@ -306,26 +306,46 @@ module.exports = {
         const { idCronograma } = req.params;
         const { idUsuarios } = req.body;
 
-        if (!idUsuarios || !Array.isArray(idUsuarios) || idUsuarios.length === 0) {
-            return res.status(400).json({ msg: "É necessário enviar pelo menos um usuário." });
-        }
-
         try {
             const cronograma = await CronogramaModel.findById(idCronograma);
             if (!cronograma) {
                 return res.status(404).json({ msg: "Cronograma não encontrado." });
             }
 
+            const usuariosAnteriores = cronograma.usuariosAssociados.map(id => id.toString());
+            const novosUsuarios = idUsuarios.map(id => id.toString());
+
+            // Descobrir quem foi removido
+            const removidos = usuariosAnteriores.filter(id => !novosUsuarios.includes(id));
+
+            // Desassociar os removidos
+            if (removidos.length > 0) {
+                await userModel.updateMany(
+                    { _id: { $in: removidos } },
+                    { $set: { cronogramaAssociado: '' } }
+                );
+            }
+
+            // Associar os novos
             await userModel.updateMany(
-                { _id: { $in: idUsuarios } },
+                { _id: { $in: novosUsuarios } },
                 { $set: { cronogramaAssociado: idCronograma } }
             );
 
+            // Atualizar o cronograma
+            cronograma.usuariosAssociados = novosUsuarios;
+            await cronograma.save();
+
             return res.status(200).json({ msg: "Usuários associados com sucesso!" });
+
         } catch (error) {
+            console.error(error);
             return res.status(500).json({ msg: "Erro ao associar usuários.", error });
         }
-    }
+    },
+
+
+
 
 
 

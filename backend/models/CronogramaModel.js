@@ -33,6 +33,9 @@ const cronogramaSchema = new Schema({
         type: Number,
         required: true
     },
+    usuariosAssociados: {
+        type: [String]
+    },
     semanas: [semanaSchema]
 
 }, { timestamps: true })

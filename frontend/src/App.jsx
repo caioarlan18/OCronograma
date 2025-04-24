@@ -17,6 +17,7 @@ import { GerenciarUsuarios } from './components/painel-adm/gerenciar-usuarios/ge
 import { Pastas } from './components/painel-adm/gerenciar-cronogramas/pastas/Pastas';
 import { GerenciarCronogramas } from './components/painel-adm/gerenciar-cronogramas/dentro-da-pasta/GerenciarCronogramas';
 import { CriarCronograma2 } from './components/painel-adm/criar-cronograma/etapa2/CriarCronograma2';
+import { CriarCronograma3 } from './components/painel-adm/criar-cronograma/etapa3/CriarCronograma3';
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
           <Route path='/gerenciar-cronogramas' element={<VerifyAdm><Pastas /></VerifyAdm>} />
           <Route path='/gerenciar-cronogramas/:idPasta' element={<VerifyAdm><GerenciarCronogramas /></VerifyAdm>} />
           <Route path='/criar-cronograma2/:idCronograma' element={<VerifyAdm><CriarCronograma2 /></VerifyAdm>} />
+          <Route path='/criar-cronograma3/:idCronograma' element={<VerifyAdm><CriarCronograma3 /></VerifyAdm>} />
         </Routes>
       </Router>
     </>
