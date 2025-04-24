@@ -148,7 +148,7 @@ export function CriarCronograma3() {
                 <div className={styles.titleContainer}>
                     <h1 className={styles.title}>{cronograma?.nome}</h1>
                     <p className={styles.subtitle}>
-                        Esse Cronograma é para ser <br /> utilizado por qual usuário?
+                        Esse Cronograma é para ser <br /> utilizado por quais usuários?
                     </p>
                 </div>
                 <div className={styles.cronograma3b}>
