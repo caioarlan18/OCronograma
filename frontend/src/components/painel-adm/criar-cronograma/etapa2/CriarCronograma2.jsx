@@ -16,7 +16,7 @@ export function CriarCronograma2() {
     const [links, setLinks] = useState("");
     const [materias, setMaterias] = useState([]);
     const [trigger, setTrigger] = useState(false);
-
+    const [novoNome, setNovoNome] = useState("");
     const selectedWeekData = cronograma?.semanas?.[selectedWeek];
     const selectedDayData = selectedWeekData?.dias?.[selectedDay];
     const semanaId = selectedWeekData?._id;
@@ -27,6 +27,7 @@ export function CriarCronograma2() {
             try {
                 const response = await api.get(`/cronograma/read/${params.idCronograma}`);
                 setCronograma(response.data);
+                setNovoNome(response.data.nome);
                 setMaterias(response.data?.semanas?.[selectedWeek]?.dias?.[selectedDay]?.conteudos || []);
             } catch (error) {
                 toast.error(error.response?.data?.msg || 'Erro ao carregar cronograma');
@@ -125,14 +126,38 @@ export function CriarCronograma2() {
         }
     }
 
+    async function mudarNome(e) {
+        const novoTexto = e.currentTarget.textContent.trim();
 
+        if (!novoTexto) {
+            toast.error('O nome não pode ficar vazio');
+            e.currentTarget.textContent = novoNome;
+            return;
+        }
+
+        try {
+            const response = await api.put(`/cronograma/atualizar-nome/${params.idCronograma}`, {
+                novoNome: novoTexto,
+            });
+            toast.success(response.data.msg);
+            setNovoNome(novoTexto);
+        } catch (error) {
+            toast.error(error.response?.data?.msg || 'Erro ao atualizar o nome');
+        }
+    }
     return (
         <div className={styles.cronograma2a}>
             <MenuLateral ativo={2} />
             <div className={styles.cronograma2b}>
-                <div className={styles.cronogramaContainer}>
+                <div className={styles.cronogramaContainer} >
                     <div className={styles.titleContainer}>
-                        <h1 className={styles.title}>{cronograma?.nome}</h1>
+                        <h1 className={styles.title} contentEditable suppressContentEditableWarning
+                            onBlur={mudarNome} onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    e.currentTarget.blur();
+                                }
+                            }}>{novoNome} </h1>
                         <p className={styles.subtitle}>
                             Escolha a semana do Cronograma <br />e o dia que deseja editar.
                         </p>

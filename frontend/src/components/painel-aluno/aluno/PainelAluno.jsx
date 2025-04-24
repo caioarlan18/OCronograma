@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
-import api from "../../axiosConfig/axios";
+import api from "../../../axiosConfig/axios";
 import { useNavigate } from "react-router-dom";
+import styles from './PainelAluno.module.css';
 export function PainelAluno() {
     const navigate = useNavigate();
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
@@ -27,15 +28,15 @@ export function PainelAluno() {
         navigate("/");
     }
     return (
-        <>
-            {user.role === "aluno" && user.status === "ativo" &&
+        <div>
+            {user.role === "aluno" && user.status === "ativo" ?
 
                 <div>
                     <h1>Olá {user.nome} seu email é {user.email}</h1>
                     <button onClick={logout}>deslogar</button>
-                </div>
+                </div> : <div>Inativo</div>
             }
-        </>
+        </div>
 
 
     )

@@ -5,7 +5,7 @@ import { EsqueciSenha } from './components/esqueci-senha/EsqueciSenha';
 import { RedefinirSenha } from './components/esqueci-senha/RefefinirSenha';
 import { Toaster } from 'react-hot-toast';
 import { VerifyToken } from './components/private-route/VerifyToken';
-import { PainelAluno } from './components/painel-aluno/PainelAluno';
+import { PainelAluno } from './components/painel-aluno/aluno/PainelAluno';
 import { VerifyLogged } from './components/private-route/VerifyLogged';
 import { EmailEnviado } from './components/esqueci-senha/EmailEnviado';
 import { PainelAdmFeed } from './components/painel-adm/painel-adm-feed/PainelAdmFeed';
