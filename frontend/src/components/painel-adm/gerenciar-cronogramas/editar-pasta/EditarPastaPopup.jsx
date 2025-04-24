@@ -53,36 +53,34 @@ export function EditarPastaPopup({ abrir, fechar, pastaId }) {
     async function deletePasta(e) {
         e.preventDefault();
 
-        if (user.role !== "adm1") {
-            toast.error("Somente administrador master pode deletar uma pasta");
-        } else {
-            const resultado = await Swal.fire({
-                title: 'Tem certeza?',
-                text: 'Essa ação irá excluir a pasta e todos os cronogramas dentro dela para sempre.',
-                icon: 'warning',
-                iconColor: '#E30613',
-                showCancelButton: true,
-                confirmButtonColor: '#E30613',
-                cancelButtonColor: '#4D02E0',
-                confirmButtonText: 'Sim, excluir',
-                cancelButtonText: 'Cancelar',
-                didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup');
-                    popup.style.fontFamily = 'Poppins, sans-serif';
-                }
-            });
-            if (resultado.isConfirmed) {
-                try {
-                    const response = await api.delete(`/pasta/delete/${pastaId}`);
-                    toast.success(response.data.msg);
-                    navigate("/gerenciar-cronogramas")
-                } catch (error) {
-                    console.log("ERRO COMPLETO:", error);
-                    toast.error(error.response.data.msg);
+        if (user.role !== "adm1") return toast.error("Somente administrador master pode deletar uma pasta");
+        const resultado = await Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Essa ação irá excluir a pasta e todos os cronogramas dentro dela para sempre.',
+            icon: 'warning',
+            iconColor: '#E30613',
+            showCancelButton: true,
+            confirmButtonColor: '#E30613',
+            cancelButtonColor: '#4D02E0',
+            confirmButtonText: 'Sim, excluir',
+            cancelButtonText: 'Cancelar',
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup');
+                popup.style.fontFamily = 'Poppins, sans-serif';
+            }
+        });
+        if (resultado.isConfirmed) {
+            try {
+                const response = await api.delete(`/pasta/delete/${pastaId}`);
+                toast.success(response.data.msg);
+                navigate("/gerenciar-cronogramas")
+            } catch (error) {
+                console.log("ERRO COMPLETO:", error);
+                toast.error(error.response.data.msg);
 
-                }
             }
         }
+
 
     }
 

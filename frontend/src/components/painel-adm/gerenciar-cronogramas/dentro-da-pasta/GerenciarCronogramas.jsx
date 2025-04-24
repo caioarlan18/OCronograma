@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { MenuLateral } from "../../menu-lateral/MenuLateral";
 import styles from './GerenciarCronogramas.module.css';
 import api from './../../../../axiosConfig/axios';
@@ -11,6 +11,7 @@ import { MoverCronogramaPopup } from "../mover/MoverCronogramaPopup";
 import Swal from 'sweetalert2';
 
 export function GerenciarCronogramas() {
+    const navigate = useNavigate();
     const params = useParams();
     const [pasta, setPasta] = useState([]);
     const [busca, setBusca] = useState("");
@@ -19,7 +20,20 @@ export function GerenciarCronogramas() {
     const [idCro, setIdCro] = useState("");
     const [cronogramas, setCronogramas] = useState([]);
     const [trigger, setTrigger] = useState(false);
+    const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+    const [user, setUser] = useState([]);
+    useEffect(() => {
+        async function getUserData() {
+            try {
 
+                const response = await api.get(`/user/read/${id}`);
+                setUser(response.data);
+            } catch (error) {
+                toast.error(error);
+            }
+        }
+        getUserData();
+    }, [id])
     useEffect(() => {
         async function getPasta() {
             try {
@@ -69,6 +83,9 @@ export function GerenciarCronogramas() {
     }
     async function excluir(id) {
         try {
+            if (user.role !== "adm1") return toast.error("Somente administrador master pode deletar uma pasta");
+
+
             const resultado = await Swal.fire({
                 title: 'Tem certeza?',
                 text: 'Essa ação irá excluir o cronograma permanentemente.',
@@ -143,7 +160,7 @@ export function GerenciarCronogramas() {
 
                                                 <DropdownMenu.Portal>
                                                     <DropdownMenu.Content className={styles.menuSuspenso} sideOffset={5}>
-                                                        <DropdownMenu.Item className={`${styles.opcao} ${styles.editar}`}>Editar</DropdownMenu.Item>
+                                                        <DropdownMenu.Item className={`${styles.opcao} ${styles.editar}`} onClick={() => navigate(`/criar-cronograma2/${cronograma._id}`)}>Editar</DropdownMenu.Item>
                                                         <DropdownMenu.Item className={styles.opcao} onClick={() => duplicar(cronograma._id)}>Duplicar</DropdownMenu.Item>
                                                         <DropdownMenu.Item className={styles.opcao} onClick={() => {
                                                             mover()

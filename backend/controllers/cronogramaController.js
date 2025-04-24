@@ -79,7 +79,7 @@ module.exports = {
             semana.dias.push({ conteudos: [] });
             await cronograma.save();
 
-            return res.status(201).json(semana.dias[semana.dias.length - 1]);
+            return res.status(201).json({ msg: "Dia criado!" });
         } catch (error) {
             return res.status(400).json({ msg: "Erro ao adicionar dia", error: error.message });
         }
