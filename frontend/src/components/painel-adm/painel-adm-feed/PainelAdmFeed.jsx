@@ -46,9 +46,9 @@ export function PainelAdmFeed() {
             <MenuLateral ativo={1} />
             <div className={styles.paineladm1}>
                 <div className={styles.paineladm2}>
-                    <div className={styles.paineladm2a}>
+                    {/* <div className={styles.paineladm2a}>
                         <img src={bolaroxa} alt="" />
-                    </div>
+                    </div> */}
                     <div className={styles.paineladm2b}>
                         <h1>Bem vindo, {user.nome}!</h1>
                         <p>Na barra ao lado estão as funções do sistema.</p>

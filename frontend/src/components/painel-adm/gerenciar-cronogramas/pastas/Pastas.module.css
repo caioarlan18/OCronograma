@@ -27,7 +27,7 @@
 
 }
 
-.gerenciarCronogramas1 button {
+.gerenciarCronogramas2 button {
     background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
     width: 177px;
     height: 32px;
@@ -37,6 +37,8 @@
     color: #FFFFFF;
     font-weight: 500;
     margin-left: 37px;
+    border-radius: 2px;
+
 }
 
 .gerenciarCronogramas3 {
