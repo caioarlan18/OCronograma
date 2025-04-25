@@ -73,7 +73,7 @@ export function GerenciarUsuarios() {
                                 <th>Email do usuário</th>
                                 <th>Validade de acesso</th>
                                 <th>Data de criação</th>
-                                <th>Cronogramas vinculados</th>
+                                {/* <th>Cronogramas vinculados</th> */}
                                 <th></th>
                             </tr>
                         </thead>
@@ -84,7 +84,7 @@ export function GerenciarUsuarios() {
                                     <td data-label="Email do usuário">{usuario.email}</td>
                                     <td data-label="Validade de acesso">{formatarData(usuario.validade)}</td>
                                     <td data-label="Data de criação">{formatarData(usuario.createdAt)}</td>
-                                    <td data-label="Cronogramas vinculados">{usuario.cronogramaAssociado || "Nenhum"}</td>
+                                    {/* <td data-label="Cronogramas vinculados">{usuario.cronogramaAssociado || "Nenhum"}</td> */}
                                     <td data-label="Ações">
                                         <button className={styles.botao} onClick={() => {
                                             setAbertoEditar(true);
