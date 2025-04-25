@@ -89,7 +89,6 @@ export function GerenciarUsuarios() {
                                         <button className={styles.botao} onClick={() => {
                                             setAbertoEditar(true);
                                             setIdUsuarioEditar(usuario._id);
-                                            setUserRole(usuario.role);
                                         }}>Editar</button>
                                     </td>
                                 </tr>

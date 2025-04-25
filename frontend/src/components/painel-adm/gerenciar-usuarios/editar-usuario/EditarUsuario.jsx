@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 Modal.setAppElement('#root');
 
-export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
+export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [validade, setValidade] = useState("");
@@ -16,9 +16,13 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
     const [cargo, setCargo] = useState("");
-    useEffect(() => {
-        if (roleUser) setCargo(roleUser)
-    }, [roleUser])
+    const [cronogramaId, setCronogramaId] = useState("");
+    const [cronograma, setCronograma] = useState([]);
+
+
+
+
+
 
     //usuario adm
     useEffect(() => {
@@ -43,6 +47,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
                 setEmail(response.data.email)
                 setValidade(response.data.validade?.split('T')[0]);
                 setStatus(response.data.status);
+                setCronogramaId(response.data.cronogramaAssociado);
+                setCargo(response.data.role);
             } catch (error) {
                 toast.error(error.response.data.msg);
             }
@@ -52,9 +58,9 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
 
     async function saveUser(e) {
         e.preventDefault();
-        if (idUser === id && roleUser === "adm2") {
+        if (idUser === id && cargo === "adm2") {
             toast.error("Você (adm2) não pode editar você mesmo")
-        } else if (user.role != "adm1" && roleUser === "adm1") {
+        } else if (user.role != "adm1" && cargo === "adm1") {
             toast.error("Não é possível editar um administrador master")
         }
         else {
@@ -78,7 +84,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
 
         if (idUser === id) {
             toast.error("Não é possível deleter você mesmo")
-        } else if (roleUser === "adm1") {
+        } else if (cargo === "adm1") {
             toast.error("Não é possível deleter um administrador master");
         } else {
             const resultado = await Swal.fire({
@@ -141,7 +147,19 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
             }
         }
     }
+    useEffect(() => {
+        async function getCronograma() {
+            try {
+                if (!cronogramaId) return setCronograma("Vazio");
+                const response = await api.get(`/cronograma/read/${cronogramaId}`);
+                setCronograma(response.data);
+            } catch (error) {
+                toast.error(error.response.data.msg);
 
+            }
+        }
+        getCronograma()
+    }, [cronogramaId])
     return (
         <div className={styles.editaruser}>
 
@@ -192,6 +210,17 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser, roleUser }) {
                         <div className={styles.inputGroup}>
                             <label htmlFor="senha">Status</label>
                             <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} readOnly />
+                        </div>
+
+                    </div>
+                    <div className={styles.row}>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Cronograma Associado</label>
+                            <input type="text" value={cronograma.nome || "Nenhum"} readOnly />
+                        </div>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Cargo</label>
+                            <input type="text" value={cargo} readOnly />
                         </div>
                     </div>
                     <button className={styles.submitButton} onClick={saveUser} >Salvar alterações do Usuário</button>
