@@ -6,6 +6,7 @@ import styles from './PainelAluno.module.css';
 import logoCronograma from '../../../images/logocronogramaroxa.png';
 import iconelogout from '../../../images/logoutaluno.svg';
 import trespontos from '../../../images/3pontos.svg';
+import logomain from '../../../images/logocronograma.png';
 export function PainelAluno() {
     const navigate = useNavigate();
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
@@ -117,7 +118,26 @@ export function PainelAluno() {
 
                 ) : (
 
-                    <div>Inativo</div>
+                    <div className={styles.teste}>
+
+                        <div className={styles.intativo}>
+                            <div className={styles.inativo1}>
+                                <img src={logomain} alt="logo-cronograma" />
+                            </div>
+                            <div className={styles.inativo2}>
+                                <div className={styles.maintxt}>
+                                    <h1>Sua conta está vencida</h1>
+                                    <p>Renove para continuar tendo acesso, entre em contato com nosso time clicando no botão abaixo</p>
+                                </div>
+                                <div className={styles.ctt}>
+                                    <button >Falar com suporte</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
 
                 )
             }
