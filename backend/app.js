@@ -9,12 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 //DB Connection
 const conn = require("./db/conn");
 conn();
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', '*');
-    res.header('Access-Control-Allow-Headers', '*');
-    next();
-});
+
 
 //routes
 const routes = require("./routes/routes");
