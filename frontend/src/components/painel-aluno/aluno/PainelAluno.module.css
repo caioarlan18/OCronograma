@@ -193,7 +193,7 @@
 
 }
 
-.teste {
+.inativo0 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -247,4 +247,19 @@
     border-radius: 14px;
     height: 57px;
     cursor: pointer;
+}
+
+
+.ncro {
+    background-color: #F7FBFE;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.ncro2 {
+    background-color: white;
+    box-shadow: 0px 0px 50px #0000001A;
+    border-radius: 15px;
+    width: clamp(280px, 50vw, 512px);
+    padding: 42px 31px 48px 31px;
 }

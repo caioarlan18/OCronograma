@@ -315,10 +315,8 @@ module.exports = {
             const usuariosAnteriores = cronograma.usuariosAssociados.map(id => id.toString());
             const novosUsuarios = idUsuarios.map(id => id.toString());
 
-            // Descobrir quem foi removido
+            // 1. Desassociar usuários que foram REMOVIDOS deste cronograma
             const removidos = usuariosAnteriores.filter(id => !novosUsuarios.includes(id));
-
-            // Desassociar os removidos
             if (removidos.length > 0) {
                 await userModel.updateMany(
                     { _id: { $in: removidos } },
@@ -326,13 +324,26 @@ module.exports = {
                 );
             }
 
-            // Associar os novos
-            await userModel.updateMany(
-                { _id: { $in: novosUsuarios } },
-                { $set: { cronogramaAssociado: idCronograma } }
-            );
+            // 2. Verificar se os novos usuários já estão em outros cronogramas
+            for (const userId of novosUsuarios) {
+                const user = await userModel.findById(userId);
 
-            // Atualizar o cronograma
+                if (user.cronogramaAssociado && user.cronogramaAssociado !== idCronograma) {
+                    const cronogramaAntigo = await CronogramaModel.findById(user.cronogramaAssociado);
+                    if (cronogramaAntigo) {
+                        cronogramaAntigo.usuariosAssociados = cronogramaAntigo.usuariosAssociados.filter(
+                            id => id.toString() !== userId
+                        );
+                        await cronogramaAntigo.save();
+                    }
+                }
+
+                // Atualizar o campo cronogramaAssociado do usuário
+                user.cronogramaAssociado = idCronograma;
+                await user.save();
+            }
+
+            // 3. Atualizar o cronograma atual com os novos usuários
             cronograma.usuariosAssociados = novosUsuarios;
             await cronograma.save();
 
@@ -342,7 +353,8 @@ module.exports = {
             console.error(error);
             return res.status(500).json({ msg: "Erro ao associar usuários.", error });
         }
-    },
+    }
+
 
 
 

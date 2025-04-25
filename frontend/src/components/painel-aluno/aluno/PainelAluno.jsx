@@ -79,6 +79,7 @@ export function PainelAluno() {
                             </div>
                         </div>
                         <div className={styles.aluno3}>
+
                             {cronograma?.semanas?.[selectedWeek].dias?.map((dia, index) => (
                                 <div className={styles.aluno3a} key={index}>
                                     <div className={styles.aluno3b}>
@@ -113,12 +114,25 @@ export function PainelAluno() {
 
                                 </div>
                             ))}
+                            {!cronogramaId && <div className={styles.ncro}>
+                                <div className={styles.ncro2}>
+                                    <div className={styles.maintxt}>
+                                        <h1>Nenhum cronograma</h1>
+                                        <p>Você não tem nenhum cronograma associado na sua conta, entra em contato com o suporte no botão abaixo</p>
+                                    </div>
+                                    <div className={styles.ctt}>
+                                        <button >Falar com suporte</button>
+                                    </div>
+                                </div>
+
+
+                            </div>}
                         </div>
                     </div>
 
                 ) : (
 
-                    <div className={styles.teste}>
+                    <div className={styles.inativo0}>
 
                         <div className={styles.intativo}>
                             <div className={styles.inativo1}>
