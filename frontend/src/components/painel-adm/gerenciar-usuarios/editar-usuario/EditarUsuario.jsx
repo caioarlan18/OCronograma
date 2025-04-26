@@ -81,8 +81,10 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     }
     async function deleteUser(e) {
         e.preventDefault();
-
-        if (idUser === id) {
+        if (user.role != "adm1") {
+            toast.error("Só o admnistrador master pode deletar um usuário");
+        }
+        else if (idUser === id) {
             toast.error("Não é possível deleter você mesmo")
         } else if (cargo === "adm1") {
             toast.error("Não é possível deleter um administrador master");

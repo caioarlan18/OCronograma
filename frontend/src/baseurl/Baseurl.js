@@ -1,3 +1,3 @@
-const baseurl = "https://o-cronograma.vercel.app";
+const baseurl = "http://localhost:3000";
 
 export default baseurl;

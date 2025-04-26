@@ -83,7 +83,7 @@ export function GerenciarCronogramas() {
     }
     async function excluir(id) {
         try {
-            if (user.role !== "adm1") return toast.error("Somente administrador master pode deletar uma pasta");
+            if (user.role !== "adm1") return toast.error("Somente administrador master pode deletar um cronograma");
 
 
             const resultado = await Swal.fire({
