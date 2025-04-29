@@ -29,6 +29,7 @@ export function PainelAluno() {
 
     useEffect(() => {
         async function getCronograma() {
+            if (!cronogramaId) return;
             try {
                 const response = await api.get(`/cronograma/read/${cronogramaId}`);
                 setCronograma(response.data);
