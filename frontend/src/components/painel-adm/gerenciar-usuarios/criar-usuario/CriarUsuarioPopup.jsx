@@ -67,21 +67,21 @@ export function CriarUsuarioPopup({ abrir, fechar }) {
                     <div className={styles.row}>
                         <div className={styles.inputGroup}>
                             <label htmlFor="nome">Nome</label>
-                            <input type="text" id="nome" placeholder="Victor Soares" value={nome} onChange={(e) => setNome(e.target.value)} />
+                            <input type="text" id="nome" placeholder="" value={nome} onChange={(e) => setNome(e.target.value)} />
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="validade">Validade de Acesso</label>
-                            <input type="date" id="validade" placeholder='19/09/2025' value={validade} onChange={(e) => setValidade(e.target.value)} />
+                            <input type="date" id="validade" placeholder='' value={validade} onChange={(e) => setValidade(e.target.value)} />
                         </div>
                     </div>
                     <div className={styles.row}>
                         <div className={styles.inputGroup}>
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" placeholder="victorsoares@gmail.com" value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                            <input type="email" id="email" placeholder="" value={email} onChange={(e) => { setEmail(e.target.value) }} />
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="senha">Senha</label>
-                            <input type="text" id="senha" placeholder="******" value={senha} onChange={(e) => setSenha(e.target.value)} />
+                            <input type="text" id="senha" placeholder="" value={senha} onChange={(e) => setSenha(e.target.value)} />
                         </div>
                     </div>
                     <button className={styles.submitButton} onClick={criarUser}>Criar Usuário</button>
