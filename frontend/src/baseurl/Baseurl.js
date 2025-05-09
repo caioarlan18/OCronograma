@@ -1,3 +1,3 @@
-const baseurl = "http://localhost:3000";
+const baseurl = "https://ocronograma.fly.dev";
 
 export default baseurl;

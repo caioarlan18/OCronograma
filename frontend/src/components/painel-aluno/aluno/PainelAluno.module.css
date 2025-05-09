@@ -263,3 +263,51 @@
     width: clamp(280px, 50vw, 512px);
     padding: 42px 31px 48px 31px;
 }
+
+@media screen and (max-width: 768px) {
+    .aluno1 {
+        width: 95%;
+    }
+
+    .aluno2 {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .aluno2a {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .aluno2b {
+        margin: 0;
+    }
+
+    .aluno2a img {
+        margin-top: 30px;
+    }
+
+    .aluno2a p {
+        margin-top: 30px;
+        margin-bottom: 30px;
+
+    }
+
+    .aluno2b {
+        max-width: 100%;
+    }
+
+    .aluno2c {
+        margin-top: 30px;
+    }
+
+    .aluno2d {
+        margin-top: 30px;
+    }
+
+    .aluno3 {
+        min-width: 100%;
+    }
+}

@@ -57,6 +57,7 @@ export function PainelAluno() {
     }
     return (
         <div className={styles.aluno}>
+
             {user.role === "aluno" && user.status === "ativo" ?
                 (
                     <div className={styles.aluno1}>

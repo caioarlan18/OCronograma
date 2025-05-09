@@ -54,7 +54,6 @@ export function CriarCronograma2() {
             };
             const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${materias[index]._id}`, updatedContent);
             setTrigger(prev => !prev);
-            toast.success(response.data.msg);
         } catch (error) {
             toast.error(error.response?.data?.msg);
         }
@@ -222,6 +221,7 @@ export function CriarCronograma2() {
                                                 type="text"
                                                 value={conteudo.areaConhecimento || ""}
                                                 onChange={(e) => handleInputChange(e, i, 'areaConhecimento')}
+                                                onBlur={() => handleSaveMateria(i)}
                                             />
                                         </div>
 
@@ -230,6 +230,8 @@ export function CriarCronograma2() {
                                             <textarea
                                                 value={conteudo.resumoConteudo || ""}
                                                 onChange={(e) => handleInputChange(e, i, 'resumoConteudo')}
+                                                onBlur={() => handleSaveMateria(i)}
+
                                             />
                                         </div>
 
@@ -239,12 +241,14 @@ export function CriarCronograma2() {
                                                 type="url"
                                                 value={conteudo.link || ""}
                                                 onChange={(e) => handleInputChange(e, i, 'link')}
+                                                onBlur={() => handleSaveMateria(i)}
+
                                             />
                                         </div>
 
-                                        <button className={styles.saveButton} onClick={() => handleSaveMateria(i)}>
+                                        {/* <button className={styles.saveButton} onClick={() => handleSaveMateria(i)}>
                                             Salvar
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                             ))}
