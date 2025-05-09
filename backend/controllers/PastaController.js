@@ -66,7 +66,7 @@ module.exports = {
             const pasta = await pastaModel.findById(id);
             if (!pasta) return res.status(404).json({ msg: "Pasta não encontrada" });
             pasta.cronogramas.forEach(async (item) => {
-                const cronograma = await cronogramaModel.findById(item._id);
+                const cronograma = await cronogramaModel.findById(item.idCronograma);
                 await cronogramaModel.deleteOne(cronograma);
             })
             await pastaModel.deleteOne(pasta);
