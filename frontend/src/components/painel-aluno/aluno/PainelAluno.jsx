@@ -76,7 +76,7 @@ export function PainelAluno() {
                                 <p>{formatarData(user.validade)}</p>
                             </div>
                             <div className={styles.aluno2d}>
-                                <button> <img src={trespontos} alt="" /> Opções</button>
+                                {/* <button> <img src={trespontos} alt="" /> Opções</button> */}
                                 <button onClick={logout}>  <img src={iconelogout} alt="" /> Deslogar</button>
                             </div>
                         </div>
