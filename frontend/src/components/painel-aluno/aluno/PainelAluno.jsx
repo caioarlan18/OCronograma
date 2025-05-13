@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 import api from "../../../axiosConfig/axios";
-import { useNavigate } from "react-router-dom";
 import styles from './PainelAluno.module.css';
 import logoCronograma from '../../../images/logocronogramaroxa.png';
-import iconelogout from '../../../images/logoutaluno.svg';
 import trespontos from '../../../images/3pontos.svg';
 import logomain from '../../../images/logocronograma.png';
+import { OptionsPopup } from "../opcoespopup/OptionsPopup";
 export function PainelAluno() {
-    const navigate = useNavigate();
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
     const [cronogramaId, setCronogramaId] = useState("");
     const [cronograma, setCronograma] = useState([]);
     const [selectedWeek, setSelectedWeek] = useState(0);
+    const [abrirPopup, setAbrirPopup] = useState(false);
     useEffect(() => {
         async function getUserData() {
             try {
@@ -40,14 +39,6 @@ export function PainelAluno() {
         getCronograma()
     }, [cronogramaId])
 
-    function logout() {
-        localStorage.removeItem("id");
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("id");
-        sessionStorage.removeItem("token");
-        toast.success("Até logo! Você saiu da sua conta.")
-        navigate("/");
-    }
     function formatarData(dataISO) {
         const data = new Date(dataISO);
         const dia = String(data.getUTCDate()).padStart(2, '0');
@@ -57,7 +48,7 @@ export function PainelAluno() {
     }
     return (
         <div className={styles.aluno}>
-
+            <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
             {user.role === "aluno" && user.status === "ativo" ?
                 (
                     <div className={styles.aluno1}>
@@ -76,8 +67,8 @@ export function PainelAluno() {
                                 <p>{formatarData(user.validade)}</p>
                             </div>
                             <div className={styles.aluno2d}>
-                                <button> <img src={trespontos} alt="" /> Opções</button>
-                                <button onClick={logout}>  <img src={iconelogout} alt="" /> Deslogar</button>
+                                <button onClick={() => setAbrirPopup(true)}> <img src={trespontos} alt="" /> Opções</button>
+
                             </div>
                         </div>
                         <div className={styles.aluno3}>
@@ -123,7 +114,7 @@ export function PainelAluno() {
                                         <p>Você não tem nenhum cronograma associado na sua conta, entre em contato com o suporte no botão abaixo</p>
                                     </div>
                                     <div className={styles.ctt}>
-                                        <button >Falar com suporte</button>
+                                        <button onClick={() => window.open("https://api.whatsapp.com/send/?phone=5521981780957&text=Venho+do+sistema+OCronograma+e+preciso+de+ajuda.&type=phone_number&app_absent=0", "_blank")}>Falar com suporte</button>
                                     </div>
                                 </div>
 
@@ -146,7 +137,7 @@ export function PainelAluno() {
                                     <p>Renove para continuar tendo acesso, entre em contato com nosso time clicando no botão abaixo</p>
                                 </div>
                                 <div className={styles.ctt}>
-                                    <button >Falar com suporte</button>
+                                    <button onClick={() => window.open("https://api.whatsapp.com/send/?phone=5521981780957&text=Venho+do+sistema+OCronograma+e+preciso+de+ajuda.&type=phone_number&app_absent=0", "_blank")}>Falar com suporte</button>
                                 </div>
                             </div>
 

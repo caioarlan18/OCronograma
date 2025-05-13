@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { Tooltip } from 'react-tooltip';
+import interrogacao from '../../../../images/interrogacao.svg';
 export function CriarCronograma2() {
     const params = useParams();
     const navigate = useNavigate();
@@ -250,9 +252,20 @@ export function CriarCronograma2() {
                                         </div>
 
                                         <div className={styles.field}>
-                                            <label className={styles.fieldTitle}>Links</label>
-                                            <input
-                                                type="url"
+                                            <label className={styles.fieldTitle}>Links <img src={interrogacao} data-tooltip-id="info-tooltip" alt="" />
+                                                <Tooltip
+                                                    id="info-tooltip"
+                                                    place="top"
+                                                    style={{ backgroundColor: '#333', color: '#fff', fontSize: '13px', maxWidth: '250px', padding: '8px' }}
+                                                >
+                                                    Formato: <strong>TÍTULO DO BOTÃO</strong>, <strong>URL</strong><br />
+                                                    (A URL deve começar com http ou https)<br />
+                                                    Separe com vírgulas: TÍTULO, URL, TÍTULO, URL<br />
+                                                    Se não tiver título, será usado "Acessar".
+                                                </Tooltip>
+
+                                            </label>
+                                            <textarea
                                                 value={conteudo.link || ""}
                                                 onChange={(e) => handleInputChange(e, i, 'link')}
                                                 onBlur={() => handleSaveMateria(i)}

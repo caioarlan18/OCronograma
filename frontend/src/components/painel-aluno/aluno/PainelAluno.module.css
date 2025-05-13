@@ -10,7 +10,7 @@
     display: flex;
     justify-content: space-between;
     margin: 0px 20px 0px 20px;
-    padding: 60px 0px 0px 60px;
+    padding: 60px 0px 0px 0px;
 }
 
 .aluno2a {
@@ -91,7 +91,7 @@
     font-size: 15px;
     font-weight: 500;
     font-family: poppins;
-    min-width: 147px;
+    min-width: 127px;
     height: 55px;
     margin-left: 10px;
     cursor: pointer;
@@ -125,13 +125,15 @@
 
 .aluno3b {
     min-width: 251px;
+    background: transparent linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    border-radius: 7px;
     height: 43px;
-    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .aluno3b h1 {
-    background: transparent linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%) 0% 0% no-repeat padding-box;
-    border-radius: 7px;
     color: #F7FBFE;
     font-size: 22px;
     text-align: center;
@@ -266,7 +268,7 @@
     padding: 42px 31px 48px 31px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 975px) {
     .aluno1 {
         width: 95%;
     }

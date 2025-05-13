@@ -218,6 +218,8 @@
     color: #939393;
     font-family: poppins;
     font-weight: 500;
+    display: flex;
+    gap: 5px;
 }
 
 .field input {
@@ -247,6 +249,11 @@
     padding: 10px;
     box-sizing: border-box;
 
+}
+
+.field img {
+    width: 15px;
+    height: 15px;
 }
 
 .addSubjectButton {

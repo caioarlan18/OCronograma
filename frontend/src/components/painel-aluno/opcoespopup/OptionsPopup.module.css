@@ -1,0 +1,99 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header img {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.header h1 {
+    font-family: poppins;
+    font-weight: 500;
+    font-size: 34px;
+    color: #1E1E1E;
+    text-align: center;
+    color: #333;
+}
+
+.options1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+
+}
+
+.faq,
+.suporte,
+.deslog {
+    width: 70%;
+}
+
+.faq button {
+    background: transparent linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    border: 1px solid white;
+    border-radius: 7px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: poppins;
+    width: 100%;
+    height: 55px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+}
+
+.faq img,
+.suporte img {
+    width: 20px;
+    height: 20px;
+}
+
+.suporte button {
+    background-color: #706F6F;
+    border: 1px solid white;
+    border-radius: 7px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: poppins;
+    width: 100%;
+    height: 55px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.deslog button {
+    background-color: white;
+    border: 1px solid #706F6F;
+    border-radius: 7px;
+    color: #706F6F;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: poppins;
+    width: 100%;
+    height: 55px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+}
