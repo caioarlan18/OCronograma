@@ -9,7 +9,8 @@
 .aluno2 {
     display: flex;
     justify-content: space-between;
-    padding: 60px 0px 0px 80px;
+    margin: 0px 20px 0px 20px;
+    padding: 60px 0px 0px 60px;
 }
 
 .aluno2a {
@@ -70,7 +71,7 @@
     font-size: 15px;
     font-weight: 500;
     font-family: poppins;
-    min-width: 147px;
+    width: 147px;
     height: 55px;
     margin-left: 10px;
     cursor: pointer;
@@ -175,8 +176,9 @@
     font-size: 13px;
     font-weight: 400;
     color: #1E1E1E;
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 15px;
+    width: 203px;
+    height: 43px;
     cursor: pointer;
 }
 

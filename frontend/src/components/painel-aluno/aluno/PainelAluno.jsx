@@ -76,7 +76,7 @@ export function PainelAluno() {
                                 <p>{formatarData(user.validade)}</p>
                             </div>
                             <div className={styles.aluno2d}>
-                                {/* <button> <img src={trespontos} alt="" /> Opções</button> */}
+                                <button> <img src={trespontos} alt="" /> Opções</button>
                                 <button onClick={logout}>  <img src={iconelogout} alt="" /> Deslogar</button>
                             </div>
                         </div>
@@ -88,19 +88,19 @@ export function PainelAluno() {
                                         <h1>Dia {index + 1}</h1>
                                     </div>
                                     {dia.conteudos.map((conteudo, index) => {
-                                        const links = conteudo.link?.split(",").map(link => link.trim()).filter(Boolean) || [];
+                                        const partes = conteudo.link?.split(",").map(p => p.trim()).filter(Boolean) || [];
 
-                                        const nomeBotao = links[0];
-                                        const linksClicaveis = links.slice(1);
+                                        const textos = partes.filter(p => !p.startsWith("http"));
+                                        const links = partes.filter(p => p.startsWith("http"));
 
                                         return (
                                             <div className={styles.aluno3c} key={index}>
                                                 <h1>{conteudo.areaConhecimento}</h1>
                                                 <p>{conteudo.resumoConteudo}</p>
 
-                                                {linksClicaveis.map((link, i) => (
+                                                {links.map((link, i) => (
                                                     <button key={i} onClick={() => window.open(link, "_blank")}>
-                                                        {nomeBotao}
+                                                        {textos[i] || "Acessar"}
                                                     </button>
                                                 ))}
                                             </div>
@@ -120,7 +120,7 @@ export function PainelAluno() {
                                 <div className={styles.ncro2}>
                                     <div className={styles.maintxt}>
                                         <h1>Nenhum cronograma</h1>
-                                        <p>Você não tem nenhum cronograma associado na sua conta, entra em contato com o suporte no botão abaixo</p>
+                                        <p>Você não tem nenhum cronograma associado na sua conta, entre em contato com o suporte no botão abaixo</p>
                                     </div>
                                     <div className={styles.ctt}>
                                         <button >Falar com suporte</button>

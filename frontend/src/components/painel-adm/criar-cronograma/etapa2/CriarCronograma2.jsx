@@ -46,18 +46,32 @@ export function CriarCronograma2() {
     };
 
     const handleSaveMateria = async (index) => {
+        const materia = materias?.[index];
+
+        if (!materia || !materia._id) {
+            toast.error("Matéria inválida ou não encontrada.");
+            return;
+        }
+
         try {
             const updatedContent = {
-                areaConhecimento: materias[index].areaConhecimento,
-                resumoConteudo: materias[index].resumoConteudo,
-                link: materias[index].link,
+                areaConhecimento: materia.areaConhecimento,
+                resumoConteudo: materia.resumoConteudo,
+                link: materia.link,
             };
-            const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${materias[index]._id}`, updatedContent);
+
+            await api.put(
+                `/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${materia._id}`,
+                updatedContent
+            );
+
             setTrigger(prev => !prev);
         } catch (error) {
-            toast.error(error.response?.data?.msg);
+            toast.error(error.response?.data?.msg || "Erro ao salvar matéria.");
+            console.error(error);
         }
     };
+
 
     async function excluirSemana(id) {
         try {
