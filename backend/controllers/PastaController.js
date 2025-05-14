@@ -62,18 +62,23 @@ module.exports = {
     async deletePasta(req, res) {
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando ID da pasta" });
+
         try {
             const pasta = await pastaModel.findById(id);
             if (!pasta) return res.status(404).json({ msg: "Pasta não encontrada" });
-            pasta.cronogramas.forEach(async (item) => {
+
+            for (const item of pasta.cronogramas) {
                 const cronograma = await cronogramaModel.findById(item.idCronograma);
-                await cronogramaModel.deleteOne(cronograma);
-            })
-            await pastaModel.deleteOne(pasta);
+                if (cronograma) {
+                    await cronogramaModel.deleteOne({ _id: cronograma._id });
+                }
+            }
+
+            await pastaModel.deleteOne({ _id: pasta._id });
+
             return res.status(200).json({ msg: "Pasta deletada com sucesso" });
         } catch (error) {
             return res.status(500).json({ msg: "Erro interno do servidor", error });
-
         }
     }
 };
