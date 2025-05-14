@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import interrogacao from '../../../../images/interrogacao.svg';
+import olhoAberto from '../../../../images/olhoaberto.svg';
+import olhoFechado from '../../../../images/olhofechado.svg';
 export function CriarCronograma2() {
     const params = useParams();
     const navigate = useNavigate();
@@ -160,6 +162,17 @@ export function CriarCronograma2() {
             toast.error(error.response?.data?.msg || 'Erro ao atualizar o nome');
         }
     }
+
+    async function changeVisible(semanaId) {
+        try {
+            const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/changevisible`);
+            setTrigger(prev => !prev);
+            toast.success(response.data.msg);
+        } catch (error) {
+            toast.error(error.response?.data?.msg || 'Erro ao atualizar o nome');
+
+        }
+    }
     return (
         <div className={styles.cronograma2a}>
             <MenuLateral ativo={2} />
@@ -181,19 +194,31 @@ export function CriarCronograma2() {
                     {/* Seletor de Semanas */}
                     <div className={styles.weekSelector}>
                         {cronograma?.semanas?.map((semana, index) => (
-                            <button
-                                key={index}
-                                className={`${styles.weekButton} ${selectedWeek === index ? styles.active : ''}`}
-                                onClick={() => {
-                                    setSelectedWeek(index);
-                                    setSelectedDay(0);
-                                }}
-                            >
-                                Semana {index + 1}
-                                {index !== 0 && (
-                                    <span className={styles.plusIcon} onClick={() => excluirSemana(semana._id)}>x</span>
-                                )}
-                            </button>
+                            <div key={index + 2}>
+
+                                <div className={styles.visible} key={index + 3}>
+                                    <span>Visibilidade:</span>
+                                    <img
+                                        src={semana.visible ? olhoAberto : olhoFechado}
+                                        alt="visibilidade"
+                                        onClick={() => changeVisible(semana._id)}
+                                    />
+                                </div>
+                                <button
+                                    key={index + 4}
+                                    className={`${styles.weekButton} ${selectedWeek === index ? styles.active : ''}`}
+                                    onClick={() => {
+                                        setSelectedWeek(index);
+                                        setSelectedDay(0);
+                                    }}
+                                >
+                                    Semana {index + 1}
+                                    {index !== 0 && (
+                                        <span className={styles.plusIcon} onClick={() => excluirSemana(semana._id)}>x</span>
+                                    )}
+                                </button>
+                            </div>
+
                         ))}
                         <button className={styles.addWeekButton} onClick={criarSemana}>
                             <span className={styles.plusIcon}>+</span>

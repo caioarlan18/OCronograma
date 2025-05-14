@@ -102,6 +102,7 @@
     background-color: #DAD9EA;
     color: #525252;
     cursor: pointer;
+    margin-top: 30px;
 
 }
 
@@ -119,6 +120,26 @@
     margin-top: 15px;
     width: 100%;
 
+}
+
+.visible img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+}
+
+.visible span {
+    font-family: poppins;
+    font-size: 12px;
+    font-weight: 400;
+    color: #1E1E1E;
+}
+
+.visible {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .daySelector {

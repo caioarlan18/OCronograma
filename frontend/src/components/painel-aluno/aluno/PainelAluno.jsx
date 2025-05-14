@@ -46,6 +46,7 @@ export function PainelAluno() {
         const ano = data.getUTCFullYear();
         return `${dia}/${mes}/${ano}`;
     }
+
     return (
         <div className={styles.aluno}>
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
@@ -59,7 +60,10 @@ export function PainelAluno() {
                             </div>
                             <div className={styles.aluno2b}>
                                 {cronograma?.semanas?.map((semana, index) => (
-                                    <button onClick={() => setSelectedWeek(index)} key={index} className={selectedWeek === index ? styles.bttativosemana : styles.bttsemana}>Semana {index + 1}</button>
+                                    <div key={index}>
+                                        {semana.visible && <button onClick={() => setSelectedWeek(index)} key={index} className={selectedWeek === index ? styles.bttativosemana : styles.bttsemana}>Semana {index + 1}</button>}
+                                    </div>
+
                                 ))}
                             </div>
                             <div className={styles.aluno2c}>

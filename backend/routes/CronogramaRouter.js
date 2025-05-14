@@ -33,6 +33,7 @@ router.put("/cronograma/atualizar-nome/:id", CronogramaController.atualizarNome)
 router.put("/cronograma/:cronogramaId/semana/:semanaId/dia/:diaId/conteudo/:conteudoId", CronogramaController.atualizarConteudo);
 //associar usuarios
 router.patch("/cronograma/:idCronograma/associar-usuarios", CronogramaController.associarUsuarios);
-//desassociar usuarios
+//mudar visibilidade da semana
+router.put("/cronograma/:cronogramaId/semana/:semanaId/changevisible", CronogramaController.changeVisible);
 
 module.exports = router;

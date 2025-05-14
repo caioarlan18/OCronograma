@@ -13,7 +13,12 @@ const diaSchema = new Schema({
 });
 
 const semanaSchema = new Schema({
-    dias: [diaSchema]
+    dias: [diaSchema],
+    visible: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 });
 
 const cronogramaSchema = new Schema({
@@ -46,7 +51,8 @@ cronogramaSchema.pre('save', function (next) {
             this.semanas.push({
                 dias: Array.from({ length: 7 }, () => ({
                     conteudos: []
-                }))
+                })),
+
             });
         }
     }

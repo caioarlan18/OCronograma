@@ -353,6 +353,24 @@ module.exports = {
             console.error(error);
             return res.status(500).json({ msg: "Erro ao associar usuários.", error });
         }
+    },
+    async changeVisible(req, res) {
+        const { cronogramaId, semanaId } = req.params;
+        if (!cronogramaId || !semanaId) return res.status(400).json({ msg: "Erro" });
+        const cronograma = await CronogramaModel.findById(cronogramaId);
+        if (!cronograma) return res.status(400).json({ msg: "Cronograma não encontrado" });
+        const semana = cronograma.semanas.id(semanaId);
+        if (!semana) return res.status(400).json({ msg: "Semana não encontrada" });
+        try {
+            semana.visible = !semana.visible;
+            await cronograma.save();
+            return res.status(200).json({ msg: "Visibilidade alterada com sucesso!" });
+
+        } catch (error) {
+            return res.status(500).json({ msg: "Erro ao associar usuários.", error });
+
+        }
+
     }
 
 
