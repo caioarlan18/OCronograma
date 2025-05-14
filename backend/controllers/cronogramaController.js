@@ -1,6 +1,7 @@
 const CronogramaModel = require("../models/CronogramaModel");
 const pastaModel = require("../models/PastaModel");
 const userModel = require("../models/UserModel");
+const axios = require('axios');
 module.exports = {
 
     async criarCronograma(req, res) {
@@ -315,6 +316,7 @@ module.exports = {
             const usuariosAnteriores = cronograma.usuariosAssociados.map(id => id.toString());
             const novosUsuarios = idUsuarios.map(id => id.toString());
 
+
             // 1. Desassociar usuários que foram REMOVIDOS deste cronograma
             const removidos = usuariosAnteriores.filter(id => !novosUsuarios.includes(id));
             if (removidos.length > 0) {
@@ -347,6 +349,23 @@ module.exports = {
             cronograma.usuariosAssociados = novosUsuarios;
             await cronograma.save();
 
+            //enviar email para os novos usuarios
+            const realmenteNovos = novosUsuarios.filter(id => !usuariosAnteriores.includes(id));
+            if (realmenteNovos.length > 0) {
+                const usuarios = await userModel.find({ _id: { $in: realmenteNovos } });
+
+                const users = usuarios.map(user => ({
+                    nome: user.nome,
+                    email: user.email
+                }));
+
+                await axios.post("https://hook.eu2.make.com/a8gzfvfsu5htty4e2nnpul9jqo3545b7", {
+                    users,
+                    cronograma: cronograma.nome
+                });
+            }
+
+            //sucesso
             return res.status(200).json({ msg: "Usuários associados com sucesso!" });
 
         } catch (error) {

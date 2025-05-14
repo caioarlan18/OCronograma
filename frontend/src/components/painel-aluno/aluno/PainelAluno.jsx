@@ -11,7 +11,7 @@ export function PainelAluno() {
     const [user, setUser] = useState([]);
     const [cronogramaId, setCronogramaId] = useState("");
     const [cronograma, setCronograma] = useState([]);
-    const [selectedWeek, setSelectedWeek] = useState(0);
+    const [selectedWeek, setSelectedWeek] = useState(null);
     const [abrirPopup, setAbrirPopup] = useState(false);
     useEffect(() => {
         async function getUserData() {
@@ -46,7 +46,16 @@ export function PainelAluno() {
         const ano = data.getUTCFullYear();
         return `${dia}/${mes}/${ano}`;
     }
-
+    useEffect(() => {
+        if (cronograma?.semanas?.length) {
+            const index = cronograma.semanas.findIndex(semana => semana.visible);
+            if (index !== -1) {
+                setSelectedWeek(index);
+            } else {
+                setSelectedWeek(null);
+            }
+        }
+    }, [cronograma]);
     return (
         <div className={styles.aluno}>
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
@@ -77,7 +86,7 @@ export function PainelAluno() {
                         </div>
                         <div className={styles.aluno3}>
 
-                            {cronograma?.semanas?.[selectedWeek].dias?.map((dia, index) => (
+                            {cronograma?.semanas?.[selectedWeek]?.dias?.map((dia, index) => (
                                 <div className={styles.aluno3a} key={index}>
                                     <div className={styles.aluno3b}>
                                         <h1>Dia {index + 1}</h1>
