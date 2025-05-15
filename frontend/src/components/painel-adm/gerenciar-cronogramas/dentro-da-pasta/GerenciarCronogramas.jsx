@@ -134,7 +134,7 @@ export function GerenciarCronogramas() {
                     </div>
                     <div className={styles.container}>
                         <div className={styles.header}>
-                            <h1>Cronogramas</h1>
+                            <h1>Cronogramas ({cronogramasFiltrados.length})</h1>
                         </div>
 
                         <table className={styles.tabela}>

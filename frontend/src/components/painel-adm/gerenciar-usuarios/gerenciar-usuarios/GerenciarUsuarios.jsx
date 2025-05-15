@@ -63,7 +63,7 @@ export function GerenciarUsuarios() {
 
                 <div className={styles.container}>
                     <div className={styles.header}>
-                        <h1>Gerencie Usuários</h1>
+                        <h1>Gerencie Usuários ({usuariosFiltrados.length})</h1>
                     </div>
 
                     <table className={styles.tabela}>
