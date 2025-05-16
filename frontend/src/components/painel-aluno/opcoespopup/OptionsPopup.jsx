@@ -7,11 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import iconelogout from '../../../images/logoutaluno.svg';
 import faqicon from '../../../images/faq.svg';
 import suporteicon from '../../../images/suporteicon.svg';
+import { FaleConoscoPopup } from '../faleconosco-popup/FaleConoscoPopUp';
 
 Modal.setAppElement('#root');
 
 export function OptionsPopup({ abrir, fechar }) {
     const navigate = useNavigate();
+    const [abrirFale, setAbrirFale] = useState(false);
     function logout() {
         localStorage.removeItem("id");
         localStorage.removeItem("token");
@@ -22,7 +24,7 @@ export function OptionsPopup({ abrir, fechar }) {
     }
     return (
         <div className={styles.options}>
-
+            <FaleConoscoPopup abrir={abrirFale} fechar={() => setAbrirFale(false)} />
             <Modal
                 isOpen={abrir}
                 onRequestClose={fechar}
@@ -56,7 +58,10 @@ export function OptionsPopup({ abrir, fechar }) {
 
                     </div>
                     <div className={styles.suporte}>
-                        <button onClick={() => window.open("https://api.whatsapp.com/send/?phone=5521981780957&text=Venho+do+sistema+OCronograma+e+preciso+de+ajuda.&type=phone_number&app_absent=0", "_blank")}><img src={suporteicon} alt="" /> Fale conosco</button>
+                        <button onClick={() => {
+                            fechar();
+                            setAbrirFale(true);
+                        }}><img src={suporteicon} alt="" /> Fale conosco</button>
 
                     </div>
                     <div className={styles.deslog}>

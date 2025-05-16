@@ -1,0 +1,41 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.header img {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.header h1 {
+    font-family: poppins;
+    font-weight: 500;
+    font-size: 34px;
+    color: #1E1E1E;
+    text-align: center;
+    color: #333;
+}
+
+.options1 {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.options1 h1 {
+    font-size: 17px;
+    font-family: poppins;
+    color: black;
+    font-weight: 600;
+}
+
+.options1 p {
+    font-size: 14px;
+    font-family: poppins;
+    color: #333;
+    font-weight: 500;
+}
