@@ -44,10 +44,7 @@ export function FaleConoscoPopup({ abrir, fechar }) {
                     <p>suporte@ocronograma.com</p>
 
                 </div>
-                <div className={styles.options1}>
-                    <h1>ASSUNTOS FINANCEIROS</h1>
-                    <p>financeiro@ocronograma.com</p>
-                </div>
+
 
 
             </Modal>

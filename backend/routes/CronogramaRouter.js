@@ -35,5 +35,6 @@ router.put("/cronograma/:cronogramaId/semana/:semanaId/dia/:diaId/conteudo/:cont
 router.patch("/cronograma/:idCronograma/associar-usuarios", CronogramaController.associarUsuarios);
 //mudar visibilidade da semana
 router.put("/cronograma/:cronogramaId/semana/:semanaId/changevisible", CronogramaController.changeVisible);
-
+//clonar semana
+router.post("/cronograma/:cronogramaId/semana/:semanaId/clonar", CronogramaController.clonarSemana);
 module.exports = router;

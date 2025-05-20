@@ -9,6 +9,7 @@ import { Tooltip } from 'react-tooltip';
 import interrogacao from '../../../../images/interrogacao.svg';
 import olhoAberto from '../../../../images/olhoaberto.svg';
 import olhoFechado from '../../../../images/olhofechado.svg';
+import copyicon from '../../../../images/copy.svg';
 export function CriarCronograma2() {
     const params = useParams();
     const navigate = useNavigate();
@@ -25,7 +26,6 @@ export function CriarCronograma2() {
     const selectedDayData = selectedWeekData?.dias?.[selectedDay];
     const semanaId = selectedWeekData?._id;
     const diaId = selectedDayData?._id;
-
     useEffect(() => {
         async function getCronograma() {
             try {
@@ -173,6 +173,16 @@ export function CriarCronograma2() {
 
         }
     }
+    async function clonarSemana(semanaId) {
+        try {
+            const response = await api.post(`/cronograma/${params.idCronograma}/semana/${semanaId}/clonar`);
+            setTrigger(prev => !prev);
+            toast.success(response.data.msg);
+        } catch (error) {
+            toast.error(error.response?.data?.msg || 'Erro ao clonar semana');
+
+        }
+    }
     return (
         <div className={styles.cronograma2a}>
             <MenuLateral ativo={2} />
@@ -197,13 +207,20 @@ export function CriarCronograma2() {
                             <div key={index + 2}>
 
                                 <div className={styles.visible} key={index + 3}>
-                                    <span>Visibilidade:</span>
+                                    <span>Visiblidade:</span>
                                     <img
                                         src={semana.visible ? olhoAberto : olhoFechado}
                                         alt="visibilidade"
                                         onClick={() => changeVisible(semana._id)}
                                     />
+                                    <img
+                                        src={copyicon}
+                                        alt="duplicar"
+                                        onClick={() => clonarSemana(semana._id)}
+                                        className={styles.dupli}
+                                    />
                                 </div>
+
                                 <button
                                     key={index + 4}
                                     className={`${styles.weekButton} ${selectedWeek === index ? styles.active : ''}`}
@@ -211,6 +228,7 @@ export function CriarCronograma2() {
                                         setSelectedWeek(index);
                                         setSelectedDay(0);
                                     }}
+
                                 >
                                     Semana {index + 1}
                                     {index !== 0 && (
@@ -308,7 +326,7 @@ export function CriarCronograma2() {
                     </div>
 
                     {/* Botões Atribuir e Criar Matéria */}
-                    <div className={styles.teste}>
+                    <div className={styles.materia}>
                         <button className={styles.materiaButton} onClick={criarMateria}>
                             Criar Matéria
                             <span className={styles.arrowIcon}>+</span>

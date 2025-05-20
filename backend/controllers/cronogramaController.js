@@ -390,7 +390,32 @@ module.exports = {
 
         }
 
+    },
+    async clonarSemana(req, res) {
+        const { cronogramaId, semanaId } = req.params;
+        if (!cronogramaId) return res.status(400).json({ msg: "Faltando id do cronograma" });
+        if (!semanaId) return res.status(400).json({ msg: "Faltando id da semana" });
+
+        try {
+            const cronograma = await CronogramaModel.findById(cronogramaId);
+            if (!cronograma) return res.status(404).json({ msg: "Cronograma não encontrado" });
+            const indexOriginal = cronograma.semanas.findIndex(
+                (semana) => semana._id.toString() === semanaId
+            );
+            if (indexOriginal === -1) return res.status(404).json({ msg: "Semana não encontrada" });
+            const semanaOriginal = cronograma.semanas[indexOriginal];
+            const novaSemana = {
+                dias: JSON.parse(JSON.stringify(semanaOriginal.dias))
+            };
+            cronograma.semanas.splice(indexOriginal + 1, 0, novaSemana);
+            cronograma.quantidadeSemanas = cronograma.semanas.length;
+            await cronograma.save();
+            res.status(200).json({ msg: `Semana ${indexOriginal + 1} duplicada com sucesso` });
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+        }
     }
+
 
 
 

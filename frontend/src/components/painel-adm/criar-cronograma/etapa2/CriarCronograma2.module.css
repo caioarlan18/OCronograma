@@ -5,7 +5,7 @@
 }
 
 .cronograma2b {
-    padding: 150px 75px 75px 75px;
+    padding: 100px 75px 75px 75px;
     overflow: auto;
     width: 100%;
 }
@@ -50,6 +50,8 @@
     margin-left: 129px;
 
 }
+
+
 
 .weekButton {
     min-width: 135px;
@@ -129,6 +131,11 @@
 
 }
 
+img.dupli {
+    width: 15px;
+
+}
+
 .visible span {
     font-family: poppins;
     font-size: 12px;
@@ -140,6 +147,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .daySelector {
@@ -337,7 +345,7 @@
 
 }
 
-.teste {
+.materia {
     display: flex;
     justify-content: space-between;
 }
