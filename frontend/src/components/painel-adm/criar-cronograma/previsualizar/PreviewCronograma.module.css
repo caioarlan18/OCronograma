@@ -1,0 +1,242 @@
+.aluno {
+    background-color: #F7FBFE;
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+
+}
+
+.aluno2 {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 20px 0px 20px;
+    padding: 60px 0px 0px 0px;
+}
+
+.aluno2a {
+    display: flex;
+    align-items: center;
+
+}
+
+
+
+
+.aluno2a p {
+    color: #706F6F;
+    font-family: poppins;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0px 30px;
+}
+
+.aluno2b {
+    overflow: auto;
+    display: flex;
+    min-width: 155px;
+    max-width: 40%;
+    align-items: center;
+    margin: 0px 30px;
+}
+
+
+
+.aluno2c {
+    margin: 0px 30px;
+}
+
+.aluno2c span {
+    color: #706F6F;
+    font-family: poppins;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.aluno2c p {
+    color: #706F6F;
+    font-family: poppins;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.aluno2d {
+    display: flex;
+}
+
+.aluno2d button {
+    background-color: white;
+    border: 1px solid #706F6F;
+    border-radius: 7px;
+    color: #706F6F;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: poppins;
+    width: 147px;
+    height: 55px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+}
+
+
+.bttsemana {
+    background-color: white;
+    border: 1px solid #706F6F;
+    border-radius: 7px;
+    color: #706F6F;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: poppins;
+    min-width: 147px;
+    height: 55px;
+    margin-left: 10px;
+    cursor: pointer;
+
+}
+
+.bttativosemana {
+    background-color: #706F6F;
+    min-width: 147px;
+    height: 55px;
+    font-size: 15px;
+    color: #F7FBFE;
+    font-weight: 500;
+    border-radius: 7px;
+    border: 0;
+    font-family: poppins;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.aluno3 {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px 20px 0px 20px;
+    overflow: auto;
+    gap: 20px;
+    padding-bottom: 100px;
+}
+
+
+
+.aluno3b {
+    min-width: 251px;
+    background: transparent linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    border-radius: 7px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aluno3b h1 {
+    color: #F7FBFE;
+    font-size: 22px;
+    text-align: center;
+    font-family: poppins;
+    font-weight: 500;
+
+}
+
+.aluno3c {
+    background: #F7FBFE 0% 0% no-repeat padding-box;
+    box-shadow: 0px 0px 25px #00000026;
+    border-radius: 11px;
+    margin-top: 20px;
+    padding: 30px 20px;
+    max-width: 251px;
+
+}
+
+.aluno3c h1 {
+    color: #1E1E1E;
+    font-family: poppins;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.aluno3c p {
+    color: #000000;
+    font-family: poppins;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 10px;
+
+}
+
+.aluno3c button {
+    border: 1px solid #9D9D9C;
+    background-color: transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: poppins;
+    font-size: 13px;
+    font-weight: 400;
+    color: #1E1E1E;
+    margin-top: 15px;
+    width: 203px;
+    height: 43px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+@media screen and (max-width: 975px) {
+    .aluno1 {
+        width: 95%;
+    }
+
+    .aluno2 {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .aluno2a {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .aluno2b {
+        margin: 0;
+    }
+
+    .aluno2a img {
+        margin-top: 30px;
+    }
+
+    .aluno2a p {
+        margin-top: 30px;
+        margin-bottom: 30px;
+
+    }
+
+    .aluno2b {
+        max-width: 100%;
+    }
+
+    .aluno2c {
+        margin-top: 30px;
+    }
+
+    .aluno2d {
+        margin-top: 30px;
+    }
+
+    .aluno2d button {
+        display: none;
+    }
+
+    .aluno3 {
+        min-width: 100%;
+    }
+}

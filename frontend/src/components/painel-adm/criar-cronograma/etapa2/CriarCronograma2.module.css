@@ -345,9 +345,32 @@ img.dupli {
 
 }
 
+.previewButton {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-family: poppins;
+    align-items: center;
+    padding: 15px 28px;
+    margin-top: 70px;
+    border: none;
+    background-color: #3A3A3A;
+    border-radius: 15px;
+    color: #F2F2F2;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+
+}
+
 .materia {
     display: flex;
     justify-content: space-between;
+}
+
+.materia2 {
+    display: flex;
+    gap: 20px;
 }
 
 .materiaButton {

@@ -9,6 +9,8 @@ export function PainelAdmFeed() {
     const navigate = useNavigate()
     const [user, setUser] = useState([]);
     const [cronogramas, setCronogramas] = useState([]);
+    const [busca, setBusca] = useState("");
+
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     useEffect(() => {
         async function getUserData() {
@@ -41,6 +43,9 @@ export function PainelAdmFeed() {
         const ano = data.getUTCFullYear();
         return `${dia}/${mes}/${ano}`;
     }
+    const cronogramasFiltrados = cronogramas.filter(cronograma =>
+        cronograma.nome.toLowerCase().includes(busca.toLowerCase())
+    );
     return (
         <div className={styles.paineladm}>
             <MenuLateral ativo={1} />
@@ -52,11 +57,14 @@ export function PainelAdmFeed() {
                     <div className={styles.paineladm2b}>
                         <h1>Bem vindo, {user.nome}!</h1>
                         <p>Na barra ao lado estão as funções do sistema.</p>
+                        <input type="text" placeholder='Pesquise o cronograma...' value={busca} onChange={(e) => setBusca(e.target.value)} />
+
                     </div>
                 </div>
                 <div className={styles.container}>
+
                     <div className={styles.header}>
-                        <h1>Registro de Atividades ({cronogramas.length})</h1>
+                        <h1>Registro de Atividades ({cronogramasFiltrados.length})</h1>
                     </div>
 
                     <table className={styles.tabela}>
@@ -69,7 +77,7 @@ export function PainelAdmFeed() {
                             </tr>
                         </thead>
                         <tbody>
-                            {cronogramas.map((cronograma, index) => (
+                            {cronogramasFiltrados.map((cronograma, index) => (
                                 <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
                                     <td data-label="Nome do cronograma">{cronograma.nome}</td>
                                     <td data-label="usuario criador">{cronograma.userCriador}</td>

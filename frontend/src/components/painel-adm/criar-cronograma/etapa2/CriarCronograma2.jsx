@@ -10,6 +10,7 @@ import interrogacao from '../../../../images/interrogacao.svg';
 import olhoAberto from '../../../../images/olhoaberto.svg';
 import olhoFechado from '../../../../images/olhofechado.svg';
 import copyicon from '../../../../images/copy.svg';
+import { PreviewCronograma } from '../previsualizar/PreviewCronograma';
 export function CriarCronograma2() {
     const params = useParams();
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ export function CriarCronograma2() {
     const selectedDayData = selectedWeekData?.dias?.[selectedDay];
     const semanaId = selectedWeekData?._id;
     const diaId = selectedDayData?._id;
+    const [openPreview, setOpenPreview] = useState(false);
     useEffect(() => {
         async function getCronograma() {
             try {
@@ -186,6 +188,7 @@ export function CriarCronograma2() {
     return (
         <div className={styles.cronograma2a}>
             <MenuLateral ativo={2} />
+            <PreviewCronograma abrir={openPreview} fechar={() => setOpenPreview(false)} cronogramaId={params.idCronograma} />
             <div className={styles.cronograma2b}>
                 <div className={styles.cronogramaContainer} >
                     <div className={styles.titleContainer}>
@@ -327,14 +330,24 @@ export function CriarCronograma2() {
 
                     {/* Botões Atribuir e Criar Matéria */}
                     <div className={styles.materia}>
-                        <button className={styles.materiaButton} onClick={criarMateria}>
-                            Criar Matéria
-                            <span className={styles.arrowIcon}>+</span>
-                        </button>
-                        <button className={styles.atribuirButton} onClick={() => navigate(`/criar-cronograma3/${params.idCronograma}`)}>
-                            Atribuir Usuário
-                            <span className={styles.arrowIcon}>&gt;</span>
-                        </button>
+                        <div className={styles.materia1}>
+                            <button className={styles.materiaButton} onClick={criarMateria}>
+                                Criar Matéria
+                                <span className={styles.arrowIcon}>+</span>
+                            </button>
+                        </div>
+
+                        <div className={styles.materia2}>
+                            <button className={styles.previewButton} onClick={() => setOpenPreview(true)}>
+                                Pré Visualizar Cronograma
+                                <span className={styles.arrowIcon}></span>
+                            </button>
+                            <button className={styles.atribuirButton} onClick={() => navigate(`/criar-cronograma3/${params.idCronograma}`)}>
+                                Atribuir Usuário
+                                <span className={styles.arrowIcon}>&gt;</span>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
