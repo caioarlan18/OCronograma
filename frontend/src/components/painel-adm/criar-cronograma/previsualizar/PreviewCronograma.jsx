@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import logoCronograma from '../../../../images/logocronogramaroxa.png';
 Modal.setAppElement('#root');
-export function PreviewCronograma({ abrir, fechar, cronogramaId, trigger }) {
+export function PreviewCronograma({ abrir, fechar, cronogramaId, gatilho }) {
     const [cronograma, setCronograma] = useState([]);
     const [selectedWeek, setSelectedWeek] = useState(0);
     useEffect(() => {
@@ -19,7 +19,7 @@ export function PreviewCronograma({ abrir, fechar, cronogramaId, trigger }) {
             }
         }
         getCronograma()
-    }, [cronogramaId]);
+    }, [cronogramaId, gatilho]);
 
     return (
         <div className={styles.preview}>

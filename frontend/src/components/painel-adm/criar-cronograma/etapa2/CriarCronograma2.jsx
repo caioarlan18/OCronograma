@@ -188,7 +188,7 @@ export function CriarCronograma2() {
     return (
         <div className={styles.cronograma2a}>
             <MenuLateral ativo={2} />
-            <PreviewCronograma abrir={openPreview} fechar={() => setOpenPreview(false)} cronogramaId={params.idCronograma} />
+            <PreviewCronograma abrir={openPreview} fechar={() => setOpenPreview(false)} cronogramaId={params.idCronograma} gatilho={trigger} />
             <div className={styles.cronograma2b}>
                 <div className={styles.cronogramaContainer} >
                     <div className={styles.titleContainer}>
