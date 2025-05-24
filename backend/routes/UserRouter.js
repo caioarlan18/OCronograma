@@ -24,6 +24,6 @@ router.get("/user/read", userController.read);
 //mostrar um usuario
 router.get("/user/read/:id", userController.readOne);
 //verificacao de validade para deixar usuario inativo
-setInterval(userController.usuarioExpirou, 12 * 60 * 60 * 1000); // Executa a cada 12 horas
+router.post("/user/usuario-expirou", userController.usuarioExpirou);
 
 module.exports = router;

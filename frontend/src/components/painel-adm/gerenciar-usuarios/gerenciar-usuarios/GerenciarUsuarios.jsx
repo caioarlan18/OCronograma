@@ -5,7 +5,7 @@ import styles from './GerenciarUsuarios.module.css';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { EditarUsuarioPopup } from '../editar-usuario/EditarUsuario';
-
+import filter from '../../../../images/filter_4240701.svg'
 export function GerenciarUsuarios() {
     const [abertoCriar, setAbertoCriar] = useState(false);
     const [abertoEditar, setAbertoEditar] = useState(false);
@@ -13,7 +13,8 @@ export function GerenciarUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [userRole, setUserRole] = useState("");
     const [busca, setBusca] = useState("");
-
+    const [userInactive, setUserInactive] = useState(false);
+    const [vencimentoproximo, setVencimentoProximo] = useState(false);
     function abrir() {
         setAbertoCriar(true);
     }
@@ -39,10 +40,20 @@ export function GerenciarUsuarios() {
         return `${dia}/${mes}/${ano}`;
     }
 
-    const usuariosFiltrados = usuarios.filter(usuario =>
-        usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
-        usuario.email.toLowerCase().includes(busca.toLowerCase())
-    );
+    const usuariosFiltrados = usuarios.filter(usuario => {
+        const correspondeBusca =
+            usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.email.toLowerCase().includes(busca.toLowerCase());
+
+        const correspondeStatus = userInactive ? usuario.status.includes("inativo") : true;
+
+        return correspondeBusca && correspondeStatus;
+    });
+
+    if (vencimentoproximo) {
+        usuariosFiltrados.sort((a, b) => new Date(a.validade) - new Date(b.validade));
+    }
+    const [showCheckboxes, setShowCheckboxes] = useState(false);
 
     return (
         <div className={styles.gerenciar}>
@@ -57,13 +68,21 @@ export function GerenciarUsuarios() {
                         placeholder='Pesquise o usuário por nome ou email'
                         value={busca}
                         onChange={(e) => setBusca(e.target.value)}
-                    />
-                    <button onClick={abrir}>+ Criar usuário</button>
+
+                    /> <button onClick={abrir}>+ Criar usuário</button>
                 </div>
 
                 <div className={styles.container}>
                     <div className={styles.header}>
                         <h1>Gerencie Usuários ({usuariosFiltrados.length})</h1>
+                        <div className={styles.filtros}>
+                            <input type="checkbox" onClick={() => setUserInactive(!userInactive)} />
+                            <label htmlFor="">Usuários inativos</label>
+                        </div>
+                        <div className={styles.filtros}>
+                            <input type="checkbox" onClick={() => setVencimentoProximo(!vencimentoproximo)} />
+                            <label htmlFor="">Mais perto do vencimento</label>
+                        </div>
                     </div>
 
                     <table className={styles.tabela}>

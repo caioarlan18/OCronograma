@@ -65,8 +65,24 @@
 
 .header {
     padding: 20px 0px 20px 50px;
-
+    display: flex;
+    gap: 30px;
+    align-items: center;
 }
+
+.filtros {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.filtros label {
+    font-family: poppins;
+    font-size: 12px;
+    font-weight: 400;
+    color: #444;
+}
+
 
 .tabela {
     width: 100%;
