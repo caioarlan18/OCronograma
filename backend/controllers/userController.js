@@ -178,18 +178,23 @@ module.exports = {
         }
 
     },
-    async usuarioExpirou() {
-        const usuarios = await userModel.find();
-        usuarios.forEach(async (usuario) => {
-            if (usuario.validade && moment(usuario.validade).isBefore(moment())) {
-                usuario.status = 'inativo';
-                await usuario.save();
-            } else {
-                usuario.status = "ativo";
-                await usuario.save();
+    async usuarioExpirou(req, res) {
+        try {
+            const usuarios = await userModel.find();
 
+            for (const usuario of usuarios) {
+                if (usuario.validade && moment(usuario.validade).isBefore(moment())) {
+                    usuario.status = 'inativo';
+                } else {
+                    usuario.status = 'ativo';
+                }
+                await usuario.save();
             }
-        });
+
+            return res.status(200).json({ msg: "Verificação de validade executada com sucesso" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Verificação de validade deu erro", erro: error.message });
+        }
     },
     async read(req, res) {
         try {
