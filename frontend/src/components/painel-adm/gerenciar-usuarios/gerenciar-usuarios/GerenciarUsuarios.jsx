@@ -5,7 +5,6 @@ import styles from './GerenciarUsuarios.module.css';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { EditarUsuarioPopup } from '../editar-usuario/EditarUsuario';
-import filter from '../../../../images/filter_4240701.svg'
 export function GerenciarUsuarios() {
     const [abertoCriar, setAbertoCriar] = useState(false);
     const [abertoEditar, setAbertoEditar] = useState(false);
@@ -53,7 +52,6 @@ export function GerenciarUsuarios() {
     if (vencimentoproximo) {
         usuariosFiltrados.sort((a, b) => new Date(a.validade) - new Date(b.validade));
     }
-    const [showCheckboxes, setShowCheckboxes] = useState(false);
 
     return (
         <div className={styles.gerenciar}>
