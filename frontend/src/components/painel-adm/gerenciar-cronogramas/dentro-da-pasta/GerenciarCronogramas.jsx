@@ -72,6 +72,8 @@ export function GerenciarCronogramas() {
         cronograma.nome.toLowerCase().includes(busca.toLowerCase())
     );
     async function duplicar(id) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode duplicar cronogramas");
+
         try {
             const response = await api.post(`/cronograma/clonar/${id}`);
             toast.success(response.data.msg);
@@ -83,7 +85,7 @@ export function GerenciarCronogramas() {
     }
     async function excluir(id) {
         try {
-            if (user.role !== "adm1") return toast.error("Somente administrador master pode deletar um cronograma");
+            if (user.role !== "administrador") return toast.error("Somente o administrador pode deletar um cronograma");
 
 
             const resultado = await Swal.fire({
@@ -114,6 +116,8 @@ export function GerenciarCronogramas() {
     }
 
     async function mover() {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode mover cronogramas");
+
         setAbrirMover(true);
     }
     return (

@@ -4,13 +4,29 @@ import closeicon from '../../../../images/closeicon.svg';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 Modal.setAppElement('#root');
 
 export function CriarPastaPopup({ abrir, fechar, finish }) {
     const [nome, setNome] = useState("");
+    const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+    const [user, setUser] = useState([]);
+    useEffect(() => {
+        async function getUserData() {
+            try {
+
+                const response = await api.get(`/user/read/${id}`);
+                setUser(response.data);
+            } catch (error) {
+                toast.error(error);
+            }
+        }
+        getUserData();
+    }, [id])
     async function criarPasta(e) {
         e.preventDefault();
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode criar pastas");
+
         try {
             const response = await api.post("/pasta/criar", {
                 nome,

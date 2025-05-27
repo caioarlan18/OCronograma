@@ -22,7 +22,7 @@ export function Redirecionamento() {
 
     useEffect(() => {
         if (!user || !user.role) return;
-        if (user.role === "adm1" || user.role === "adm2") {
+        if (user.role === "administrador" || user.role === "distribuidor" || user.role === "baterista") {
             return navigate("/painel-adm-feed")
         } else if (user.role === "aluno") {
             return navigate("/painel-aluno")

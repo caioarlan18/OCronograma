@@ -58,9 +58,9 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
 
     async function saveUser(e) {
         e.preventDefault();
-        if (idUser === id && cargo === "adm2") {
-            toast.error("Você (adm2) não pode editar você mesmo")
-        } else if (user.role != "adm1" && cargo === "adm1") {
+        if (idUser === id && cargo === "distribuidor") {
+            toast.error("Você (distribuidor) não pode editar você mesmo")
+        } else if (user.role != "administrador" && cargo === "administrador") {
             toast.error("Não é possível editar um administrador master")
         }
         else {
@@ -68,7 +68,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                 const response = await api.put(`/user/editar/${idUser}`, {
                     novoNome: nome,
                     novoEmail: email,
-                    novaValidade: validade
+                    novaValidade: validade,
+                    novoCargo: cargo
                 });
                 toast.success(response.data.msg);
                 fechar();
@@ -81,12 +82,12 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     }
     async function deleteUser(e) {
         e.preventDefault();
-        if (user.role != "adm1") {
-            toast.error("Só o admnistrador master pode deletar um usuário");
+        if (user.role != "administrador") {
+            toast.error("Somente o admnistrador pode deletar um usuário");
         }
         else if (idUser === id) {
             toast.error("Não é possível deleter você mesmo")
-        } else if (cargo === "adm1") {
+        } else if (cargo === "administrador") {
             toast.error("Não é possível deleter um administrador master");
         } else {
             const resultado = await Swal.fire({
@@ -117,38 +118,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
         }
 
     }
-    async function promoverAdm(e) {
-        e.preventDefault();
-        if (user.role != "adm1") {
-            toast.error("Só o admnistrador master pode promover um usuário");
-        } else {
-            try {
-                const response = await api.patch(`/user/promover/${idUser}`);
-                toast.success(response.data.msg);
-                setCargo("adm2");
-            } catch (error) {
-                toast.error(error.response.data.msg);
 
-            }
-        }
-
-    }
-    async function rebaixarAdm(e) {
-        e.preventDefault();
-        if (user.role != "adm1") {
-            toast.error("Só o admnistrador master pode rebaixar um usuário");
-        } else {
-            try {
-                const response = await api.patch(`/user/rebaixar/${idUser}`);
-                toast.success(response.data.msg);
-                setCargo("aluno");
-
-            } catch (error) {
-                toast.error(error.response.data.msg);
-
-            }
-        }
-    }
     useEffect(() => {
         async function getCronograma() {
             try {
@@ -222,18 +192,28 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="senha">Cargo</label>
-                            <input type="text" value={cargo} readOnly />
+                            {user.role === "administrador" && cargo !== "administrador" ?
+                                (<div>
+                                    <select value={cargo} onChange={(e) => setCargo(e.target.value)}>
+                                        <option value="aluno">Aluno</option>
+                                        <option value="distribuidor">Distribuidor</option>
+                                        <option value="baterista">Baterista</option>
+                                    </select>
+                                </div>)
+
+                                : (<input type="text" value={cargo} readOnly />)}
+
                         </div>
                     </div>
                     <button className={styles.submitButton} onClick={saveUser} >Salvar alterações do Usuário</button>
                     <button className={styles.excluirButton} onClick={deleteUser} >Excluir</button>
-                    {
+                    {/* {
                         cargo === "aluno"
                             ? <button className={styles.promoverButton} onClick={promoverAdm}>Promover Administrador</button>
-                            : cargo === "adm2"
+                            : cargo === "distribuidor"
                                 ? <button className={styles.promoverButton} onClick={rebaixarAdm}>Rebaixar</button>
                                 : <button className={styles.promoverButton} onClick={(e) => e.preventDefault()}>Moderador Master</button>
-                    }
+                    } */}
 
                 </form>
             </Modal>

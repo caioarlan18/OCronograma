@@ -42,6 +42,21 @@ export function CriarCronograma2() {
         getCronograma();
     }, [params.idCronograma, trigger, selectedWeek, selectedDay]);
 
+    const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+    const [user, setUser] = useState([]);
+    useEffect(() => {
+        async function getUserData() {
+            try {
+
+                const response = await api.get(`/user/read/${id}`);
+                setUser(response.data);
+            } catch (error) {
+                toast.error(error);
+            }
+        }
+        getUserData();
+    }, [id])
+
     const handleInputChange = (event, index, field) => {
         const newMaterias = [...materias];
         newMaterias[index] = {
@@ -80,6 +95,7 @@ export function CriarCronograma2() {
 
 
     async function excluirSemana(id) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir semana");
         try {
             const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${id}`);
             setTrigger(prev => !prev);
@@ -91,6 +107,7 @@ export function CriarCronograma2() {
     }
 
     async function excluirDia(id) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir dia");
         try {
             const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${id}`);
             setTrigger(prev => !prev);
@@ -102,6 +119,7 @@ export function CriarCronograma2() {
     }
 
     async function criarSemana() {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode criar semana");
         try {
             const response = await api.post(`/cronograma/${params.idCronograma}/semana/`);
             setTrigger(prev => !prev);
@@ -112,6 +130,7 @@ export function CriarCronograma2() {
     }
 
     async function criarDia() {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode criar dia");
         try {
             const response = await api.post(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia`);
             setTrigger(prev => !prev);
@@ -122,6 +141,7 @@ export function CriarCronograma2() {
     }
 
     async function criarMateria() {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode criar matéria");
         try {
             const response = await api.post(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}`, {
                 areaConhecimento: area,
@@ -136,6 +156,7 @@ export function CriarCronograma2() {
     }
 
     async function removerConteudo(id) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir matéria");
         try {
             const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${id}`);
             setTrigger(prev => !prev);
@@ -146,6 +167,7 @@ export function CriarCronograma2() {
     }
 
     async function mudarNome(e) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode mudar o nome do cronograma");
         const novoTexto = e.currentTarget.textContent.trim();
 
         if (!novoTexto) {
@@ -166,6 +188,7 @@ export function CriarCronograma2() {
     }
 
     async function changeVisible(semanaId) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode mudar visibilidade da semana");
         try {
             const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/changevisible`);
             setTrigger(prev => !prev);
@@ -176,6 +199,8 @@ export function CriarCronograma2() {
         }
     }
     async function clonarSemana(semanaId) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode duplicar a semana");
+
         try {
             const response = await api.post(`/cronograma/${params.idCronograma}/semana/${semanaId}/clonar`);
             setTrigger(prev => !prev);
@@ -342,7 +367,10 @@ export function CriarCronograma2() {
                                 Pré Visualizar Cronograma
                                 <span className={styles.arrowIcon}></span>
                             </button>
-                            <button className={styles.atribuirButton} onClick={() => navigate(`/criar-cronograma3/${params.idCronograma}`)}>
+                            <button className={styles.atribuirButton} onClick={() => {
+                                if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode atribuir usuário");
+                                navigate(`/criar-cronograma3/${params.idCronograma}`)
+                            }}>
                                 Atribuir Usuário
                                 <span className={styles.arrowIcon}>&gt;</span>
                             </button>

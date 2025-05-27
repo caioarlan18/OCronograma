@@ -14,7 +14,21 @@ export function GerenciarUsuarios() {
     const [busca, setBusca] = useState("");
     const [userInactive, setUserInactive] = useState(false);
     const [vencimentoproximo, setVencimentoProximo] = useState(false);
+    const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+    const [user, setUser] = useState([]);
+    useEffect(() => {
+        async function getUserData() {
+            try {
+                const response = await api.get(`/user/read/${id}`);
+                setUser(response.data);
+            } catch (error) {
+                toast.error(error);
+            }
+        }
+        getUserData();
+    }, [id])
     function abrir() {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode criar usuários");
         setAbertoCriar(true);
     }
 
@@ -104,6 +118,7 @@ export function GerenciarUsuarios() {
                                     {/* <td data-label="Cronogramas vinculados">{usuario.cronogramaAssociado || "Nenhum"}</td> */}
                                     <td data-label="Ações">
                                         <button className={styles.botao} onClick={() => {
+                                            if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode editar usuários");
                                             setAbertoEditar(true);
                                             setIdUsuarioEditar(usuario._id);
                                         }}>Editar</button>

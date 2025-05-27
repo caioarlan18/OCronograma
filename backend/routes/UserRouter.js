@@ -13,10 +13,6 @@ router.post("/esqueci-senha", userController.recuperarSenhaEmail);
 router.patch("/redefinir-senha/:id", userController.redefinirSenha);
 //editar usuario
 router.put("/user/editar/:id", userController.editarUsuario);
-//promover cargo para adm2
-router.patch("/user/promover/:id", userController.promoverUsuario);
-//rebaixar cargo para aluno
-router.patch("/user/rebaixar/:id", userController.rebaixarUsuario);
 //deletar usuario
 router.delete("/user/delete/:id", userController.excluirUsuario);
 //mostrar todos os usuarios

@@ -21,7 +21,7 @@ export function VerifyAdm({ children }) {
                 const response = await api.get(`/user/read/${id}`);
                 const role = response.data.role;
 
-                if (role === "adm1" || role === "adm2") {
+                if (role === "administrador" || role === "distribuidor" || role === "baterista") {
                     setIsAuthorized(true);
                 } else {
                     toast.error("Você não tem permissão para entrar");

@@ -114,7 +114,7 @@ module.exports = {
         }
     },
     async editarUsuario(req, res) {
-        const { novoNome, novoEmail, novaValidade } = req.body;
+        const { novoNome, novoEmail, novaValidade, novoCargo } = req.body;
         if (!novoNome || !novoEmail || !novaValidade) return res.status(400).json({ msg: "Os campos devem estar preenchidos" });
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
@@ -125,44 +125,13 @@ module.exports = {
             user.nome = novoNome;
             user.email = novoEmail;
             user.validade = novaValidade;
+            user.role = novoCargo;
             await user.save();
             return res.status(200).json({ msg: "Usuário editado com sucesso" });
         } catch (error) {
             return res.status(500).json({ msg: "Ocorreu um erro", error });
         }
 
-    },
-    async promoverUsuario(req, res) {
-        const { id } = req.params;
-        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
-        const user = await userModel.findById(id);
-        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
-        if (user.role === "adm2") return res.status(400).json({ msg: "Usuário já estava promovido" });
-        try {
-            user.role = "adm2";
-            await user.save();
-            return res.status(200).json({ msg: "Usuário promovido com sucesso" });
-
-        } catch (error) {
-            return res.status(500).json({ msg: "Ocorreu um erro", error });
-
-        }
-    },
-    async rebaixarUsuario(req, res) {
-        const { id } = req.params;
-        if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
-        const user = await userModel.findById(id);
-        if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
-        if (user.role === "aluno") return res.status(400).json({ msg: "Usuário já estava rebaixado" });
-        try {
-            user.role = "aluno";
-            await user.save();
-            return res.status(200).json({ msg: "Usuário rebaixado com sucesso" });
-
-        } catch (error) {
-            return res.status(500).json({ msg: "Ocorreu um erro", error });
-
-        }
     },
     async excluirUsuario(req, res) {
         const { id } = req.params;

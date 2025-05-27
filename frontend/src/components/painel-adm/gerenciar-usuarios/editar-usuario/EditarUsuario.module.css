@@ -48,7 +48,8 @@
     font-weight: 500;
 }
 
-.inputGroup input {
+.inputGroup input,
+.inputGroup select {
     width: 240px;
     height: 55px;
     color: #939393;

@@ -46,6 +46,8 @@ export function CriarCronograma1() {
         getUser();
     }, [id])
     async function criarCronograma() {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode criar cronogramas");
+
         try {
             const response = await api.post("/cronograma", {
                 nome: nome,

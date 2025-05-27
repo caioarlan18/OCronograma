@@ -49,12 +49,12 @@ export function PainelAdmFeed() {
     return (
         <div className={styles.paineladm}>
             <MenuLateral ativo={1} />
-            <div className={styles.paineladm1}>
-                <div className={styles.paineladm2}>
-                    {/* <div className={styles.paineladm2a}>
+            <div className={styles.paineladministrador}>
+                <div className={styles.paineldistribuidor}>
+                    {/* <div className={styles.paineldistribuidora}>
                         <img src={bolaroxa} alt="" />
                     </div> */}
-                    <div className={styles.paineladm2b}>
+                    <div className={styles.paineldistribuidorb}>
                         <h1>Bem vindo, {user.nome}!</h1>
                         <p>Na barra ao lado estão as funções do sistema.</p>
                         <input type="text" placeholder='Pesquise o cronograma...' value={busca} onChange={(e) => setBusca(e.target.value)} />

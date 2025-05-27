@@ -359,7 +359,7 @@ module.exports = {
                     email: user.email
                 }));
 
-                await axios.post("https://hook.eu2.make.com/a8gzfvfsu5htty4e2nnpul9jqo3545b7", {
+                await axios.post("https://hook.eu2.make.com/5ewbxgytjto3vemv9t7v32sade6wkyfn", {
                     users,
                     cronograma: cronograma.nome
                 });

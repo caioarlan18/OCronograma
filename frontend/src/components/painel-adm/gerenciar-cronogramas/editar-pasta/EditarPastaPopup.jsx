@@ -16,7 +16,6 @@ export function EditarPastaPopup({ abrir, fechar, pastaId }) {
     useEffect(() => {
         async function getUserData() {
             try {
-
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
@@ -39,6 +38,7 @@ export function EditarPastaPopup({ abrir, fechar, pastaId }) {
     }, [pastaId]);
     async function EditarPasta(e) {
         e.preventDefault();
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode editar pastas");
         try {
             const response = await api.put(`/pasta/editar/${pastaId}`, {
                 novoNome: nome,
@@ -53,7 +53,7 @@ export function EditarPastaPopup({ abrir, fechar, pastaId }) {
     async function deletePasta(e) {
         e.preventDefault();
 
-        if (user.role !== "adm1") return toast.error("Somente administrador master pode deletar uma pasta");
+        if (user.role !== "administrador") return toast.error("Somente o administrador pode deletar uma pasta");
         const resultado = await Swal.fire({
             title: 'Tem certeza?',
             text: 'Essa ação irá excluir a pasta e todos os cronogramas dentro dela para sempre.',

@@ -147,7 +147,7 @@ export function PainelAluno() {
                             <div className={styles.inativo2}>
                                 <div className={styles.maintxt}>
                                     <h1>Sua conta está vencida</h1>
-                                    <p>Renove para continuar tendo acesso, entre em contato com nosso time clicando no botão abaixo</p>
+                                    <p>Renove agora o seu plano e volte a estudar com o seu cronograma</p>
                                 </div>
                                 <div className={styles.ctt}>
                                     <button onClick={() => window.open("https://api.whatsapp.com/send/?phone=5521981780957&text=Venho+do+sistema+OCronograma+e+preciso+de+ajuda.&type=phone_number&app_absent=0", "_blank")}>Falar com suporte</button>

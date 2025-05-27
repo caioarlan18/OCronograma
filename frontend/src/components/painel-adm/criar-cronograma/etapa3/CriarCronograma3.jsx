@@ -14,7 +14,20 @@ export function CriarCronograma3() {
     const [abrir, setAbrir] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
     const [idsUsuariosAssociados, setIdsUsuariosAssociados] = useState([]);
+    const id = localStorage.getItem("id") || sessionStorage.getItem("id");
+    const [user, setUser] = useState([]);
+    useEffect(() => {
+        async function getUserData() {
+            try {
 
+                const response = await api.get(`/user/read/${id}`);
+                setUser(response.data);
+            } catch (error) {
+                toast.error(error);
+            }
+        }
+        getUserData();
+    }, [id])
     useEffect(() => {
         async function getCronograma() {
             try {
@@ -56,6 +69,8 @@ export function CriarCronograma3() {
 
     async function associarUsuarios(e) {
         e.preventDefault();
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode associar usuários");
+
         try {
             const ids = usuariosSelecionados.map(user => user.value);
 
@@ -167,7 +182,18 @@ export function CriarCronograma3() {
                                 <Select
                                     options={usuarios}
                                     value={usuariosSelecionados}
-                                    onChange={setUsuariosSelecionados}
+                                    onChange={(selectedOptions, actionMeta) => {
+                                        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode desassociar usuários");
+
+                                        if (actionMeta.action === "remove-value" || actionMeta.action === "pop-value") {
+                                            const confirmacao = window.confirm("Deseja realmente remover este usuário?");
+                                            if (!confirmacao) return;
+
+                                            setUsuariosSelecionados(selectedOptions);
+                                        } else {
+                                            setUsuariosSelecionados(selectedOptions);
+                                        }
+                                    }}
                                     placeholder="Escolher usuários"
                                     className={styles.select}
                                     classNamePrefix="meu-select"
