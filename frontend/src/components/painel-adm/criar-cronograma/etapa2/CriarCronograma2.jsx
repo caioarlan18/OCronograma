@@ -188,7 +188,6 @@ export function CriarCronograma2() {
     }
 
     async function changeVisible(semanaId) {
-        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode mudar visibilidade da semana");
         try {
             const response = await api.put(`/cronograma/${params.idCronograma}/semana/${semanaId}/changevisible`);
             setTrigger(prev => !prev);
