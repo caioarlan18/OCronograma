@@ -16,6 +16,8 @@ export function GerenciarUsuarios() {
     const [vencimentoproximo, setVencimentoProximo] = useState(false);
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
+    const [cronogramaId, setCronogramaId] = useState("");
+    const [cronograma, setCronograma] = useState({});
     useEffect(() => {
         async function getUserData() {
             try {
@@ -26,7 +28,20 @@ export function GerenciarUsuarios() {
             }
         }
         getUserData();
-    }, [id])
+    }, [id]);
+    useEffect(() => {
+        async function getCronograma() {
+            try {
+                if (!cronogramaId) return setCronograma("Vazio");
+                const response = await api.get(`/cronograma/read/${cronogramaId}`);
+                setCronograma(response.data);
+            } catch (error) {
+                toast.error(error.response.data.msg);
+
+            }
+        }
+        getCronograma()
+    }, [cronogramaId]);
     function abrir() {
         if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode criar usuários");
         setAbertoCriar(true);
@@ -66,7 +81,23 @@ export function GerenciarUsuarios() {
     if (vencimentoproximo) {
         usuariosFiltrados.sort((a, b) => new Date(a.validade) - new Date(b.validade));
     }
+    const [nomesCronogramas, setNomesCronogramas] = useState({});
 
+    function renderNomeCronograma(id) {
+        if (!id) return "Nenhum";
+        if (nomesCronogramas[id]) return nomesCronogramas[id];
+
+        // Buscando apenas uma vez por ID
+        api.get(`/cronograma/read/${id}`)
+            .then(res => {
+                setNomesCronogramas(prev => ({ ...prev, [id]: res.data.nome }));
+            })
+            .catch(() => {
+                setNomesCronogramas(prev => ({ ...prev, [id]: "Cronograma não encontrado" }));
+            });
+
+        return "Carregando...";
+    }
     return (
         <div className={styles.gerenciar}>
             <MenuLateral ativo={4} />
@@ -102,10 +133,10 @@ export function GerenciarUsuarios() {
                             <tr>
                                 <th>Nome do usuário</th>
                                 <th>Email do usuário</th>
+                                <th>Cronograma associado</th>
                                 <th>Validade de acesso</th>
-                                <th>Data de criação</th>
-                                {/* <th>Cronogramas vinculados</th> */}
                                 <th></th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -113,9 +144,8 @@ export function GerenciarUsuarios() {
                                 <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
                                     <td data-label="Nome do usuário">{usuario.nome}</td>
                                     <td data-label="Email do usuário">{usuario.email}</td>
+                                    <td data-label="Cronograma associado">{renderNomeCronograma(usuario.cronogramaAssociado)}</td>
                                     <td data-label="Validade de acesso">{formatarData(usuario.validade)}</td>
-                                    <td data-label="Data de criação">{formatarData(usuario.createdAt)}</td>
-                                    {/* <td data-label="Cronogramas vinculados">{usuario.cronogramaAssociado || "Nenhum"}</td> */}
                                     <td data-label="Ações">
                                         <button className={styles.botao} onClick={() => {
                                             if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode editar usuários");

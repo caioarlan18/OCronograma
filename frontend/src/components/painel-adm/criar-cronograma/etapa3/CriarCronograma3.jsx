@@ -200,6 +200,7 @@ export function CriarCronograma3() {
                                     styles={customStyles}
                                     isSearchable
                                     isMulti
+                                    isClearable={false}
                                 />
                             </div>
                         </div>

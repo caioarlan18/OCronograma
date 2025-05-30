@@ -109,9 +109,9 @@
     color: #000000;
     font-family: poppins;
     font-weight: 500;
-    padding: 13px 69px 13px 50px;
+    padding: 13px 30px 13px 50px;
     white-space: nowrap;
-    max-width: 250px;
+    max-width: 220px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

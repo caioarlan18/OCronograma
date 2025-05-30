@@ -16,9 +16,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
     const [cargo, setCargo] = useState("");
-    const [cronogramaId, setCronogramaId] = useState("");
-    const [cronograma, setCronograma] = useState([]);
-
+    const [createdAt, setCreatedAt] = useState("");
 
 
 
@@ -47,8 +45,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                 setEmail(response.data.email)
                 setValidade(response.data.validade?.split('T')[0]);
                 setStatus(response.data.status);
-                setCronogramaId(response.data.cronogramaAssociado);
                 setCargo(response.data.role);
+                setCreatedAt(response.data.createdAt)
             } catch (error) {
                 toast.error(error.response.data.msg);
             }
@@ -119,19 +117,14 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
 
     }
 
-    useEffect(() => {
-        async function getCronograma() {
-            try {
-                if (!cronogramaId) return setCronograma("Vazio");
-                const response = await api.get(`/cronograma/read/${cronogramaId}`);
-                setCronograma(response.data);
-            } catch (error) {
-                toast.error(error.response.data.msg);
 
-            }
-        }
-        getCronograma()
-    }, [cronogramaId])
+    function formatarData(dataISO) {
+        const data = new Date(dataISO);
+        const dia = String(data.getUTCDate()).padStart(2, '0');
+        const mes = String(data.getUTCMonth() + 1).padStart(2, '0');
+        const ano = data.getUTCFullYear();
+        return `${dia}/${mes}/${ano}`;
+    }
     return (
         <div className={styles.editaruser}>
 
@@ -180,17 +173,6 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                             <input type="email" id="email" placeholder="victorsoares@gmail.com" value={email} onChange={(e) => { setEmail(e.target.value) }} />
                         </div>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="senha">Status</label>
-                            <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} readOnly />
-                        </div>
-
-                    </div>
-                    <div className={styles.row}>
-                        <div className={styles.inputGroup}>
-                            <label htmlFor="senha">Cronograma Associado</label>
-                            <input type="text" value={cronograma.nome || "Nenhum"} readOnly />
-                        </div>
-                        <div className={styles.inputGroup}>
                             <label htmlFor="senha">Cargo</label>
                             {user.role === "administrador" && cargo !== "administrador" ?
                                 (<div>
@@ -204,7 +186,20 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                                 : (<input type="text" value={cargo} readOnly />)}
 
                         </div>
+
+
                     </div>
+                    <div className={styles.row}>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Data de criação</label>
+                            <input type="text" value={formatarData(createdAt)} readOnly />
+                        </div>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Status</label>
+                            <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} readOnly />
+                        </div>
+                    </div>
+
                     <button className={styles.submitButton} onClick={saveUser} >Salvar alterações do Usuário</button>
                     <button className={styles.excluirButton} onClick={deleteUser} >Excluir</button>
                     {/* {
