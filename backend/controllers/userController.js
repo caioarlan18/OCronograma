@@ -86,7 +86,7 @@ module.exports = {
             return res.status(404).json({ msg: 'E-mail não encontrado' });
         }
         try {
-            await axios.post("https://hook.eu2.make.com/hn41bov9iciu9aqn3thwrsagpxncyf1m", { email: usuario.email, nome: usuario.nome, id: usuario._id });
+            await axios.post("https://n8n.punchmarketing.com.br/webhook/redefinir-senha", { email: usuario.email, nome: usuario.nome, id: usuario._id });
 
             return res.status(200).json({ msg: "E-mail de recuperação enviado." });
         } catch (error) {

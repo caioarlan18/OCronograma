@@ -359,7 +359,7 @@ module.exports = {
                     email: user.email
                 }));
 
-                await axios.post("https://hook.eu2.make.com/5ewbxgytjto3vemv9t7v32sade6wkyfn", {
+                await axios.post("https://n8n.punchmarketing.com.br/webhook/usuario-associado", {
                     users,
                     cronograma: cronograma.nome
                 });
