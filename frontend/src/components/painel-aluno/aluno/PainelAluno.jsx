@@ -4,7 +4,6 @@ import api from "../../../axiosConfig/axios";
 import styles from './PainelAluno.module.css';
 import logoCronograma from '../../../images/logocronogramaroxa.png';
 import trespontos from '../../../images/3pontos.svg';
-import logomain from '../../../images/logocronograma.png';
 import { OptionsPopup } from "../opcoespopup/OptionsPopup";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
@@ -162,7 +161,6 @@ export function PainelAluno() {
                             </div>
                         </div>
                         <div className={styles.inativo0}>
-
                             <div className={styles.intativo}>
                                 <div className={styles.inativo2}>
                                     <div className={styles.maintxt}>
