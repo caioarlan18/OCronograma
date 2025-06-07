@@ -59,7 +59,7 @@ export function PainelAluno() {
     return (
         <div className={styles.aluno}>
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
-            {user.role === "aluno" && user.status === "ativo" ?
+            {user.role === "aluno" && user.status === "ativo" && !user.inadimplente ?
                 (
                     <div className={styles.aluno1}>
                         <div className={styles.aluno2}>
@@ -146,7 +146,7 @@ export function PainelAluno() {
                             </div>
                             <div className={styles.inativo2}>
                                 <div className={styles.maintxt}>
-                                    <h1>Sua conta está vencida</h1>
+                                    <h1>Sua conta está vencida ou você está em inadimplência</h1>
                                     <p>Renove agora o seu plano e volte a estudar com o seu cronograma</p>
                                 </div>
                                 <div className={styles.ctt}>
