@@ -96,6 +96,8 @@ export function CriarCronograma2() {
 
     async function excluirSemana(id) {
         if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir semana");
+        const confirmacao = window.confirm("Deseja realmente remover esta semana?");
+        if (!confirmacao) return;
         try {
             const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${id}`);
             setTrigger(prev => !prev);
@@ -108,6 +110,8 @@ export function CriarCronograma2() {
 
     async function excluirDia(id) {
         if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir dia");
+        const confirmacao = window.confirm("Deseja realmente remover este dia?");
+        if (!confirmacao) return;
         try {
             const response = await api.delete(`/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${id}`);
             setTrigger(prev => !prev);

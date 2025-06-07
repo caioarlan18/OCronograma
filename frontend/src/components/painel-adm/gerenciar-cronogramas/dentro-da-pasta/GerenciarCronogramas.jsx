@@ -120,6 +120,8 @@ export function GerenciarCronogramas() {
 
         setAbrirMover(true);
     }
+    const [limiteCronogramas, setLimiteCronogramas] = useState(10);
+    const CronogramasRenderizados = cronogramasFiltrados.slice(0, limiteCronogramas);
     return (
         <div className={styles.gcro}>
             <MenuLateral ativo={3} />
@@ -151,7 +153,7 @@ export function GerenciarCronogramas() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {cronogramasFiltrados.map((cronograma, index) => (
+                                {CronogramasRenderizados.map((cronograma, index) => (
                                     <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
                                         <td data-label="Nome do cronograma">{cronograma.nome}</td>
                                         <td data-label="usuario criador">{cronograma.userCriador}</td>
@@ -179,6 +181,13 @@ export function GerenciarCronogramas() {
                                 ))}
                             </tbody>
                         </table>
+                        {limiteCronogramas < cronogramasFiltrados.length && (
+                            <div className={styles.mais}>
+                                <p onClick={() => setLimiteCronogramas(prev => prev + 20)} >
+                                    Carregar mais
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
 

@@ -5,6 +5,7 @@ import styles from './GerenciarUsuarios.module.css';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { EditarUsuarioPopup } from '../editar-usuario/EditarUsuario';
+import { TableVirtuoso } from 'react-virtuoso';
 export function GerenciarUsuarios() {
     const [abertoCriar, setAbertoCriar] = useState(false);
     const [abertoEditar, setAbertoEditar] = useState(false);
@@ -98,6 +99,9 @@ export function GerenciarUsuarios() {
 
         return "Carregando...";
     }
+    const [limiteUsuarios, setLimiteUsuarios] = useState(20);
+    const usuariosRenderizados = usuariosFiltrados.slice(0, limiteUsuarios);
+
     return (
         <div className={styles.gerenciar}>
             <MenuLateral ativo={4} />
@@ -140,7 +144,7 @@ export function GerenciarUsuarios() {
                             </tr>
                         </thead>
                         <tbody>
-                            {usuariosFiltrados.map((usuario, index) => (
+                            {usuariosRenderizados.map((usuario, index) => (
                                 <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
                                     <td data-label="Nome do usuário">{usuario.nome}</td>
                                     <td data-label="Email do usuário">{usuario.email}</td>
@@ -155,9 +159,20 @@ export function GerenciarUsuarios() {
                                     </td>
                                 </tr>
                             ))}
+
                         </tbody>
                     </table>
+                    {limiteUsuarios < usuariosFiltrados.length && (
+                        <div className={styles.mais}>
+                            <p onClick={() => setLimiteUsuarios(prev => prev + 20)} >
+                                Carregar mais
+                            </p>
+                        </div>
+
+
+                    )}
                 </div>
+
             </div>
         </div>
     )

@@ -30,6 +30,11 @@ const userSchema = new Schema({
     cronogramaAssociado: {
         type: String,
         required: false
+    },
+    inadimplente: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, { timestamps: true })
 

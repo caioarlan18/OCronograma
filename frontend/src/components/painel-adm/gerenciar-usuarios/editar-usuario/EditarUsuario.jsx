@@ -17,7 +17,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     const [user, setUser] = useState([]);
     const [cargo, setCargo] = useState("");
     const [createdAt, setCreatedAt] = useState("");
-
+    const [updatedAt, setUpdatedAt] = useState("");
+    const [inadimplente, setInadimplente] = useState(false);
 
 
 
@@ -46,7 +47,9 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                 setValidade(response.data.validade?.split('T')[0]);
                 setStatus(response.data.status);
                 setCargo(response.data.role);
-                setCreatedAt(response.data.createdAt)
+                setCreatedAt(response.data.createdAt);
+                setUpdatedAt(response.data.updatedAt);
+                setInadimplente(response.data.inadimplente);
             } catch (error) {
                 toast.error(error.response.data.msg);
             }
@@ -67,7 +70,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                     novoNome: nome,
                     novoEmail: email,
                     novaValidade: validade,
-                    novoCargo: cargo
+                    novoCargo: cargo,
+                    inadimplente: inadimplente
                 });
                 toast.success(response.data.msg);
                 fechar();
@@ -145,6 +149,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                         padding: '30px',
                         borderRadius: '12px',
                         width: '500px',
+                        maxHeight: "90%",
                         maxWidth: '90%',
                         border: 'none',
                         background: '#fff',
@@ -191,12 +196,25 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                     </div>
                     <div className={styles.row}>
                         <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Status</label>
+                            <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} readOnly />
+                        </div>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Inadimplente</label>
+                            <select value={inadimplente ? "sim" : "não"} onChange={(e) => setInadimplente(e.target.value === "sim" ? true : false)}>
+                                <option value="não">Não</option>
+                                <option value="sim">Sim</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className={styles.row}>
+                        <div className={styles.inputGroup}>
                             <label htmlFor="senha">Data de criação</label>
                             <input type="text" value={formatarData(createdAt)} readOnly />
                         </div>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="senha">Status</label>
-                            <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} readOnly />
+                            <label htmlFor="senha">Data de atualização</label>
+                            <input type="text" value={formatarData(updatedAt)} readOnly />
                         </div>
                     </div>
 

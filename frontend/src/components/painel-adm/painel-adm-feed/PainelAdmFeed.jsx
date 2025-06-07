@@ -46,6 +46,8 @@ export function PainelAdmFeed() {
     const cronogramasFiltrados = cronogramas.filter(cronograma =>
         cronograma.nome.toLowerCase().includes(busca.toLowerCase())
     );
+    const [limiteCronogramas, setLimiteCronogramas] = useState(20);
+    const CronogramasRenderizados = cronogramasFiltrados.slice(0, limiteCronogramas);
     return (
         <div className={styles.paineladm}>
             <MenuLateral ativo={1} />
@@ -77,7 +79,7 @@ export function PainelAdmFeed() {
                             </tr>
                         </thead>
                         <tbody>
-                            {cronogramasFiltrados.map((cronograma, index) => (
+                            {CronogramasRenderizados.map((cronograma, index) => (
                                 <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
                                     <td data-label="Nome do cronograma">{cronograma.nome}</td>
                                     <td data-label="usuario criador">{cronograma.userCriador}</td>
@@ -87,8 +89,16 @@ export function PainelAdmFeed() {
                                     </td>
                                 </tr>
                             ))}
+
                         </tbody>
                     </table>
+                    {limiteCronogramas < cronogramasFiltrados.length && (
+                        <div className={styles.mais}>
+                            <p onClick={() => setLimiteCronogramas(prev => prev + 20)} >
+                                Carregar mais
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

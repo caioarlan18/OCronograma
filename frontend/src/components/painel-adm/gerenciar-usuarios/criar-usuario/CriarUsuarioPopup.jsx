@@ -77,7 +77,7 @@ export function CriarUsuarioPopup({ abrir, fechar }) {
                     <div className={styles.row}>
                         <div className={styles.inputGroup}>
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" placeholder="" value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                            <input type="email" id="email" placeholder="" required value={email} onChange={(e) => { setEmail(e.target.value) }} />
                         </div>
                         <div className={styles.inputGroup}>
                             <label htmlFor="senha">Senha</label>

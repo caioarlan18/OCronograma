@@ -25,7 +25,7 @@ module.exports = {
                 senha: senhaHash,
                 role: "aluno",
                 validade,
-                status: "ativo"
+                status: "ativo",
             })
             return res.status(200).json({ msg: "Conta criada com sucesso" });
         } catch (error) {
@@ -114,7 +114,7 @@ module.exports = {
         }
     },
     async editarUsuario(req, res) {
-        const { novoNome, novoEmail, novaValidade, novoCargo } = req.body;
+        const { novoNome, novoEmail, novaValidade, novoCargo, inadimplente } = req.body;
         if (!novoNome || !novoEmail || !novaValidade) return res.status(400).json({ msg: "Os campos devem estar preenchidos" });
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
@@ -126,10 +126,13 @@ module.exports = {
             user.email = novoEmail;
             user.validade = novaValidade;
             user.role = novoCargo;
+            user.inadimplente = inadimplente;
             await user.save();
             return res.status(200).json({ msg: "Usuário editado com sucesso" });
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ msg: "Ocorreu um erro", error });
+
         }
 
     },

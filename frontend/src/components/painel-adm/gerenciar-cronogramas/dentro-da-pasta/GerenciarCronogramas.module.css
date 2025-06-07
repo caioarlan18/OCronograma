@@ -188,3 +188,19 @@
     border: 0;
     font-weight: 600;
 }
+
+.mais {
+    margin: 30px 50px;
+    width: 100%;
+    display: flex;
+    color: #8023E1;
+    text-decoration: underline;
+    cursor: pointer;
+
+}
+
+.mais p {
+    font-family: poppins;
+    font-size: 13px;
+    font-weight: 400;
+}
