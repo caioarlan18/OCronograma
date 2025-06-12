@@ -35,6 +35,10 @@ const userSchema = new Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    especialista: {
+        type: String,
+        required: false
     }
 }, { timestamps: true })
 

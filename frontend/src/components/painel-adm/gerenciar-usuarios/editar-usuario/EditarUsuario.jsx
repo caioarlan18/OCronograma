@@ -18,6 +18,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     const [cargo, setCargo] = useState("");
     const [createdAt, setCreatedAt] = useState("");
     const [updatedAt, setUpdatedAt] = useState("");
+    const [especialista, setEspecialista] = useState("");
     const [inadimplente, setInadimplente] = useState(false);
 
 
@@ -50,6 +51,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                 setCreatedAt(response.data.createdAt);
                 setUpdatedAt(response.data.updatedAt);
                 setInadimplente(response.data.inadimplente);
+                setEspecialista(response.data.especialista);
             } catch (error) {
                 toast.error(error.response.data.msg);
             }
@@ -71,7 +73,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                     novoEmail: email,
                     novaValidade: validade,
                     novoCargo: cargo,
-                    inadimplente: inadimplente
+                    inadimplente: inadimplente,
+                    especialista: especialista
                 });
                 toast.success(response.data.msg);
                 fechar();
@@ -213,8 +216,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                             <input type="text" value={formatarData(createdAt)} readOnly />
                         </div>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="senha">Data de atualização</label>
-                            <input type="text" value={formatarData(updatedAt)} readOnly />
+                            <label htmlFor="senha">Especialista</label>
+                            <input type="text" value={especialista || ""} onChange={(e) => setEspecialista(e.target.value)} />
                         </div>
                     </div>
 

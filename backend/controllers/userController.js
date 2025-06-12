@@ -114,7 +114,7 @@ module.exports = {
         }
     },
     async editarUsuario(req, res) {
-        const { novoNome, novoEmail, novaValidade, novoCargo, inadimplente } = req.body;
+        const { novoNome, novoEmail, novaValidade, novoCargo, inadimplente, especialista } = req.body;
         if (!novoNome || !novoEmail || !novaValidade) return res.status(400).json({ msg: "Os campos devem estar preenchidos" });
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
@@ -127,6 +127,7 @@ module.exports = {
             user.validade = novaValidade;
             user.role = novoCargo;
             user.inadimplente = inadimplente;
+            user.especialista = especialista;
             await user.save();
             return res.status(200).json({ msg: "Usuário editado com sucesso" });
         } catch (error) {

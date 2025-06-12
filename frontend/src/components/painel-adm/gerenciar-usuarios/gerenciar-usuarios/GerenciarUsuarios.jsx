@@ -72,7 +72,8 @@ export function GerenciarUsuarios() {
     const usuariosFiltrados = usuarios.filter(usuario => {
         const correspondeBusca =
             usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
-            usuario.email.toLowerCase().includes(busca.toLowerCase());
+            usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.especialista?.toLowerCase().includes(busca.toLowerCase());
 
         const correspondeStatus = userInactive ? usuario.status.includes("inativo") : true;
 
@@ -112,7 +113,7 @@ export function GerenciarUsuarios() {
                 <div className={styles.gerenciar2}>
                     <input
                         type="text"
-                        placeholder='Pesquise o usuário por nome ou email'
+                        placeholder='Pesquise o usuário por nome, email ou especialista'
                         value={busca}
                         onChange={(e) => setBusca(e.target.value)}
 
