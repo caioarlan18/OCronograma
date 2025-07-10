@@ -311,9 +311,7 @@
         margin-top: 30px;
     }
 
-    .aluno2d button {
-        display: none;
-    }
+    .aluno2d button {}
 
     .aluno3 {
         min-width: 100%;
