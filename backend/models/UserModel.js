@@ -1,6 +1,17 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const historicoCronogramasSchema = new Schema({
+    idCronograma: {
+        type: String
+    },
+    questions: [{
+        nome: { type: String },
+        acertos: { type: Number },
+        erros: { type: Number }
+    }]
+
+}, { timestamps: true });
 
 const userSchema = new Schema({
     nome: {
@@ -39,7 +50,8 @@ const userSchema = new Schema({
     especialista: {
         type: String,
         required: false
-    }
+    },
+    historicoCronogramas: [historicoCronogramasSchema]
 }, { timestamps: true })
 
 const UserModel = mongoose.model("UserModel", userSchema);

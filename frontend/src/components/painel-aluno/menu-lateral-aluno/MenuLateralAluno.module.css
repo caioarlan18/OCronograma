@@ -1,0 +1,152 @@
+/* Novo container para manter o espaço */
+.sidebarContainer {
+    width: clamp(250px, 30%, 357px);
+    min-height: 100vh;
+    position: relative;
+    flex-shrink: 0;
+    transition: .3s;
+}
+
+/* inicio do menu ativo/inativo */
+.inactive {
+    width: 50px;
+    min-height: 100vh;
+    position: relative;
+    flex-shrink: 0;
+    transition: 0.3s;
+}
+
+.inactive .sidebar {
+    padding: 0px 0px 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inactive .rec {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.inactive .sidebar4 img {
+    margin: 0;
+}
+
+.inactive .logout {
+    display: none;
+}
+
+.inactive .sidebar>*:not(.rec) {
+    display: none;
+}
+
+/* fim do menu ativo/inativo */
+
+.sidebar {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: left;
+    padding: 100px 0px 0px 37px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.sidebar img {
+    width: 259px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar1 {
+    padding: 7.04px 0px 7.04px 11.77px;
+}
+
+.ativo {
+    background-color: #F902CA;
+    border-radius: 7px 0px 0px 7px;
+    font-size: 17px;
+    margin-bottom: 30px;
+    padding: 15px 0px 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.ativo img {
+    width: 23px;
+    height: 23px;
+}
+
+.ativo2 {
+    background-color: #F902CA;
+    border-radius: 7px 0px 0px 7px;
+    padding: 7.04px 0px 7.04px 11.77px;
+}
+
+.sidebar2 a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: poppins;
+}
+
+.sidebar2 {
+    margin-top: 90px;
+}
+
+.sidebar3 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+    padding: 15px 0px 15px 20px;
+}
+
+.sidebar3 img,
+.logout img {
+    width: 23px;
+    height: 23px;
+}
+
+.sidebar3 p,
+.logout h1 {
+    font-family: poppins;
+    font-weight: 300;
+    font-size: 17px;
+    color: #F7FBFE;
+    text-decoration: none;
+}
+
+.logout {
+    background-color: #4D02E0;
+    border-radius: 0px 07px 07px 0px;
+    margin-left: -50px;
+    display: flex;
+    min-width: 50%;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0px 15px 70px;
+    cursor: pointer;
+}
+
+.rec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 97px;
+}
+
+.sidebar4 img {
+    width: 25px;
+    margin-right: 20px;
+    cursor: pointer;
+}

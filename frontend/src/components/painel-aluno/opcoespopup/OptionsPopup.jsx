@@ -14,14 +14,7 @@ Modal.setAppElement('#root');
 export function OptionsPopup({ abrir, fechar }) {
     const navigate = useNavigate();
     const [abrirFale, setAbrirFale] = useState(false);
-    function logout() {
-        localStorage.removeItem("id");
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("id");
-        sessionStorage.removeItem("token");
-        toast.success("Até logo! Você saiu da sua conta.")
-        navigate("/");
-    }
+
     return (
         <div className={styles.options}>
             <FaleConoscoPopup abrir={abrirFale} fechar={() => setAbrirFale(false)} />
@@ -64,9 +57,7 @@ export function OptionsPopup({ abrir, fechar }) {
                         }}><img src={suporteicon} alt="" /> Fale conosco</button>
 
                     </div>
-                    <div className={styles.deslog}>
-                        <button onClick={logout}>  <img src={iconelogout} alt="" /> Deslogar</button>
-                    </div>
+
                 </div>
 
 

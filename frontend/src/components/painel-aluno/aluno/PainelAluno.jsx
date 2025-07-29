@@ -5,6 +5,7 @@ import styles from './PainelAluno.module.css';
 import logoCronograma from '../../../images/logocronogramaroxa.png';
 import trespontos from '../../../images/3pontos.svg';
 import { OptionsPopup } from "../opcoespopup/OptionsPopup";
+import { MenuLateralAluno } from "../menu-lateral-aluno/MenuLateralAluno";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -57,13 +58,13 @@ export function PainelAluno() {
     }, [cronograma]);
     return (
         <div className={styles.aluno}>
+            <MenuLateralAluno ativo={2} />
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
             {user.role === "aluno" && user.status === "ativo" && !user.inadimplente ?
                 (
                     <div className={styles.aluno1}>
                         <div className={styles.aluno2}>
                             <div className={styles.aluno2a}>
-                                <img src={logoCronograma} alt="logo-cronograma" />
                                 <p>{cronograma.nome}</p>
                             </div>
                             <div className={styles.aluno2b}>
