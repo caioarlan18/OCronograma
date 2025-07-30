@@ -60,7 +60,6 @@ export function PainelAdmFeed() {
                         <h1>Bem vindo, {user.nome}!</h1>
                         <p>Na barra ao lado estão as funções do sistema.</p>
                         <input type="text" placeholder='Pesquise o cronograma...' value={busca} onChange={(e) => setBusca(e.target.value)} />
-
                     </div>
                 </div>
                 <div className={styles.container}>

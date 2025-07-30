@@ -121,14 +121,18 @@
     justify-content: space-between;
     margin: 50px 20px 0px 20px;
     overflow: auto;
-    gap: 20px;
+    gap: 15px;
     padding-bottom: 100px;
+    flex: 1;
 }
 
-
+.aluno3a {
+    flex: 1;
+    max-width: 100%;
+}
 
 .aluno3b {
-    min-width: 251px;
+    max-width: 100%;
     background: transparent linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
     border-radius: 7px;
     height: 43px;
@@ -152,9 +156,11 @@
     border-radius: 11px;
     margin-top: 20px;
     padding: 30px 20px;
-    max-width: 251px;
+    max-width: 100%;
+    flex-grow: 1;
 
 }
+
 
 .aluno3c h1 {
     color: #1E1E1E;
@@ -170,7 +176,7 @@
     font-size: 12px;
     font-weight: 400;
     margin-top: 10px;
-
+    max-width: 95%;
 }
 
 .aluno3c button {

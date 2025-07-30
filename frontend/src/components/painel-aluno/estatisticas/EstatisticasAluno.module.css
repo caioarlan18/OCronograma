@@ -1,0 +1,87 @@
+.estati {
+    display: flex;
+}
+
+.estati2 {
+    padding: 100px 50px 120px 75px;
+
+}
+
+.estatitxt h1 {
+    color: #1E1E1E;
+    font-family: poppins;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 38px;
+    max-width: 100%;
+}
+
+.estati3 {
+    margin-top: 40px;
+    background-color: #EDE6FF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 70px;
+    border-radius: 9px;
+    padding: 32px 70px;
+}
+
+.estati3a h1 {
+    font-family: poppins;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1E1E1E;
+}
+
+.estati3c {
+    position: relative;
+    width: 200px;
+    height: 200px;
+
+}
+
+.estati3ctxt {
+    font-family: poppins;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: 700;
+    color: #1E1E1E;
+}
+
+.estati3 svg {
+    outline: none;
+}
+
+.estati3b {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.estati3b h1 {
+    color: #1E1E1E;
+    font-family: poppins;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.estati3b p {
+    color: #1E1E1E;
+    font-family: poppins;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+
+
+.estati3bb {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
