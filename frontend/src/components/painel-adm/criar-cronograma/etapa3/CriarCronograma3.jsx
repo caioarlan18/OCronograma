@@ -16,10 +16,10 @@ export function CriarCronograma3() {
     const [idsUsuariosAssociados, setIdsUsuariosAssociados] = useState([]);
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
+
     useEffect(() => {
         async function getUserData() {
             try {
-
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
@@ -27,7 +27,8 @@ export function CriarCronograma3() {
             }
         }
         getUserData();
-    }, [id])
+    }, [id]);
+
     useEffect(() => {
         async function getCronograma() {
             try {
@@ -45,12 +46,13 @@ export function CriarCronograma3() {
         async function loadUsers() {
             try {
                 const response = await api.get("/user/read");
-
                 const apenasAlunos = response.data.filter(usuario => usuario.role === 'aluno');
 
                 const usuariosOptions = apenasAlunos.map(usuario => ({
                     value: usuario._id,
-                    label: usuario.nome
+                    label: usuario.nome,
+                    inadimplente: usuario.inadimplente,
+                    status: usuario.status
                 })).reverse();
 
                 setUsuarios(usuariosOptions);
@@ -66,21 +68,17 @@ export function CriarCronograma3() {
         loadUsers();
     }, [abrir, idsUsuariosAssociados]);
 
-
     async function associarUsuarios(e) {
         e.preventDefault();
-        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode associar usuários");
+        if (user.role !== "administrador" && user.role !== "distribuidor")
+            return toast.error("Baterista não pode associar usuários");
 
         try {
             const ids = usuariosSelecionados.map(user => user.value);
-
             const associar = await api.patch(`/cronograma/${params.idCronograma}/associar-usuarios`, {
                 idUsuarios: ids
             });
-
             toast.success(associar.data.msg);
-
-
         } catch (error) {
             toast.error(error.response?.data?.msg || 'Erro ao atualizar usuários');
         }
@@ -115,30 +113,54 @@ export function CriarCronograma3() {
             ...provided,
             padding: 0,
         }),
-        option: (provided) => ({
-            ...provided,
-            backgroundColor: '#fff',
-            color: '#939393',
-            borderBottom: '0.5px solid #F6F6F6',
-            padding: '12px 16px',
-            cursor: 'pointer',
-            fontFamily: 'Poppins, sans-serif',
-            fontSize: '14px',
-            fontWeight: "500",
-            ':hover': {
+        option: (provided, state) => {
+            const inadimplente = state.data.inadimplente === true;
+            const inativo = state.data.status === "inativo";
+            const isVermelho = inadimplente || inativo;
+
+            return {
+                ...provided,
                 backgroundColor: '#fff',
-            },
-            ':active': {
-                backgroundColor: '#fff',
-            },
-        }),
-        singleValue: (provided) => ({
-            ...provided,
-            color: '#939393',
-            fontFamily: 'Poppins, sans-serif',
-            fontSize: '14px',
-            fontWeight: "500"
-        }),
+                color: isVermelho ? 'red' : '#939393',
+                borderBottom: '0.5px solid #F6F6F6',
+                padding: '12px 16px',
+                cursor: 'pointer',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '14px',
+                fontWeight: "500",
+                ':hover': {
+                    backgroundColor: '#f0f0f0',
+                },
+                ':active': {
+                    backgroundColor: '#f0f0f0',
+                },
+            };
+        },
+        singleValue: (provided, state) => {
+            const inadimplente = state.data.inadimplente === true;
+            const inativo = state.data.status === "inativo";
+            const isVermelho = inadimplente || inativo;
+
+            return {
+                ...provided,
+                color: isVermelho ? 'red' : '#939393',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '14px',
+                fontWeight: "500"
+            };
+        },
+        multiValueLabel: (provided, state) => {
+            const inadimplente = state.data.inadimplente === true;
+            const inativo = state.data.status === "inativo";
+            const isVermelho = inadimplente || inativo;
+
+            return {
+                ...provided,
+                color: isVermelho ? 'red' : '#333',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '14px',
+            };
+        },
         placeholder: (provided) => ({
             ...provided,
             color: '#C6C6C6',
@@ -154,6 +176,7 @@ export function CriarCronograma3() {
             display: 'none',
         }),
     };
+
 
     return (
         <div className={styles.cronograma3}>
@@ -183,12 +206,12 @@ export function CriarCronograma3() {
                                     options={usuarios}
                                     value={usuariosSelecionados}
                                     onChange={(selectedOptions, actionMeta) => {
-                                        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode desassociar usuários");
+                                        if (user.role !== "administrador" && user.role !== "distribuidor")
+                                            return toast.error("Baterista não pode desassociar usuários");
 
                                         if (actionMeta.action === "remove-value" || actionMeta.action === "pop-value") {
                                             const confirmacao = window.confirm("Deseja realmente remover este usuário?");
                                             if (!confirmacao) return;
-
                                             setUsuariosSelecionados(selectedOptions);
                                         } else {
                                             setUsuariosSelecionados(selectedOptions);

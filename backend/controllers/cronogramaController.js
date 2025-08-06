@@ -340,8 +340,16 @@ module.exports = {
                     }
                 }
 
-                // Atualizar o campo cronogramaAssociado do usuário
+
                 user.cronogramaAssociado = idCronograma;
+                const jaTemNoHistorico = user.historicoCronogramas.some(h => h.idCronograma.toString() === idCronograma);
+                if (!jaTemNoHistorico) {
+                    user.historicoCronogramas.push({
+                        idCronograma,
+                        questions: []
+                    });
+                }
+                // Atualizar o campo cronogramaAssociado do usuário
                 await user.save();
             }
 

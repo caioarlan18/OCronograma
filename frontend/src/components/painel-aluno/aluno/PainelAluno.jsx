@@ -99,6 +99,7 @@ export function PainelAluno() {
 
                                         return (
                                             <div className={styles.aluno3c} key={index}>
+                                                <input type="checkbox" />
                                                 <h1>{conteudo.areaConhecimento}</h1>
                                                 <p>{conteudo.resumoConteudo}</p>
 
@@ -137,11 +138,10 @@ export function PainelAluno() {
                     </div>
 
                 ) : (
-                    <div>
+                    <div className={styles.aluno1}>
 
                         <div className={styles.aluno2}>
                             <div className={styles.aluno2a}>
-                                <img src={logoCronograma} alt="logo-cronograma" />
                                 <p>{cronograma.nome}</p>
                             </div>
                             <div className={styles.aluno2b}>
