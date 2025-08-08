@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const moment = require('moment');
+const CronogramaModel = require("../models/CronogramaModel");
 
 module.exports = {
 
@@ -189,6 +190,94 @@ module.exports = {
             return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
-    }
+    },
+    async addQuestionsHistorico(req, res) {
+        try {
+            const { userId, idCronograma } = req.params;
+            const { nomeMateria, idMateria, acertos, erros } = req.body;
+            if (!nomeMateria || !idMateria || !acertos || !erros) {
+                return res.status(400).json({ msg: "Faltando dados para inserir as questões" });
+            }
+            const user = await userModel.findById(userId);
+            if (!user) {
+                return res.status(404).json({ msg: "Usuário não encontrado" });
+            }
+            const historico = user.historicoCronogramas.find(
+                (item) => item.idCronograma === idCronograma
+            );
+            if (!historico) {
+                return res.status(404).json({ msg: "Cronograma não encontrado no histórico" });
+            }
+            const dadosQuestions = {
+                nome: nomeMateria,
+                idMateria: idMateria,
+                acertos: acertos,
+                erros: erros
+            };
+            historico.questions.push(dadosQuestions);
+            await user.save();
+            return res.status(200).json({ msg: "Questão adicionada com sucesso!", historico });
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+
+    },
+    async verificarMateriaAdicionada(req, res) {
+        try {
+            const { userId, materiaId, cronogramaId } = req.params;
+            if (!userId || !materiaId || !cronogramaId) return res.status(400).json({ msg: "Faltando id do usuário e id da matéria" });
+            const user = await userModel.findById(userId);
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+            const historico = user.historicoCronogramas.find((item) => item.idCronograma === cronogramaId);
+            if (!historico) {
+                return res.status(404).json({ msg: "Cronograma não encontrado" });
+            }
+            const questions = historico.questions.find((item) => item.idMateria === materiaId);
+            if (!questions) return res.status(400).json({ msg: "Não encontrado" });
+            return res.status(200).json({ msg: "encontrado com sucesso" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+        }
+    },
+    async getHistorico(req, res) {
+        try {
+            const { userId } = req.params;
+            if (!userId) return res.status(400).json({ msg: "Faltando id do usuário." });
+
+            const user = await userModel.findById(userId);
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+
+            const historicoComNome = await Promise.all(
+                user.historicoCronogramas.map(async (crono) => {
+                    const cronograma = await CronogramaModel.findById(crono.idCronograma);
+                    return {
+                        ...crono.toObject(),
+                        nomeCronograma: cronograma ? cronograma.nome : 'Sem nome'
+                    };
+                })
+            );
+
+            return res.status(200).json(historicoComNome);
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+        }
+    },
+    async getHistoricoAtual(req, res) {
+        try {
+            const { userId, cronogramaId } = req.params;
+            if (!userId || !cronogramaId) return res.status(400).json({ msg: "Faltando id do usuário." });
+            const user = await userModel.findById(userId);
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+            const historicoAtual = user.historicoCronogramas.find((item) => item.idCronograma === cronogramaId);
+            return res.status(200).json(historicoAtual);
+
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+    },
+
+
 
 }

@@ -1,8 +1,8 @@
 import styles from './MenuLateralAluno.module.css';
 import logocronogramabranco from '../../../images/logocronogramabranco.png';
-import iconemais from '../../../images/iconemais.svg';
-import iconecamadas from '../../../images/iconecamadas.svg';
-import iconeuser from '../../../images/iconeuser.svg';
+import iconehistorico from '../../../images/historico.svg';
+import iconeestatistica from '../../../images/estatistica.svg';
+import iconemeucronograma from '../../../images/meucronograma.svg';
 import iconelogout from '../../../images/iconelogout.svg';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -33,15 +33,15 @@ export function MenuLateralAluno({ ativo }) {
 
                     <div className={styles.sidebar2}>
                         <Link to={"/painel-aluno"} className={ativo === 2 ? styles.ativo : styles.sidebar3}>
-                            <img src={iconemais} alt="" />
+                            <img src={iconemeucronograma} alt="" />
                             <p>Meu Cronograma</p>
                         </Link>
                         <Link to={"/painel-aluno-estatisticas"} className={ativo === 3 ? styles.ativo : styles.sidebar3}>
-                            <img src={iconecamadas} alt="" />
+                            <img src={iconeestatistica} alt="" />
                             <p>Estatísticas</p>
                         </Link>
-                        <Link to={"/"} className={ativo === 4 ? styles.ativo : styles.sidebar3}>
-                            <img src={iconeuser} alt="" />
+                        <Link to={"/painel-aluno-historico-cronogramas"} className={ativo === 4 ? styles.ativo : styles.sidebar3}>
+                            <img src={iconehistorico} alt="" />
                             <p>Histórico de Cronogramas</p>
                         </Link>
                     </div>

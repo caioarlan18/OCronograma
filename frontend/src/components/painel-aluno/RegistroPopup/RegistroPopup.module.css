@@ -1,0 +1,90 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-direction: column;
+
+}
+
+.header img {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.header span {
+    font-weight: 700;
+}
+
+.header h1 {
+    font-family: poppins;
+    font-weight: 500;
+    font-size: 32px;
+    color: #1E1E1E;
+    text-align: center;
+    color: #333;
+}
+
+.header p {
+    color: #111111;
+    font-size: 18px;
+    font-family: poppins;
+    font-weight: 500;
+}
+
+.registro1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.registro1 input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.registro1 input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.registro1 label {
+    font-family: poppins;
+    font-size: 15px;
+    color: #1E1E1E;
+    font-weight: 700;
+}
+
+.registro1 input {
+    margin-top: 10px;
+    border: 1px solid #9D9D9C;
+    border-radius: 6px;
+    padding: 5px 0px;
+    outline: none;
+    font-family: poppins;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+}
+
+.registro1 button {
+    background: transparent linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    color: white;
+    font-family: poppins;
+    width: 100%;
+    padding: 15px;
+    border-radius: 6px;
+    border: 0px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.registro1 span {
+    font-weight: 500;
+}

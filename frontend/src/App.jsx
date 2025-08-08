@@ -19,6 +19,7 @@ import { GerenciarCronogramas } from './components/painel-adm/gerenciar-cronogra
 import { CriarCronograma2 } from './components/painel-adm/criar-cronograma/etapa2/CriarCronograma2';
 import { CriarCronograma3 } from './components/painel-adm/criar-cronograma/etapa3/CriarCronograma3';
 import { EstatisticasAluno } from './components/painel-aluno/estatisticas/EstatisticasAluno';
+import { HistoricoCronogramas } from './components/painel-aluno/historico/HistoricoCronogramas';
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
           {/* aluno */}
           <Route path='/painel-aluno' element={<VerifyAluno><PainelAluno /></VerifyAluno>} />
           <Route path='/painel-aluno-estatisticas' element={<VerifyAluno><EstatisticasAluno /></VerifyAluno>} />
+          <Route path='/painel-aluno-historico-cronogramas' element={<VerifyAluno><HistoricoCronogramas /></VerifyAluno>} />
 
         </Routes>
       </Router>

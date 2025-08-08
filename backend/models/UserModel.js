@@ -7,6 +7,7 @@ const historicoCronogramasSchema = new Schema({
     },
     questions: [{
         nome: { type: String },
+        idMateria: { type: String },
         acertos: { type: Number },
         erros: { type: Number }
     }]

@@ -6,6 +6,7 @@ import logoCronograma from '../../../images/logocronogramaroxa.png';
 import trespontos from '../../../images/3pontos.svg';
 import { OptionsPopup } from "../opcoespopup/OptionsPopup";
 import { MenuLateralAluno } from "../menu-lateral-aluno/MenuLateralAluno";
+import { RegistroPopup } from "../RegistroPopup/RegistroPopup";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -13,6 +14,10 @@ export function PainelAluno() {
     const [cronograma, setCronograma] = useState([]);
     const [selectedWeek, setSelectedWeek] = useState(null);
     const [abrirPopup, setAbrirPopup] = useState(false);
+    const [abrirRegistro, setAbrirRegistro] = useState(false);
+    const [areaRegistro, setAreaRegistro] = useState("");
+    const [idMateria, setIdMateria] = useState("");
+    const [checkboxMarcados, setCheckboxMarcados] = useState({});
     useEffect(() => {
         async function getUserData() {
             try {
@@ -56,10 +61,34 @@ export function PainelAluno() {
             }
         }
     }, [cronograma]);
+
+    useEffect(() => {
+        async function verificarTodasMaterias() {
+            if (!cronograma?.semanas?.[selectedWeek]) return;
+            let novosMarcados = {};
+            const dias = cronograma.semanas[selectedWeek].dias;
+            for (const dia of dias) {
+                for (const conteudo of dia.conteudos) {
+                    try {
+                        const response = await api.get(`/user/verificarMateriaAdicionada/${id}/${conteudo._id}/${cronogramaId}`);
+                        if (response.status === 200) {
+                            novosMarcados[conteudo._id] = true;
+                        }
+                    } catch {
+                        novosMarcados[conteudo._id] = false;
+                    }
+                }
+            }
+            setCheckboxMarcados(novosMarcados);
+        }
+        verificarTodasMaterias();
+    }, [cronograma, selectedWeek, abrirRegistro]);
+
     return (
         <div className={styles.aluno}>
             <MenuLateralAluno ativo={2} />
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
+            <RegistroPopup abrir={abrirRegistro} fechar={() => setAbrirRegistro(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria} />
             {user.role === "aluno" && user.status === "ativo" && !user.inadimplente ?
                 (
                     <div className={styles.aluno1}>
@@ -85,7 +114,6 @@ export function PainelAluno() {
                             </div>
                         </div>
                         <div className={styles.aluno3}>
-
                             {cronograma?.semanas?.[selectedWeek]?.dias?.map((dia, index) => (
                                 <div className={styles.aluno3a} key={index}>
                                     <div className={styles.aluno3b}>
@@ -98,10 +126,17 @@ export function PainelAluno() {
                                         const links = partes.filter(p => p.startsWith("http"));
 
                                         return (
-                                            <div className={styles.aluno3c} key={index}>
-                                                <input type="checkbox" />
+                                            <div className={styles.aluno3c} key={conteudo._id}>
+                                                <input
+                                                    type="checkbox"
+                                                    className={styles.customCheckbox}
+                                                    onClick={() => (setAbrirRegistro(true), setAreaRegistro(conteudo.areaConhecimento), setIdMateria(conteudo._id))}
+                                                    checked={!!checkboxMarcados[conteudo._id]}
+                                                    disabled={!!checkboxMarcados[conteudo._id]}
+                                                />
                                                 <h1>{conteudo.areaConhecimento}</h1>
                                                 <p>{conteudo.resumoConteudo}</p>
+
 
                                                 {links.map((link, i) => (
                                                     <button key={i} onClick={() => window.open(link, "_blank")}>

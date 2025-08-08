@@ -1,13 +1,13 @@
-.estati {
+.historico {
     display: flex;
 }
 
-.estati2 {
+.historico2 {
     padding: 100px 50px 120px 75px;
 
 }
 
-.estatitxt h1 {
+.historicotxt h1 {
     color: #1E1E1E;
     font-family: poppins;
     font-weight: 500;
@@ -16,11 +16,11 @@
     max-width: 100%;
 }
 
-.estati3 {
+.historico3 {
     margin-top: 40px;
 }
 
-.estati3a {
+.historico3a {
     display: flex;
     background-color: #EDE6FF;
     display: flex;
@@ -35,21 +35,22 @@
     padding: 32px 70px;
 }
 
-.estati3a h1 {
+.historico3a h1 {
     font-family: poppins;
     font-size: 20px;
     font-weight: 700;
     color: #1E1E1E;
+    max-width: 250px;
 }
 
-.estati3c {
+.historico3c {
     position: relative;
     width: 200px;
     height: 200px;
 
 }
 
-.estati3ctxt {
+.historico3ctxt {
     font-family: poppins;
     position: absolute;
     top: 50%;
@@ -60,17 +61,17 @@
     color: #1E1E1E;
 }
 
-.estati3 svg {
+.historico3 svg {
     outline: none;
 }
 
-.estati3b {
+.historico3b {
     display: flex;
     align-items: center;
     gap: 50px;
 }
 
-.estati3b h1 {
+.historico3b h1 {
     color: #1E1E1E;
     font-family: poppins;
     font-size: 14px;
@@ -78,7 +79,7 @@
     font-weight: 500;
 }
 
-.estati3b p {
+.historico3b p {
     color: #1E1E1E;
     font-family: poppins;
     font-size: 20px;
@@ -87,7 +88,7 @@
 }
 
 
-.estati3bb {
+.historico3bb {
     display: flex;
     flex-direction: column;
     gap: 15px;
