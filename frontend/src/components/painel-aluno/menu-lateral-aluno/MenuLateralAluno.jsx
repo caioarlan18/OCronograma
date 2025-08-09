@@ -9,10 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import sidebaricon from '../../../images/sidebar.svg'
 import { useState } from 'react';
+import menuhamburguer from '../../../images/menuhamburguer.svg';
+import closeicon from '../../../images/close.svg';
 export function MenuLateralAluno({ ativo }) {
     const navigate = useNavigate();
     const isMobile = window.innerWidth <= 975;
-    const [abrir, setAbrir] = useState(isMobile ? false : true); // começa fechado no mobile
+    const [abrir, setAbrir] = useState(isMobile ? false : true);
 
     function logout() {
         localStorage.removeItem("id");
@@ -28,8 +30,12 @@ export function MenuLateralAluno({ ativo }) {
         <>
             {isMobile && (
                 <div className={styles.sidebar4}>
-                    <img src={logocronogramabranco} alt="logo cronograma" />
-                    <img src={sidebaricon} alt="abrir menu" onClick={() => setAbrir(prev => !prev)} />
+                    <div className={styles.sidebar4a}>
+                        <img src={logocronogramabranco} alt="logo cronograma" />
+                    </div>
+                    <div className={styles.sidebar4b}>
+                        <img src={menuhamburguer} alt="abrir menu" onClick={() => setAbrir(prev => !prev)} />
+                    </div>
                 </div>
             )}
 
@@ -39,12 +45,14 @@ export function MenuLateralAluno({ ativo }) {
             >
                 <div className={styles.sidebar}>
                     <div className={styles.sidebarr}>
-                        <Link to={'/'}>
-                            <div className={ativo === 1 ? styles.ativo2 : styles.sidebar1}>
+                        <div className={ativo === 1 ? styles.ativo2 : styles.sidebar1}>
+                            <div className={styles.sidebar1a}>
                                 <img src={logocronogramabranco} alt="logo-cronograma-branco" />
                             </div>
-                        </Link>
-
+                            <div className={styles.sidebar1b}>
+                                <img src={closeicon} alt="" onClick={() => setAbrir(false)} />
+                            </div>
+                        </div>
                         <div className={styles.sidebar2}>
                             <Link to={"/painel-aluno"} className={ativo === 2 ? styles.ativo : styles.sidebar3}>
                                 <img src={iconemeucronograma} alt="" />

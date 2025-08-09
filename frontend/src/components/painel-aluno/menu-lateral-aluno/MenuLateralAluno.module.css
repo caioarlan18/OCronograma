@@ -151,6 +151,10 @@
     cursor: pointer;
 }
 
+.sidebar1b {
+    display: none;
+}
+
 @media screen and (max-width: 975px) {
 
     /* Faz o container do menu ocupar a tela toda de altura e se sobrepor ao conteúdo */
@@ -158,29 +162,59 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 80%;
+        width: 0;
         height: 100%;
         z-index: 999;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
+        transition: .3s;
+        overflow: hidden;
+
     }
 
-    /* Quando estiver ativo (abrir = true) mostra o menu */
+    .sidebar1 {
+        display: flex;
+        gap: 30px;
+    }
+
+    .sidebar1 img {
+        width: 50%;
+
+    }
+
+    .sidebar4a img {
+        width: 200px;
+        margin-left: 20px;
+    }
+
     .sidebarContainer.ativoMobile {
-        transform: translateX(0);
+        width: 80%;
+        transition: .3s;
     }
 
     .sidebar4 {
-        position: absolute;
+        position: fixed;
         width: 100%;
         background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
-        height: 88px;
         z-index: 1;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        height: 88px;
     }
 
+    .sidebar4b img {
+        width: 40px;
+        background-color: #3D04C8;
+        border-radius: 4px;
+    }
 
+    .sidebar1a img {
+        width: 100%;
+    }
+
+    .sidebar1b {
+        display: block;
+        width: 80px;
+    }
 
     /* Ajusta o conteúdo interno no mobile */
     .sidebar {

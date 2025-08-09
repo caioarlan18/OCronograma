@@ -117,3 +117,47 @@
     line-height: 38px;
     max-width: 100%;
 }
+
+@media screen and (max-width: 975px) {
+    .historico {
+        justify-content: center;
+
+    }
+
+    .historico2 {
+        padding: 120px 30px;
+    }
+
+
+    .historicotxt h1 {
+        font-size: 17px;
+        text-align: center;
+        line-height: 20px;
+    }
+
+    .historico3 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .historico3a h1 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .historico3a {
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .historico3b h1 {
+        font-size: 13px;
+    }
+
+    .historico3b p {
+        font-size: 20px;
+    }
+
+}

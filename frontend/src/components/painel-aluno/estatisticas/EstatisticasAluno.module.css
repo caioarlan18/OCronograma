@@ -116,3 +116,47 @@
     line-height: 38px;
     max-width: 100%;
 }
+
+@media screen and (max-width: 975px) {
+    .estati {
+        justify-content: center;
+
+    }
+
+    .estati2 {
+        padding: 120px 30px;
+    }
+
+
+    .estatitxt h1 {
+        font-size: 17px;
+        text-align: center;
+        line-height: 20px;
+    }
+
+    .estati3 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .estati3a h1 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .estati3a {
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .estati3b h1 {
+        font-size: 13px;
+    }
+
+    .estati3b p {
+        font-size: 20px;
+    }
+
+}
