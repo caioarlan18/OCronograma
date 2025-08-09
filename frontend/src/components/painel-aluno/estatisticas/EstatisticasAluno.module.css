@@ -159,4 +159,16 @@
         font-size: 20px;
     }
 
+    .semdados {
+        padding: 30px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .semdados h1 {
+        font-size: 20px;
+        line-height: 28px;
+        align-items: center;
+    }
+
 }

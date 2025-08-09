@@ -111,7 +111,9 @@ export function HistoricoCronogramas() {
                             );
                         })
                     ) : (
-                        <p>Sem dados históricos.</p>
+                        <div className={styles.semdados}>
+                            <h1>Sem dados disponíveis</h1>
+                        </div>
                     )}
                 </div>
             </div>
