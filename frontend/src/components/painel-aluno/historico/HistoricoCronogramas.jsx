@@ -16,7 +16,7 @@ export function HistoricoCronogramas() {
             try {
                 const response = await api.get(`/user/historico/${id}`);
                 const dados = Array.isArray(response.data) ? response.data : [];
-                setHistorico(dados);
+                setHistorico(dados.reverse());
             } catch (error) {
                 toast.error('Erro ao carregar histórico.');
                 console.error(error);

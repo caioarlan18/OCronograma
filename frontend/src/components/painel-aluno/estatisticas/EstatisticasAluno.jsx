@@ -70,7 +70,7 @@ export function EstatisticasAluno() {
 
                 <div className={styles.estati3}>
                     {resultadoAgrupado.length > 0 ? (
-                        resultadoAgrupado.map((item) => (
+                        resultadoAgrupado.reverse().map((item) => (
                             <div className={styles.estati3a} key={item.nome}>
                                 <h1>{item.nome}</h1>
                                 <div className={styles.estati3b}>

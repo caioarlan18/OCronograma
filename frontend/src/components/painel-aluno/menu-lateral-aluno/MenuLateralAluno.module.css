@@ -150,3 +150,50 @@
     margin-right: 20px;
     cursor: pointer;
 }
+
+@media screen and (max-width: 975px) {
+
+    /* Faz o container do menu ocupar a tela toda de altura e se sobrepor ao conteúdo */
+    .sidebarContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 80%;
+        height: 100%;
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    /* Quando estiver ativo (abrir = true) mostra o menu */
+    .sidebarContainer.ativoMobile {
+        transform: translateX(0);
+    }
+
+    .sidebar4 {
+        position: absolute;
+        width: 100%;
+        background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+        height: 88px;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+
+    /* Ajusta o conteúdo interno no mobile */
+    .sidebar {
+        padding: 80px 20px 20px 20px;
+        height: 100%;
+    }
+
+    .sidebar2 p {
+        font-size: 15px;
+    }
+
+    .ativo {
+        width: 100%;
+    }
+
+}

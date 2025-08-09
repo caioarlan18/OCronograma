@@ -304,7 +304,8 @@
 
 @media screen and (max-width: 975px) {
     .aluno1 {
-        width: 95%;
+        width: 100%;
+        margin-top: 150px;
     }
 
     .aluno2 {
@@ -347,7 +348,5 @@
 
     .aluno2d button {}
 
-    .aluno3 {
-        min-width: 100%;
-    }
+
 }
