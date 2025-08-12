@@ -8,16 +8,18 @@ import iconelogout from '../../../images/logoutaluno.svg';
 import faqicon from '../../../images/faq.svg';
 import suporteicon from '../../../images/suporteicon.svg';
 import { FaleConoscoPopup } from '../faleconosco-popup/FaleConoscoPopUp';
+import { GuiaDeUso } from '../guiapopup/GuiaDeUso';
 
 Modal.setAppElement('#root');
 
 export function OptionsPopup({ abrir, fechar }) {
     const navigate = useNavigate();
     const [abrirFale, setAbrirFale] = useState(false);
-
+    const [abrirGuia, setAbrirGuia] = useState(false);
     return (
         <div className={styles.options}>
             <FaleConoscoPopup abrir={abrirFale} fechar={() => setAbrirFale(false)} />
+            <GuiaDeUso abrir={abrirGuia} fechar={() => setAbrirGuia(false)} />
             <Modal
                 isOpen={abrir}
                 onRequestClose={fechar}
@@ -33,11 +35,13 @@ export function OptionsPopup({ abrir, fechar }) {
                         bottom: 'auto',
                         transform: 'translate(-50%, -50%)',
                         padding: '30px',
-                        borderRadius: '12px',
-                        width: '500px',
-                        maxWidth: '90%',
+                        width: 'min(600px, 90vw)',
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
                         border: 'none',
                         background: '#fff',
+                        borderRadius: '12px',
+                        boxSizing: 'border-box',
                     },
                 }}
             >
@@ -47,7 +51,7 @@ export function OptionsPopup({ abrir, fechar }) {
                 </div>
                 <div className={styles.options1}>
                     <div className={styles.faq}>
-                        <button onClick={() => alert("EM BREVE")}><img src={faqicon} alt="" /> Guia de uso</button>
+                        <button onClick={() => { fechar(); setAbrirGuia(true) }}><img src={faqicon} alt="" /> Guia de uso</button>
 
                     </div>
                     <div className={styles.suporte}>

@@ -46,12 +46,13 @@ export function RegistroPopup({ abrir, fechar, materia, idcronograma, idMateria 
                         right: 'auto',
                         bottom: 'auto',
                         transform: 'translate(-50%, -50%)',
-                        borderRadius: '12px',
-                        width: '500px',
-                        maxWidth: '90%',
+                        padding: '30px',
+                        width: 'min(600px, 90vw)',
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
                         border: 'none',
                         background: '#fff',
-                        padding: "70px"
+                        boxSizing: 'border-box',
                     },
                 }}
             >

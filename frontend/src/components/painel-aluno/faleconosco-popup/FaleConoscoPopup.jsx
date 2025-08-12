@@ -24,11 +24,12 @@ export function FaleConoscoPopup({ abrir, fechar }) {
                         bottom: 'auto',
                         transform: 'translate(-50%, -50%)',
                         padding: '30px',
-                        borderRadius: '12px',
-                        width: '500px',
-                        maxWidth: '90%',
+                        width: 'min(600px, 90vw)',
+                        maxHeight: '80vh',
+                        overflowY: 'auto',
                         border: 'none',
                         background: '#fff',
+                        boxSizing: 'border-box',
                     },
                 }}
             >
@@ -40,9 +41,16 @@ export function FaleConoscoPopup({ abrir, fechar }) {
 
                 </div>
                 <div className={styles.options1}>
-                    <h1>DÚVIDAS GERAIS</h1>
+                    <h1>Erro em link</h1>
                     <p>suporte@ocronograma.com</p>
-
+                </div>
+                <div className={styles.options1}>
+                    <h1>Desconto do tec/financeiro</h1>
+                    <a href="http://wa.me/5521981780957" target='_blank'>(21) 98178-0957</a>
+                </div>
+                <div className={styles.options1}>
+                    <h1>Orientações de estudo</h1>
+                    <a href="http://wa.me/5521969144126" target='_blank'>(21) 96914-4126</a>
                 </div>
 
 
