@@ -5,7 +5,6 @@ import styles from './GerenciarUsuarios.module.css';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { EditarUsuarioPopup } from '../editar-usuario/EditarUsuario';
-import { TableVirtuoso } from 'react-virtuoso';
 export function GerenciarUsuarios() {
     const [abertoCriar, setAbertoCriar] = useState(false);
     const [abertoEditar, setAbertoEditar] = useState(false);
@@ -19,6 +18,8 @@ export function GerenciarUsuarios() {
     const [user, setUser] = useState([]);
     const [cronogramaId, setCronogramaId] = useState("");
     const [cronograma, setCronograma] = useState({});
+    const [userInadimplente, setUserInadimplente] = useState(false);
+    const [semEspecialista, setSemEspecialista] = useState(false);
     useEffect(() => {
         async function getUserData() {
             try {
@@ -76,8 +77,9 @@ export function GerenciarUsuarios() {
             usuario.especialista?.toLowerCase().includes(busca.toLowerCase());
 
         const correspondeStatus = userInactive ? usuario.status.includes("inativo") : true;
-
-        return correspondeBusca && correspondeStatus;
+        const inadimplente = userInadimplente ? usuario.inadimplente : true;
+        const withoutEsp = semEspecialista ? usuario.especialista === '' : true;
+        return correspondeBusca && correspondeStatus && inadimplente && withoutEsp;
     });
 
     if (vencimentoproximo) {
@@ -130,6 +132,14 @@ export function GerenciarUsuarios() {
                         <div className={styles.filtros}>
                             <input type="checkbox" onClick={() => setVencimentoProximo(!vencimentoproximo)} />
                             <label htmlFor="">Mais perto do vencimento</label>
+                        </div>
+                        <div className={styles.filtros}>
+                            <input type="checkbox" onClick={() => setUserInadimplente(!userInadimplente)} />
+                            <label htmlFor="">Inadimplentes</label>
+                        </div>
+                        <div className={styles.filtros}>
+                            <input type="checkbox" onClick={() => setSemEspecialista(!semEspecialista)} />
+                            <label htmlFor="">Sem especialista</label>
                         </div>
                     </div>
 
