@@ -4,11 +4,12 @@ import closeicon from '../../../images/closeicon.svg';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import iconelogout from '../../../images/logoutaluno.svg';
+import iconetermos from '../../../images/termosicon.svg';
 import faqicon from '../../../images/faq.svg';
 import suporteicon from '../../../images/suporteicon.svg';
 import { FaleConoscoPopup } from '../faleconosco-popup/FaleConoscoPopUp';
 import { GuiaDeUso } from '../guiapopup/GuiaDeUso';
+import { TermosPopup } from '../termospopup/TermosPopup';
 
 Modal.setAppElement('#root');
 
@@ -16,10 +17,12 @@ export function OptionsPopup({ abrir, fechar }) {
     const navigate = useNavigate();
     const [abrirFale, setAbrirFale] = useState(false);
     const [abrirGuia, setAbrirGuia] = useState(false);
+    const [abrirTermos, setAbrirTermos] = useState(false);
     return (
         <div className={styles.options}>
             <FaleConoscoPopup abrir={abrirFale} fechar={() => setAbrirFale(false)} />
             <GuiaDeUso abrir={abrirGuia} fechar={() => setAbrirGuia(false)} />
+            <TermosPopup abrir={abrirTermos} fechar={() => setAbrirTermos(false)} />
             <Modal
                 isOpen={abrir}
                 onRequestClose={fechar}
@@ -61,7 +64,13 @@ export function OptionsPopup({ abrir, fechar }) {
                         }}><img src={suporteicon} alt="" /> Fale conosco</button>
 
                     </div>
+                    <div className={styles.suporte}>
+                        <button onClick={() => {
+                            fechar();
+                            setAbrirTermos(true);
+                        }}><img src={iconetermos} alt="" /> Termos de uso</button>
 
+                    </div>
                 </div>
 
 
