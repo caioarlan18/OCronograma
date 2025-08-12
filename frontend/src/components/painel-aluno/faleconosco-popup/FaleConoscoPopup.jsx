@@ -50,7 +50,7 @@ export function FaleConoscoPopup({ abrir, fechar }) {
                 </div>
                 <div className={styles.options1}>
                     <h1>Orientações de estudo</h1>
-                    <a href="http://wa.me/5521969144126" target='_blank'>(21) 96914-4126</a>
+                    <a href="http://wa.me/5521971307167" target='_blank'>(21) 97130-7167</a>
                 </div>
 
 
