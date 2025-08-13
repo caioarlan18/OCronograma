@@ -78,7 +78,7 @@ export function GerenciarUsuarios() {
 
         const correspondeStatus = userInactive ? usuario.status.includes("inativo") : true;
         const inadimplente = userInadimplente ? usuario.inadimplente : true;
-        const withoutEsp = semEspecialista ? usuario.especialista === '' : true;
+        const withoutEsp = semEspecialista ? !usuario.especialista || usuario.especialista.trim() === '' : true;
         return correspondeBusca && correspondeStatus && inadimplente && withoutEsp;
     });
 
