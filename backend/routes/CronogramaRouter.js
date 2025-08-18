@@ -38,6 +38,6 @@ router.put("/cronograma/:cronogramaId/semana/:semanaId/changevisible", Cronogram
 //clonar semana
 router.post("/cronograma/:cronogramaId/semana/:semanaId/clonar", CronogramaController.clonarSemana);
 
-// router.patch('/admin/corrigir-ids-cronogramas', CronogramaController.corrigirIdsDuplicados);
+router.patch('/admin/corrigir-ids-cronogramas', CronogramaController.corrigirIdsDuplicados);
 
 module.exports = router;

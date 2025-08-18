@@ -243,22 +243,52 @@ module.exports = {
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando id do cronograma" });
         try {
-            const cronograma = await CronogramaModel.findById(id);
-            if (!cronograma) return res.status(404).json({ msg: "Cronograma não encontrado" });
-            const cronogramaClone = await CronogramaModel.create({
-                nome: cronograma.nome + " [CLONE]",
-                userCriador: cronograma.userCriador,
-                pasta: cronograma.pasta,
-                quantidadeSemanas: cronograma.quantidadeSemanas,
-                semanas: cronograma.semanas
-            });
-            const pasta = await pastaModel.findById(cronograma.pasta);
-            pasta.cronogramas.push({ idCronograma: cronogramaClone._id });
-            await pasta.save();
-            res.status(200).json({ msg: "Cronograma clonado com sucesso", cronogramaClone });
-        } catch (error) {
-            return res.status(500).json({ msg: "Ocorreu um erro", error });
+            const cronogramaOriginal = await CronogramaModel.findById(id).lean();
+            if (!cronogramaOriginal) {
+                return res.status(404).json({ msg: "Cronograma não encontrado" });
+            }
+            const {
+                _id: _ignoreId,
+                __v: _ignoreV,
+                createdAt: _ignoreCreated,
+                updatedAt: _ignoreUpdated,
+                ...base
+            } = cronogramaOriginal;
+            const semanasOrig = Array.isArray(base.semanas) ? base.semanas : [];
+            const semanasClone = semanasOrig.map((semana) => {
+                const { _id: _ignoreSemanaId, dias = [], ...restSemana } = semana;
 
+                const diasClone = (Array.isArray(dias) ? dias : []).map((dia) => {
+                    const { _id: _ignoreDiaId, conteudos = [], ...restDia } = dia;
+
+                    const conteudosClone = (Array.isArray(conteudos) ? conteudos : []).map((conteudo) => {
+                        const { _id: _ignoreConteudoId, ...restConteudo } = conteudo;
+                        return { ...restConteudo };
+                    });
+
+                    return { ...restDia, conteudos: conteudosClone };
+                });
+                return { ...restSemana, dias: diasClone };
+            });
+            const dadosClone = {
+                ...base,
+                nome: `${cronogramaOriginal.nome} [CLONE]`,
+                semanas: semanasClone,
+            };
+            const cronogramaClone = await CronogramaModel.create(dadosClone);
+            const pasta = await pastaModel.findById(cronogramaOriginal.pasta);
+            if (pasta) {
+                pasta.cronogramas.push({ idCronograma: cronogramaClone._id });
+                await pasta.save();
+            }
+
+            return res.status(201).json({
+                msg: "Cronograma clonado com sucesso",
+                cronogramaClone,
+            });
+        } catch (error) {
+            console.error("Erro ao clonar cronograma:", error);
+            return res.status(500).json({ msg: "Ocorreu um erro no servidor", error: error.message });
         }
     },
     async atualizarNome(req, res) {
@@ -409,131 +439,164 @@ module.exports = {
 
         try {
             const cronograma = await CronogramaModel.findById(cronogramaId);
-            if (!cronograma) return res.status(404).json({ msg: "Cronograma não encontrado" });
+            if (!cronograma) {
+                return res.status(404).json({ msg: "Cronograma não encontrado" });
+            }
 
+            // Encontra a semana original que será clonada
+            const semanaOriginal = cronograma.semanas.id(semanaId);
+            if (!semanaOriginal) {
+                return res.status(404).json({ msg: "Semana não encontrada" });
+            }
+
+            // Encontra o índice para saber onde inserir a cópia
             const indexOriginal = cronograma.semanas.findIndex(
                 semana => semana._id.toString() === semanaId
             );
-            if (indexOriginal === -1) return res.status(404).json({ msg: "Semana não encontrada" });
 
-            const semanaOriginal = cronograma.semanas[indexOriginal];
 
+            // 1. Converte a semana original para um objeto JS puro para manipulação segura
+            const semanaObjeto = semanaOriginal.toObject();
+
+            // 2. Recria a estrutura interna, removendo os _id's de todos os níveis
             const novaSemana = {
-                dias: semanaOriginal.dias.map(dia => ({
-                    ...dia.toObject(),
-                    conteudos: dia.conteudos.map(conteudo => ({
-                        ...conteudo.toObject(),
-                        _id: undefined
-                    }))
-                }))
+                ...semanaObjeto, // Copia outras propriedades da semana (ex: 'visible')
+                dias: (semanaObjeto.dias || []).map(dia => {
+                    // 3. Remove o _id do DIA
+                    const { _id, ...restoDoDia } = dia;
+
+                    const conteudosClonados = (dia.conteudos || []).map(conteudo => {
+                        // 4. Remove o _id do CONTEÚDO
+                        const { _id, ...restoDoConteudo } = conteudo;
+                        return restoDoConteudo; // Retorna o conteúdo sem _id
+                    });
+
+                    // Retorna o dia sem _id, com os conteúdos clonados
+                    return { ...restoDoDia, conteudos: conteudosClonados };
+                })
             };
 
+            // 5. Remove o _id da própria semana que está sendo clonada
+            delete novaSemana._id;
+
+
+            // Insere a semana clonada (e sem IDs) logo após a original
             cronograma.semanas.splice(indexOriginal + 1, 0, novaSemana);
+
+            // Atualiza a contagem de semanas
             cronograma.quantidadeSemanas = cronograma.semanas.length;
 
             await cronograma.save();
-            res.status(200).json({ msg: `Semana clonada com sucesso na posição ${indexOriginal + 2}` });
+
+            // Pega o ID da semana recém-criada para retornar na resposta, se desejar
+            const semanaClonada = cronograma.semanas[indexOriginal + 1];
+
+            res.status(200).json({
+                msg: `Semana clonada com sucesso na posição ${indexOriginal + 2}`,
+                semanaClonada
+            });
+
         } catch (error) {
             console.error("Erro ao clonar semana:", error);
             res.status(500).json({ msg: "Erro interno no servidor", error: error.message });
         }
     },
 
-    // async corrigirIdsDuplicados(req, res) {
-    //     try {
-    //         const cronogramas = await CronogramaModel.find({});
-    //         let cronogramasCorrigidos = 0;
-    //         let totalIdsCorrigidos = 0;
+    async corrigirIdsDuplicados(req, res) {
+        try {
+            const cronogramas = await CronogramaModel.find({});
+            let cronogramasCorrigidos = 0;
+            let totalIdsCorrigidos = 0;
 
-    //         // Rastreamento GLOBAL de IDs (para garantir unicidade entre todos os cronogramas)
-    //         const idsSemanasGlobal = new Set();
-    //         const idsDiasGlobal = new Set();
-    //         const idsConteudosGlobal = new Set();
+            // Rastreamento GLOBAL de IDs (para garantir unicidade entre todos os cronogramas)
+            const idsSemanasGlobal = new Set();
+            const idsDiasGlobal = new Set();
+            const idsConteudosGlobal = new Set();
 
-    //         for (const cronograma of cronogramas) {
-    //             let modificado = false;
-    //             const idsSemanasLocal = new Set();
+            for (const cronograma of cronogramas) {
+                let modificado = false;
+                const idsSemanasLocal = new Set();
 
-    //             for (let semana of cronograma.semanas) {
-    //                 // Verifica duplicidade GLOBAL ou LOCAL
-    //                 const idSemanaStr = semana._id?.toString();
-    //                 if (!semana._id || !mongoose.Types.ObjectId.isValid(semana._id)) {
-    //                     semana._id = new mongoose.Types.ObjectId();
-    //                     modificado = true;
-    //                     totalIdsCorrigidos++;
-    //                 }
-    //                 else if (idsSemanasGlobal.has(idSemanaStr) || idsSemanasLocal.has(idSemanaStr)) {
-    //                     semana._id = new mongoose.Types.ObjectId();
-    //                     modificado = true;
-    //                     totalIdsCorrigidos++;
-    //                 }
+                for (let semana of cronograma.semanas) {
+                    // Verifica duplicidade GLOBAL ou LOCAL
+                    const idSemanaStr = semana._id?.toString();
+                    if (!semana._id || !mongoose.Types.ObjectId.isValid(semana._id)) {
+                        semana._id = new mongoose.Types.ObjectId();
+                        modificado = true;
+                        totalIdsCorrigidos++;
+                    }
+                    else if (idsSemanasGlobal.has(idSemanaStr) || idsSemanasLocal.has(idSemanaStr)) {
+                        semana._id = new mongoose.Types.ObjectId();
+                        modificado = true;
+                        totalIdsCorrigidos++;
+                    }
 
-    //                 idsSemanasLocal.add(semana._id.toString());
-    //                 idsSemanasGlobal.add(semana._id.toString());
+                    idsSemanasLocal.add(semana._id.toString());
+                    idsSemanasGlobal.add(semana._id.toString());
 
-    //                 const idsDiasLocal = new Set();
-    //                 for (let dia of semana.dias) {
-    //                     // Verificação para dias
-    //                     const idDiaStr = dia._id?.toString();
-    //                     if (!dia._id || !mongoose.Types.ObjectId.isValid(dia._id)) {
-    //                         dia._id = new mongoose.Types.ObjectId();
-    //                         modificado = true;
-    //                         totalIdsCorrigidos++;
-    //                     }
-    //                     else if (idsDiasGlobal.has(idDiaStr) || idsDiasLocal.has(idDiaStr)) {
-    //                         dia._id = new mongoose.Types.ObjectId();
-    //                         modificado = true;
-    //                         totalIdsCorrigidos++;
-    //                     }
+                    const idsDiasLocal = new Set();
+                    for (let dia of semana.dias) {
+                        // Verificação para dias
+                        const idDiaStr = dia._id?.toString();
+                        if (!dia._id || !mongoose.Types.ObjectId.isValid(dia._id)) {
+                            dia._id = new mongoose.Types.ObjectId();
+                            modificado = true;
+                            totalIdsCorrigidos++;
+                        }
+                        else if (idsDiasGlobal.has(idDiaStr) || idsDiasLocal.has(idDiaStr)) {
+                            dia._id = new mongoose.Types.ObjectId();
+                            modificado = true;
+                            totalIdsCorrigidos++;
+                        }
 
-    //                     idsDiasLocal.add(dia._id.toString());
-    //                     idsDiasGlobal.add(dia._id.toString());
+                        idsDiasLocal.add(dia._id.toString());
+                        idsDiasGlobal.add(dia._id.toString());
 
-    //                     const idsConteudosLocal = new Set();
-    //                     for (let conteudo of dia.conteudos) {
-    //                         // Verificação para conteúdos
-    //                         const idConteudoStr = conteudo._id?.toString();
-    //                         if (!conteudo._id || !mongoose.Types.ObjectId.isValid(conteudo._id)) {
-    //                             conteudo._id = new mongoose.Types.ObjectId();
-    //                             modificado = true;
-    //                             totalIdsCorrigidos++;
-    //                         }
-    //                         else if (idsConteudosGlobal.has(idConteudoStr) || idsConteudosLocal.has(idConteudoStr)) {
-    //                             conteudo._id = new mongoose.Types.ObjectId();
-    //                             modificado = true;
-    //                             totalIdsCorrigidos++;
-    //                         }
+                        const idsConteudosLocal = new Set();
+                        for (let conteudo of dia.conteudos) {
+                            // Verificação para conteúdos
+                            const idConteudoStr = conteudo._id?.toString();
+                            if (!conteudo._id || !mongoose.Types.ObjectId.isValid(conteudo._id)) {
+                                conteudo._id = new mongoose.Types.ObjectId();
+                                modificado = true;
+                                totalIdsCorrigidos++;
+                            }
+                            else if (idsConteudosGlobal.has(idConteudoStr) || idsConteudosLocal.has(idConteudoStr)) {
+                                conteudo._id = new mongoose.Types.ObjectId();
+                                modificado = true;
+                                totalIdsCorrigidos++;
+                            }
 
-    //                         idsConteudosLocal.add(conteudo._id.toString());
-    //                         idsConteudosGlobal.add(conteudo._id.toString());
-    //                     }
-    //                 }
-    //             }
+                            idsConteudosLocal.add(conteudo._id.toString());
+                            idsConteudosGlobal.add(conteudo._id.toString());
+                        }
+                    }
+                }
 
-    //             if (modificado) {
-    //                 await cronograma.save();
-    //                 cronogramasCorrigidos++;
-    //                 console.log(`Corrigido cronograma ${cronograma._id}: ${totalIdsCorrigidos} IDs substituídos`);
-    //             }
-    //         }
+                if (modificado) {
+                    await cronograma.save();
+                    cronogramasCorrigidos++;
+                    console.log(`Corrigido cronograma ${cronograma._id}: ${totalIdsCorrigidos} IDs substituídos`);
+                }
+            }
 
-    //         return res.status(200).json({
-    //             msg: "Correção de IDs concluída",
-    //             totalCronogramas: cronogramas.length,
-    //             cronogramasCorrigidos,
-    //             totalIdsCorrigidos,
-    //             detalhes: "Todos os IDs (válidos, inválidos e duplicados) foram verificados em todos os níveis."
-    //         });
+            return res.status(200).json({
+                msg: "Correção de IDs concluída",
+                totalCronogramas: cronogramas.length,
+                cronogramasCorrigidos,
+                totalIdsCorrigidos,
+                detalhes: "Todos os IDs (válidos, inválidos e duplicados) foram verificados em todos os níveis."
+            });
 
-    //     } catch (error) {
-    //         console.error("Erro durante a correção:", error);
-    //         return res.status(500).json({
-    //             msg: "Falha na correção",
-    //             error: error.message,
-    //             recomendacao: "Verifique manualmente alguns documentos antes de executar novamente"
-    //         });
-    //     }
-    // }
+        } catch (error) {
+            console.error("Erro durante a correção:", error);
+            return res.status(500).json({
+                msg: "Falha na correção",
+                error: error.message,
+                recomendacao: "Verifique manualmente alguns documentos antes de executar novamente"
+            });
+        }
+    }
 
 
 
