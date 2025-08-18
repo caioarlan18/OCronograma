@@ -84,6 +84,23 @@ export function PainelAluno() {
         verificarTodasMaterias();
     }, [cronograma, selectedWeek, abrirRegistro]);
 
+    if (!cronogramaId) return (
+        <div>
+            <div className={styles.redi}>
+                <div className={styles.redi1}>
+                    <img src={logoCronograma} alt="logo-cronograma" />
+                </div>
+                <div className={styles.redi2}>
+                    <div className={styles.maintxt}>
+                        <h1>Carregando...</h1>
+                        <p>Estamos carregando seu cronograma, aguarde um momento.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    )
+
     return (
         <div className={styles.aluno}>
             <MenuLateralAluno ativo={2} />
