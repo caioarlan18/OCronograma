@@ -52,6 +52,8 @@ module.exports = {
             const token = jwt.sign({
                 id: user._id
             }, secret);
+            user.tokenAtivo = token;
+            await user.save();
             return res.status(200).json({ msg: "Logado com sucesso", token, id: user._id });
         } catch (err) {
             return res.status(400).json({ msg: "Falha ao logar " + err });
@@ -60,14 +62,21 @@ module.exports = {
     async checkToken(req, res, next) {
         const token = req.headers['x-access-token'];
         const secret = process.env.SECRET;
+
         if (!token) {
-            return res.status(401).json({ msg: 'Acesso negado' })
+            return res.status(401).json({ msg: 'Acesso negado' });
         }
+
         try {
-            jwt.verify(token, secret)
-            next()
+            const decoded = jwt.verify(token, secret);
+            const user = await userModel.findById(decoded.id);
+
+            if (!user || user.tokenAtivo !== token) {
+                return res.status(401).json({ msg: 'Sessão inválida ou expirada' });
+            }
+            next();
         } catch (err) {
-            return res.status(401).json({ msg: 'Token inválido' })
+            return res.status(401).json({ msg: 'Token inválido' });
         }
     },
     async logged(req, res) {

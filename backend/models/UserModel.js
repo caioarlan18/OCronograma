@@ -52,7 +52,11 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
-    historicoCronogramas: [historicoCronogramasSchema]
+    historicoCronogramas: [historicoCronogramasSchema],
+    tokenAtivo: {
+        type: String,
+        required: false
+    }
 }, { timestamps: true })
 
 const UserModel = mongoose.model("UserModel", userSchema);

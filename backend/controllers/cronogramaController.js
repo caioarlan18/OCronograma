@@ -272,8 +272,9 @@ module.exports = {
             });
             const dadosClone = {
                 ...base,
-                nome: `${cronogramaOriginal.nome} [CLONE]`,
+                nome: `Cópia de ${cronogramaOriginal.nome}`,
                 semanas: semanasClone,
+                usuariosAssociados: []
             };
             const cronogramaClone = await CronogramaModel.create(dadosClone);
             const pasta = await pastaModel.findById(cronogramaOriginal.pasta);
