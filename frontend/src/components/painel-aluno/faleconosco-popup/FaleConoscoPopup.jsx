@@ -41,17 +41,17 @@ export function FaleConoscoPopup({ abrir, fechar }) {
 
                 </div>
                 <div className={styles.options1}>
-                    <h1>Erro em link</h1>
-                    <p>suporte@ocronograma.com</p>
-                </div>
-                <div className={styles.options1}>
-                    <h1>Desconto do tec/financeiro</h1>
+                    <h1>Equipe de Suporte</h1>
                     <a href="http://wa.me/5521981780957" target='_blank'>(21) 98178-0957</a>
                 </div>
                 <div className={styles.options1}>
-                    <h1>Orientações de estudo</h1>
+                    <h1>Marcelle Souza</h1>
                     <a href="http://wa.me/5521971307167" target='_blank'>(21) 97130-7167</a>
                 </div>
+                {/* <div className={styles.options1}>
+                    <h1>Orientações de estudo</h1>
+                    <a href="http://wa.me/5521971307167" target='_blank'>(21) 97130-7167</a>
+                </div> */}
 
 
 
