@@ -5,6 +5,7 @@ import api from '../../../axiosConfig/axios';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { Tooltip } from 'react-tooltip';
 export function PainelAdmFeed() {
     const navigate = useNavigate()
     const [user, setUser] = useState([]);
@@ -80,7 +81,27 @@ export function PainelAdmFeed() {
                         <tbody>
                             {CronogramasRenderizados.map((cronograma, index) => (
                                 <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
-                                    <td data-label="Nome do cronograma">{cronograma.nome}</td>
+                                    <td
+                                        data-label="Nome do cronograma"
+                                        data-tooltip-id={`tooltip-${index}`}
+                                        data-tooltip-content={cronograma.nome}
+                                        style={{ cursor: 'default' }}
+                                    >
+                                        {cronograma.nome}
+                                        <Tooltip
+                                            id={`tooltip-${index}`}
+                                            place="top"
+                                            style={{
+                                                backgroundColor: '#333',
+                                                color: '#fff',
+                                                fontSize: '13px',
+                                                maxWidth: '100%',
+                                                padding: '8px',
+                                                borderRadius: '6px',
+                                            }}
+                                        />
+                                    </td>
+
                                     <td data-label="usuario criador">{cronograma.userCriador}</td>
                                     <td data-label="Data de atualização">{formatarData(cronograma.updatedAt)}</td>
                                     <td data-label="Ações">
