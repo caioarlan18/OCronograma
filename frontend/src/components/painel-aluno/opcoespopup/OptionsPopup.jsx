@@ -53,22 +53,15 @@ export function OptionsPopup({ abrir, fechar }) {
                     <img src={closeicon} alt="fechar-popup" onClick={fechar} />
                 </div>
                 <div className={styles.options1}>
-                    <div className={styles.faq}>
-                        <button onClick={() => { fechar(); setAbrirGuia(true) }}><img src={faqicon} alt="" /> Guia de uso</button>
-
-                    </div>
                     <div className={styles.suporte}>
                         <button onClick={() => {
                             fechar();
                             setAbrirFale(true);
-                        }}><img src={suporteicon} alt="" /> Fale conosco</button>
+                        }}><img src={suporteicon} alt="" />Suporte</button>
 
                     </div>
-                    <div className={styles.suporte}>
-                        <button onClick={() => {
-                            fechar();
-                            window.open("https://meet.google.com/moz-pket-kie")
-                        }}>Mentoria todo sábado 6h </button>
+                    <div className={styles.faq}>
+                        <button onClick={() => { fechar(); setAbrirGuia(true) }}><img src={faqicon} alt="" /> Guia de uso</button>
 
                     </div>
                     <div className={styles.suporte}>
