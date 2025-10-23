@@ -67,6 +67,13 @@ export function OptionsPopup({ abrir, fechar }) {
                     <div className={styles.suporte}>
                         <button onClick={() => {
                             fechar();
+                            window.open("https://meet.google.com/moz-pket-kie")
+                        }}>Mentoria todo sábado 6h </button>
+
+                    </div>
+                    <div className={styles.suporte}>
+                        <button onClick={() => {
+                            fechar();
                             setAbrirTermos(true);
                         }}><img src={iconetermos} alt="" /> Termos de uso</button>
 
