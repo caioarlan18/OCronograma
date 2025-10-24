@@ -7,6 +7,7 @@ import trespontos from '../../../images/3pontos.svg';
 import { OptionsPopup } from "../opcoespopup/OptionsPopup";
 import { MenuLateralAluno } from "../menu-lateral-aluno/MenuLateralAluno";
 import { RegistroPopup } from "../RegistroPopup/RegistroPopup";
+import { AvisoPopup } from "../avisopopup/AvisoPopup";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -18,6 +19,20 @@ export function PainelAluno() {
     const [areaRegistro, setAreaRegistro] = useState("");
     const [idMateria, setIdMateria] = useState("");
     const [checkboxMarcados, setCheckboxMarcados] = useState({});
+    const ID_AVISO_ATUAL = "aviso1";
+    const [showAviso, setShowAviso] = useState(false);
+
+    useEffect(() => {
+        const jaViu = localStorage.getItem(ID_AVISO_ATUAL);
+        if (!jaViu) {
+            setShowAviso(true);
+        }
+    }, []);
+
+    function fecharAviso() {
+        localStorage.setItem(ID_AVISO_ATUAL, "true");
+        setShowAviso(false);
+    }
     useEffect(() => {
         async function getUserData() {
             try {
@@ -101,11 +116,13 @@ export function PainelAluno() {
         </div>
     )
 
+
     return (
         <div className={styles.aluno}>
             <MenuLateralAluno ativo={2} />
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
             <RegistroPopup abrir={abrirRegistro} fechar={() => setAbrirRegistro(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria} />
+            <AvisoPopup abrir={showAviso} fechar={fecharAviso} />
             {user.role === "aluno" && user.status === "ativo" && !user.inadimplente ?
                 (
                     <div className={styles.aluno1}>

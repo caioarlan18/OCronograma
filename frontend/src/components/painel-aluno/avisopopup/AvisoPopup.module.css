@@ -1,0 +1,73 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.header img {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.header h1 {
+    font-family: poppins;
+    font-weight: 500;
+    font-size: 34px;
+    color: #1E1E1E;
+    text-align: center;
+    color: #333;
+}
+
+.options1 {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.options1 h1 {
+    font-size: 17px;
+    font-family: poppins;
+    color: black;
+    font-weight: 600;
+}
+
+.options1 p {
+    font-size: 14px;
+    font-family: poppins;
+    color: #333;
+    font-weight: 500;
+}
+
+.options1 a {
+    font-size: 14px;
+    font-family: poppins;
+    color: #333;
+    font-weight: 500;
+}
+
+.options1 span {
+    font-size: 16px;
+    font-family: poppins;
+    color: #333;
+    font-weight: 500;
+}
+
+.options1 button {
+    width: 100%;
+    font-family: poppins;
+    font-size: 13.35px;
+    color: white;
+    font-weight: 500;
+    border: 0;
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    border-radius: 14px;
+    height: 57px;
+    cursor: pointer;
+
+}
