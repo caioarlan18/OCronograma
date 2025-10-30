@@ -71,6 +71,12 @@ export function OptionsPopup({ abrir, fechar }) {
                         }}><img src={iconetermos} alt="" /> Termos de uso</button>
 
                     </div>
+                    <div className={styles.suporte}>
+                        <button onClick={() => {
+                            window.open("https://chat.whatsapp.com/EvNc7LMpSaU6nLD1rXPFCy?mode=wwt")
+                        }}>Comunidade de alunos</button>
+
+                    </div>
                 </div>
 
 
