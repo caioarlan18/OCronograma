@@ -99,22 +99,7 @@ export function PainelAluno() {
         verificarTodasMaterias();
     }, [cronograma, selectedWeek, abrirRegistro]);
 
-    if (!cronogramaId) return (
-        <div>
-            <div className={styles.redi}>
-                <div className={styles.redi1}>
-                    <img src={logoCronograma} alt="logo-cronograma" />
-                </div>
-                <div className={styles.redi2}>
-                    <div className={styles.maintxt}>
-                        <h1>Carregando...</h1>
-                        <p>Estamos carregando seu cronograma, aguarde um momento.</p>
-                    </div>
-                </div>
 
-            </div>
-        </div>
-    )
 
 
     return (
@@ -193,8 +178,8 @@ export function PainelAluno() {
                             {!cronogramaId && <div className={styles.ncro}>
                                 <div className={styles.ncro2}>
                                     <div className={styles.maintxt}>
-                                        <h1>Nenhum cronograma</h1>
-                                        <p>Você não tem nenhum cronograma associado na sua conta, entre em contato com o suporte no botão abaixo</p>
+                                        <h1>Carregando ou sem cronograma.</h1>
+                                        <p>Carregando informações... Se nenhum cronograma for exibido, pode ser que nenhum esteja vinculado à sua conta neste momento.</p>
                                     </div>
                                     <div className={styles.ctt}>
                                         <button onClick={() => window.open("https://api.whatsapp.com/send/?phone=5521981780957&text=Venho+do+sistema+OCronograma+e+preciso+de+ajuda.&type=phone_number&app_absent=0", "_blank")}>Falar com suporte</button>
