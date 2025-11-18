@@ -29,4 +29,8 @@ router.get("/user/verificarMateriaAdicionada/:userId/:materiaId/:cronogramaId", 
 router.get("/user/historico/:userId", userController.getHistorico);
 // pegar historico atual
 router.get("/user/historicoAtual/:userId/:cronogramaId", userController.getHistoricoAtual);
+// pegar question
+router.get("/user/question/:userId/:cronogramaId/:idQuestion", userController.getQuestion);
+// atualizar question
+router.put("/user/editquestion/:userId/:cronogramaId/:idQuestion", userController.editQuestion);
 module.exports = router;

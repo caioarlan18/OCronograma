@@ -345,6 +345,17 @@
     text-align: center;
 }
 
+.editquestion {
+    font-family: poppins;
+    font-size: 12px;
+    padding: 3px;
+    background-color: #706F6F;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 400;
+}
+
 @media screen and (max-width: 975px) {
     .aluno1 {
         width: 100%;

@@ -285,6 +285,38 @@ module.exports = {
             return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
+    },
+    async getQuestion(req, res) {
+        try {
+            const { userId, cronogramaId, idQuestion } = req.params;
+            if (!userId || !cronogramaId || !idQuestion) return res.status(400).json({ msg: "Faltando id." });
+            const user = await userModel.findById(userId);
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+            const historicoAtual = user.historicoCronogramas.find((item) => item.idCronograma === cronogramaId);
+            const question = historicoAtual.questions.find((item) => item.idMateria === idQuestion);
+            return res.status(200).json(question);
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+    },
+    async editQuestion(req, res) {
+        try {
+            const { userId, cronogramaId, idQuestion } = req.params;
+            if (!userId || !cronogramaId || !idQuestion) return res.status(400).json({ msg: "Faltando id" });
+            const { acertos, erros } = req.body;
+            const user = await userModel.findById(userId);
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+            const historicoAtual = user.historicoCronogramas.find((item) => item.idCronograma === cronogramaId);
+            const question = historicoAtual.questions.find((item) => item.idMateria === idQuestion);
+            question.acertos = acertos;
+            question.erros = erros;
+            await user.save();
+            return res.json({ msg: "Questão atualizada com sucesso" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
     }
 
 

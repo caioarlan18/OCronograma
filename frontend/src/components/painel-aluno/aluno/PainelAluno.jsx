@@ -8,6 +8,7 @@ import { OptionsPopup } from "../opcoespopup/OptionsPopup";
 import { MenuLateralAluno } from "../menu-lateral-aluno/MenuLateralAluno";
 import { RegistroPopup } from "../RegistroPopup/RegistroPopup";
 import { AvisoPopup } from "../avisopopup/AvisoPopup";
+import { EditarRegistroPopup } from "../editarRegistroPopup/EditarRegistroPopup";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -16,8 +17,10 @@ export function PainelAluno() {
     const [selectedWeek, setSelectedWeek] = useState(null);
     const [abrirPopup, setAbrirPopup] = useState(false);
     const [abrirRegistro, setAbrirRegistro] = useState(false);
+    const [abrirRegistro2, setAbrirRegistro2] = useState(false);
     const [areaRegistro, setAreaRegistro] = useState("");
     const [idMateria, setIdMateria] = useState("");
+    const [idMateria2, setIdMateria2] = useState("");
     const [checkboxMarcados, setCheckboxMarcados] = useState({});
     const ID_AVISO_ATUAL = "aviso1";
     const [showAviso, setShowAviso] = useState(false);
@@ -108,6 +111,8 @@ export function PainelAluno() {
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
             <RegistroPopup abrir={abrirRegistro} fechar={() => setAbrirRegistro(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria} />
             <AvisoPopup abrir={showAviso} fechar={fecharAviso} />
+            <EditarRegistroPopup abrir={abrirRegistro2} fechar={() => setAbrirRegistro2(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria2} />
+
             {user.role === "aluno" && user.status === "ativo" && !user.inadimplente ?
                 (
                     <div className={styles.aluno1}>
@@ -146,13 +151,20 @@ export function PainelAluno() {
 
                                         return (
                                             <div className={styles.aluno3c} key={conteudo._id}>
-                                                <input
-                                                    type="checkbox"
-                                                    className={styles.customCheckbox}
-                                                    onClick={() => (setAbrirRegistro(true), setAreaRegistro(conteudo.areaConhecimento), setIdMateria(conteudo._id))}
-                                                    checked={!!checkboxMarcados[conteudo._id]}
-                                                    disabled={!!checkboxMarcados[conteudo._id]}
-                                                />
+                                                <div>
+                                                    <input
+                                                        type="checkbox"
+                                                        className={styles.customCheckbox}
+                                                        onClick={() => (setAbrirRegistro(true), setAreaRegistro(conteudo.areaConhecimento), setIdMateria(conteudo._id))}
+                                                        checked={!!checkboxMarcados[conteudo._id]}
+                                                        disabled={!!checkboxMarcados[conteudo._id]}
+                                                    />
+                                                    {!!checkboxMarcados[conteudo._id] &&
+                                                        <span className={styles.editquestion} onClick={() => (setAbrirRegistro2(true), setAreaRegistro(conteudo.areaConhecimento), setIdMateria2(conteudo._id))}>editar</span>
+
+                                                    }
+                                                </div>
+
                                                 <h1>{conteudo.areaConhecimento}</h1>
                                                 <p>{conteudo.resumoConteudo}</p>
 
