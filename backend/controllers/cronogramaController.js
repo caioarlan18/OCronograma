@@ -5,7 +5,26 @@ const mongoose = require("mongoose");
 
 const axios = require('axios');
 module.exports = {
+    async checkToken(req, res, next) {
+        const token = req.headers['x-access-token'];
+        const secret = process.env.SECRET;
 
+        if (!token) {
+            return res.status(401).json({ msg: 'Acesso negado' });
+        }
+
+        try {
+            const decoded = jwt.verify(token, secret);
+            const user = await userModel.findById(decoded.id);
+
+            if (!user || user.tokenAtivo !== token) {
+                return res.status(401).json({ msg: 'Sessão inválida ou expirada' });
+            }
+            next();
+        } catch (err) {
+            return res.status(401).json({ msg: 'Token inválido' });
+        }
+    },
     async criarCronograma(req, res) {
         const { nome, userCriador, pastaId, quantidadeSemanas } = req.body;
         if (!nome || !userCriador || !pastaId || !quantidadeSemanas) {

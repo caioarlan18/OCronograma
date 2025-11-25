@@ -1,36 +1,43 @@
 const router = require("express").Router();
 const userController = require("../controllers/userController");
 
-//criar usuario
+// ROTAS PÚBLICAS
+
+// criar usuário
 router.post("/user/register", userController.register);
-//logar
+// login
 router.post("/user/login", userController.login);
-//verificacao de token
-router.get("/user/logged/:id", userController.checkToken, userController.logged);
-//enviar email de esqueci a senha
+// enviar email de esqueci a senha
 router.post("/esqueci-senha", userController.recuperarSenhaEmail);
-//redefinir senha
+// redefinir senha
 router.patch("/redefinir-senha/:id", userController.redefinirSenha);
-//editar usuario
-router.put("/user/editar/:id", userController.editarUsuario);
-//deletar usuario
-router.delete("/user/delete/:id", userController.excluirUsuario);
-//mostrar todos os usuarios
-router.get("/user/read", userController.read);
-//mostrar um usuario
-router.get("/user/read/:id", userController.readOne);
-//verificacao de validade para deixar usuario inativo
-router.post("/user/usuario-expirou", userController.usuarioExpirou);
-//Adicionar questoes no historico
-router.post("/user/addQuestionsHistorico/:userId/:idCronograma", userController.addQuestionsHistorico);
-//verificar materia adicionada
-router.get("/user/verificarMateriaAdicionada/:userId/:materiaId/:cronogramaId", userController.verificarMateriaAdicionada);
-// pegar historico completo de cronogramas
-router.get("/user/historico/:userId", userController.getHistorico);
-// pegar historico atual
-router.get("/user/historicoAtual/:userId/:cronogramaId", userController.getHistoricoAtual);
+
+
+// ROTAS PROTEGIDAS 
+
+// verificação de token + mostrar usuário logado
+router.get("/user/logged/:id", userController.checkToken, userController.logged);
+// editar usuário
+router.put("/user/editar/:id", userController.checkToken, userController.editarUsuario);
+// deletar usuário
+router.delete("/user/delete/:id", userController.checkToken, userController.excluirUsuario);
+// mostrar todos os usuários 
+router.get("/user/read", userController.checkToken, userController.read);
+// mostrar um usuário
+router.get("/user/read/:id", userController.checkToken, userController.readOne);
+// verificar validade
+router.post("/user/usuario-expirou", userController.checkToken, userController.usuarioExpirou);
+// adicionar questões ao histórico
+router.post("/user/addQuestionsHistorico/:userId/:idCronograma", userController.checkToken, userController.addQuestionsHistorico);
+// verificar matéria adicionada
+router.get("/user/verificarMateriaAdicionada/:userId/:materiaId/:cronogramaId", userController.checkToken, userController.verificarMateriaAdicionada);
+// pegar histórico completo
+router.get("/user/historico/:userId", userController.checkToken, userController.getHistorico);
+// pegar histórico atual
+router.get("/user/historicoAtual/:userId/:cronogramaId", userController.checkToken, userController.getHistoricoAtual);
 // pegar question
-router.get("/user/question/:userId/:cronogramaId/:idQuestion", userController.getQuestion);
-// atualizar question
-router.put("/user/editquestion/:userId/:cronogramaId/:idQuestion", userController.editQuestion);
+router.get("/user/question/:userId/:cronogramaId/:idQuestion", userController.checkToken, userController.getQuestion);
+// editar questão
+router.put("/user/editquestion/:userId/:cronogramaId/:idQuestion", userController.checkToken, userController.editQuestion);
+
 module.exports = router;
