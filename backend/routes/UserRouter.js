@@ -18,15 +18,15 @@ router.patch("/redefinir-senha/:id", userController.redefinirSenha);
 // verificação de token + mostrar usuário logado
 router.get("/user/logged/:id", userController.checkToken, userController.logged);
 // editar usuário
-router.put("/user/editar/:id", userController.checkToken, userController.editarUsuario);
+router.put("/user/editar/:id", userController.checkAdmin, userController.editarUsuario);
 // deletar usuário
-router.delete("/user/delete/:id", userController.checkToken, userController.excluirUsuario);
+router.delete("/user/delete/:id", userController.checkAdmin, userController.excluirUsuario);
 // mostrar todos os usuários 
-router.get("/user/read", userController.checkToken, userController.read);
+router.get("/user/read", userController.checkAdmin, userController.read);
 // mostrar um usuário
 router.get("/user/read/:id", userController.checkToken, userController.readOne);
 // verificar validade
-router.post("/user/usuario-expirou", userController.checkToken, userController.usuarioExpirou);
+router.post("/user/usuario-expirou", userController.usuarioExpirou);
 // adicionar questões ao histórico
 router.post("/user/addQuestionsHistorico/:userId/:idCronograma", userController.checkToken, userController.addQuestionsHistorico);
 // verificar matéria adicionada

@@ -71,7 +71,7 @@ module.exports = {
             const decoded = jwt.verify(token, secret);
             const user = await userModel.findById(decoded.id);
 
-            if (!user || user.tokenAtivo !== token) {
+            if (!user || (user.tokenAtivo !== token && user.role === "aluno")) {
                 return res.status(401).json({ msg: 'Sessão inválida ou expirada' });
             }
             next();
@@ -79,6 +79,32 @@ module.exports = {
             return res.status(401).json({ msg: 'Token inválido' });
         }
     },
+    async checkAdmin(req, res, next) {
+        const token = req.headers["x-access-token"];
+        const secret = process.env.SECRET;
+
+        if (!token) {
+            return res.status(401).json({ msg: "Acesso negado" });
+        }
+
+        try {
+            const decoded = jwt.verify(token, secret);
+            const user = await userModel.findById(decoded.id);
+
+            if (!user) {
+                return res.status(401).json({ msg: "Usuário não encontrado" });
+            }
+
+            if (user.role === "aluno") {
+                return res.status(403).json({ msg: "Você não tem permissão para acessar este recurso" });
+            }
+
+            next();
+        } catch (error) {
+            return res.status(401).json({ msg: "Token inválido" });
+        }
+    },
+
     async logged(req, res) {
         const id = req.params.id
         const user = await userModel.findOne({ _id: id }, '-senha')
