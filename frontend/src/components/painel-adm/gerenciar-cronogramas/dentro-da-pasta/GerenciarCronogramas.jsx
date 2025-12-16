@@ -155,7 +155,7 @@ export function GerenciarCronogramas() {
                             <tbody>
                                 {CronogramasRenderizados.map((cronograma, index) => (
                                     <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
-                                        <td data-label="Nome do cronograma">{cronograma.nome}</td>
+                                        <td data-label="Nome do cronograma" style={cronograma.usuariosAssociados.length === 0 ? { color: "red", cursor: "default" } : { cursor: "default" }}>{cronograma.nome}</td>
                                         <td data-label="usuario criador">{cronograma.userCriador}</td>
                                         <td data-label="Data de atualização">{formatarData(cronograma.updatedAt)}</td>
                                         <td data-label="Ações">

@@ -85,7 +85,7 @@ export function PainelAdmFeed() {
                                         data-label="Nome do cronograma"
                                         data-tooltip-id={`tooltip-${index}`}
                                         data-tooltip-content={cronograma.nome}
-                                        style={{ cursor: 'default' }}
+                                        style={cronograma.usuariosAssociados.length === 0 ? { color: "red", cursor: "default" } : { cursor: "default" }}
                                     >
                                         {cronograma.nome}
                                         <Tooltip
