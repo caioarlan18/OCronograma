@@ -20,6 +20,8 @@ import { CriarCronograma2 } from './components/painel-adm/criar-cronograma/etapa
 import { CriarCronograma3 } from './components/painel-adm/criar-cronograma/etapa3/CriarCronograma3';
 import { EstatisticasAluno } from './components/painel-aluno/estatisticas/EstatisticasAluno';
 import { HistoricoCronogramas } from './components/painel-aluno/historico/HistoricoCronogramas';
+import { ComoEstudar } from './components/painel-aluno/como-estudar/ComoEstudar';
+import { Suporte } from './components/painel-aluno/suporte/Suporte';
 
 function App() {
 
@@ -63,6 +65,8 @@ function App() {
           <Route path='/painel-aluno' element={<VerifyAluno><PainelAluno /></VerifyAluno>} />
           <Route path='/painel-aluno-estatisticas' element={<VerifyAluno><EstatisticasAluno /></VerifyAluno>} />
           <Route path='/painel-aluno-historico-cronogramas' element={<VerifyAluno><HistoricoCronogramas /></VerifyAluno>} />
+          <Route path='/painel-aluno-como-estudar' element={<VerifyAluno><ComoEstudar /></VerifyAluno>} />
+          <Route path='/painel-aluno-suporte' element={<VerifyAluno><Suporte /></VerifyAluno>} />
 
         </Routes>
       </Router>

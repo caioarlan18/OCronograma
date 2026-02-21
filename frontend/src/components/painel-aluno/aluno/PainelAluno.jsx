@@ -132,10 +132,10 @@ export function PainelAluno() {
                                 <span>Validade de Acesso</span>
                                 <p>{formatarData(user.validade)}</p>
                             </div>
-                            <div className={styles.aluno2d}>
+                            {/* <div className={styles.aluno2d}>
                                 <button onClick={() => setAbrirPopup(true)}> <img src={trespontos} alt="" /> Opções</button>
 
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles.aluno3}>
                             {cronograma?.semanas?.[selectedWeek]?.dias?.map((dia, index) => (

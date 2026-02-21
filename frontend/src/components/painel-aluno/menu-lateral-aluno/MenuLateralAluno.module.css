@@ -49,19 +49,20 @@
     background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: left;
-    padding: 100px 0px 0px 37px;
+    padding: 0px 0px 0px 37px;
     box-sizing: border-box;
     position: sticky;
     top: 0;
     overflow: hidden;
     height: 100vh;
+
 }
 
 .sidebar img {
-    width: 259px;
-    height: 38px;
+    width: 230px;
+    height: 100%;
     display: flex;
     align-items: center;
 }
@@ -73,9 +74,9 @@
 .ativo {
     background-color: #F902CA;
     border-radius: 7px 0px 0px 7px;
-    font-size: 17px;
-    margin-bottom: 30px;
-    padding: 15px 0px 15px 20px;
+    font-size: 15px;
+    margin-bottom: 15px;
+    padding: 10px 0px 10px 10px;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -100,15 +101,15 @@
 }
 
 .sidebar2 {
-    margin-top: 90px;
+    margin-top: 0px;
 }
 
 .sidebar3 {
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     gap: 20px;
-    padding: 15px 0px 15px 20px;
+    padding: 10px 0px 10px 10px;
 }
 
 .sidebar3 img,
@@ -121,7 +122,7 @@
 .logout h1 {
     font-family: poppins;
     font-weight: 300;
-    font-size: 17px;
+    font-size: 15px;
     color: #F7FBFE;
     text-decoration: none;
 }
@@ -134,7 +135,7 @@
     min-width: 50%;
     align-items: center;
     gap: 20px;
-    padding: 16px 0px 15px 70px;
+    padding: 10px 0px 10px 50px;
     cursor: pointer;
 }
 
@@ -142,7 +143,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 97px;
+    margin-bottom: 30px;
 }
 
 .sidebar4 img {

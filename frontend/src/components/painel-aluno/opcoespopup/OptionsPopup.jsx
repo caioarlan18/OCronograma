@@ -77,6 +77,12 @@ export function OptionsPopup({ abrir, fechar }) {
                         }}>Comunidade de alunos</button>
 
                     </div>
+                    <div className={styles.suporte}>
+                        <button onClick={() => {
+                            window.open("https://meet.google.com/jgr-mont-kyp")
+                        }}>Tira-dúvidas com Marcelle Souza</button>
+
+                    </div>
                 </div>
 
 

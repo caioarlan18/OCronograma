@@ -11,6 +11,9 @@ import sidebaricon from '../../../images/sidebar.svg'
 import { useState } from 'react';
 import menuhamburguer from '../../../images/menuhamburguer.svg';
 import closeicon from '../../../images/close.svg';
+import comuniticon from '../../../images/communityicon.svg';
+import suporticon from '../../../images/suporticon.svg';
+import bookopenicon from '../../../images/bookopenicon.svg';
 export function MenuLateralAluno({ ativo }) {
     const navigate = useNavigate();
     const isMobile = window.innerWidth <= 975;
@@ -44,30 +47,45 @@ export function MenuLateralAluno({ ativo }) {
                     }`}
             >
                 <div className={styles.sidebar}>
-                    <div className={styles.sidebarr}>
-                        <div className={ativo === 1 ? styles.ativo2 : styles.sidebar1}>
-                            <div className={styles.sidebar1a}>
-                                <img src={logocronogramabranco} alt="logo-cronograma-branco" />
-                            </div>
-                            <div className={styles.sidebar1b}>
-                                <img src={closeicon} alt="" onClick={() => setAbrir(false)} />
-                            </div>
+
+                    <div className={styles.sidebar1}>
+                        <div className={styles.sidebar1a}>
+                            <img src={logocronogramabranco} alt="logo-cronograma-branco" />
                         </div>
-                        <div className={styles.sidebar2}>
-                            <Link to={"/painel-aluno"} className={ativo === 2 ? styles.ativo : styles.sidebar3}>
-                                <img src={iconemeucronograma} alt="" />
-                                <p>Meu Cronograma</p>
-                            </Link>
-                            <Link to={"/painel-aluno-estatisticas"} className={ativo === 3 ? styles.ativo : styles.sidebar3}>
-                                <img src={iconeestatistica} alt="" />
-                                <p>Estatísticas</p>
-                            </Link>
-                            <Link to={"/painel-aluno-historico-cronogramas"} className={ativo === 4 ? styles.ativo : styles.sidebar3}>
-                                <img src={iconehistorico} alt="" />
-                                <p>Histórico de Cronogramas</p>
-                            </Link>
+                        <div className={styles.sidebar1b}>
+                            <img src={closeicon} alt="" onClick={() => setAbrir(false)} />
                         </div>
                     </div>
+                    <div className={styles.sidebar2}>
+                        <Link to={"/painel-aluno-como-estudar"} className={ativo === 1 ? styles.ativo : styles.sidebar3}>
+                            <img src={bookopenicon} alt="" />
+                            <p>Como Estudar</p>
+                        </Link>
+                        <Link to={"/painel-aluno"} className={ativo === 2 ? styles.ativo : styles.sidebar3}>
+                            <img src={iconemeucronograma} alt="" />
+                            <p>Meu Cronograma</p>
+                        </Link>
+                        <Link to={"/painel-aluno-estatisticas"} className={ativo === 3 ? styles.ativo : styles.sidebar3}>
+                            <img src={iconeestatistica} alt="" />
+                            <p>Estatísticas</p>
+                        </Link>
+                        <Link to={"/painel-aluno-historico-cronogramas"} className={ativo === 4 ? styles.ativo : styles.sidebar3}>
+                            <img src={iconehistorico} alt="" />
+                            <p>Histórico de Cronogramas</p>
+                        </Link>
+                        <Link to={"/painel-aluno-suporte"} className={ativo === 5 ? styles.ativo : styles.sidebar3}>
+                            <img src={suporticon} alt="" />
+                            <p>Suporte</p>
+                        </Link>
+                        <Link onClick={() => {
+                            window.open("https://chat.whatsapp.com/EvNc7LMpSaU6nLD1rXPFCy?mode=wwt")
+                        }} className={ativo === 6 ? styles.ativo : styles.sidebar3}>
+                            <img src={comuniticon} alt="" />
+                            <p>Comunidade dos Alunos</p>
+                        </Link>
+
+                    </div>
+
 
                     <div className={styles.rec}>
                         <div className={styles.logout} onClick={logout}>
