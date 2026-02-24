@@ -21,9 +21,9 @@ export function Suporte() {
                 <section className={styles.card}>
                     <ol className={styles.lista}>
                         <li className={styles.item}>
-                            <h2 className={styles.itemTitulo}>Algum problema com o seu cronograma?</h2>
+                            <h2 className={styles.itemTitulo}>Suporte/Direcionamento/Dúvidas</h2>
                             <p className={styles.texto}>
-                                Fale com a nossa equipe no WhatsApp abaixo:
+                                Fale comigo no WhatsApp abaixo 💜
                             </p>
 
                             <a
@@ -37,28 +37,28 @@ export function Suporte() {
                         </li>
 
                         <li className={styles.item}>
-                            <h2 className={styles.itemTitulo}>Dúvidas de como estudar o seu cronograma?</h2>
+                            <h2 className={styles.itemTitulo}>Mentoria Semanal - Toda Terça-feira 18:30</h2>
                             <p className={styles.texto}>
                                 Participe dos nossos encontros de tira-dúvidas no link abaixo:
                             </p>
 
                             <a
                                 className={styles.link}
-                                href="https://meet.google.com/jgr-mont-kyp"
+                                href="https://meet.google.com/wdz-zvrv-kkf"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                https://meet.google.com/jgr-mont-kyp
+                                https://meet.google.com/wdz-zvrv-kkf
                             </a>
 
-                            <div className={styles.boxInfo}>
+                            {/* <div className={styles.boxInfo}>
                                 <p className={styles.infoLinha}>
                                     <strong>Tira-dúvidas:</strong> toda terça, <strong>14h</strong>
                                 </p>
                                 <p className={styles.infoLinha}>
                                     <strong>Alinhamento com a Marcelle:</strong> todo sábado, <strong>6h da manhã</strong> (mesmo link)
                                 </p>
-                            </div>
+                            </div> */}
                         </li>
 
                         <li className={styles.item}>
