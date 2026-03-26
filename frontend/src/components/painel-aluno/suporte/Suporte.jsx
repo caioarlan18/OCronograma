@@ -37,18 +37,28 @@ export function Suporte() {
                         </li>
 
                         <li className={styles.item}>
-                            <h2 className={styles.itemTitulo}>Mentoria Semanal - Toda Terça-feira 18:30</h2>
+                            <h2 className={styles.itemTitulo}>Mentoria Semanal</h2>
                             <p className={styles.texto}>
                                 Participe dos nossos encontros de tira-dúvidas no link abaixo:
                             </p>
 
                             <a
                                 className={styles.link}
-                                href="https://meet.google.com/wdz-zvrv-kkf"
+                                href="https://meet.google.com/vqs-yyyv-xak"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                https://meet.google.com/wdz-zvrv-kkf
+                                Quarta-feira 16h: https://meet.google.com/vqs-yyyv-xak
+                            </a>
+                            <br />
+                            <br />
+                            <a
+                                className={styles.link}
+                                href="https://meet.google.com/ian-ofrq-nbc"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Sábado 7h: https://meet.google.com/ian-ofrq-nbc
                             </a>
 
                             {/* <div className={styles.boxInfo}>
