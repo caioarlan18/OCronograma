@@ -5,6 +5,7 @@ import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import Select from 'react-select';
 
 Modal.setAppElement('#root');
 
@@ -20,8 +21,9 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     const [updatedAt, setUpdatedAt] = useState("");
     const [especialista, setEspecialista] = useState("");
     const [inadimplente, setInadimplente] = useState(false);
-
-
+    const [pagamento, setPagamento] = useState({});
+    const [assinaturas, setAssinaturas] = useState([]);
+    const [assinaturasSelecionadas, setAssinaturasSelecionadas] = useState();
 
 
     //usuario adm
@@ -38,6 +40,28 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
         getUserData();
     }, [id])
 
+    // listar assinaturas
+    useEffect(() => {
+        async function listarAssinaturas() {
+            try {
+                const response = await api.get(`/listar-assinaturas`);
+
+                const optionsFormatadas = response.data.data.map((item) => ({
+                    value: item.id,
+                    label: item.contact.email
+                }));
+
+                setAssinaturas(optionsFormatadas);
+
+            } catch (error) {
+                toast.error(error.response?.data?.msg || error.message);
+            }
+        }
+
+        listarAssinaturas();
+    }, [id]);
+
+
     //usuario a ser editado
     useEffect(() => {
         async function getUser() {
@@ -52,6 +76,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                 setUpdatedAt(response.data.updatedAt);
                 setInadimplente(response.data.inadimplente);
                 setEspecialista(response.data.especialista);
+                setPagamento(response.data.pagamento);
+                setAssinaturasSelecionadas({ label: response.data.pagamento.email, value: response.data.pagamento.idPlataforma })
             } catch (error) {
                 toast.error(error.response.data.msg);
             }
@@ -68,14 +94,22 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
         }
         else {
             try {
-                const response = await api.put(`/user/editar/${idUser}`, {
+                const res = await api.post(`/associar-assinatura`, {
+                    userId: idUser,
+                    idAssinatura: assinaturasSelecionadas.value
+                })
+                const payload = {
                     novoNome: nome,
                     novoEmail: email,
                     novaValidade: validade,
                     novoCargo: cargo,
-                    inadimplente: inadimplente,
                     especialista: especialista
-                });
+                };
+                if (!assinaturasSelecionadas?.value) {
+                    payload.inadimplente = inadimplente;
+                }
+
+                const response = await api.put(`/user/editar/${idUser}`, payload);
                 toast.success(response.data.msg);
                 fechar();
             } catch (error) {
@@ -123,6 +157,114 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
         }
 
     }
+    async function removerAssinatura(e) {
+        e.preventDefault()
+        try {
+            const response = await api.delete('/remover-assinatura', {
+                data: {
+                    userId: idUser
+                }
+            });
+            toast.success(response.data.msg);
+            setAssinaturasSelecionadas("")
+            fechar();
+        } catch (error) {
+            toast.error(error.response.data.msg);
+
+        }
+    }
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            backgroundColor: '#fff',
+            borderColor: '#DADADA',
+            borderRadius: '8px',
+            boxShadow: 'none',
+            padding: '2px 6px',
+            minHeight: '48px',
+            fontSize: '14px',
+            fontFamily: 'Poppins, sans-serif',
+            '&:hover': {
+                borderColor: '#DADADA',
+            },
+            cursor: "pointer"
+        }),
+        menu: (provided) => ({
+            ...provided,
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            marginTop: 4,
+            boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
+            overflow: 'hidden',
+            border: '0.5px solid #DADADA',
+        }),
+        menuList: (provided) => ({
+            ...provided,
+            padding: 0,
+        }),
+        option: (provided, state) => {
+            const inadimplente = state.data.inadimplente === true;
+            const inativo = state.data.status === "inativo";
+            const isVermelho = inadimplente || inativo;
+
+            return {
+                ...provided,
+                backgroundColor: '#fff',
+                color: isVermelho ? 'red' : '#939393',
+                borderBottom: '0.5px solid #F6F6F6',
+                padding: '12px 16px',
+                cursor: 'pointer',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '14px',
+                fontWeight: "500",
+                ':hover': {
+                    backgroundColor: '#f0f0f0',
+                },
+                ':active': {
+                    backgroundColor: '#f0f0f0',
+                },
+            };
+        },
+        singleValue: (provided, state) => {
+            const inadimplente = state.data.inadimplente === true;
+            const inativo = state.data.status === "inativo";
+            const isVermelho = inadimplente || inativo;
+
+            return {
+                ...provided,
+                color: isVermelho ? 'red' : '#939393',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '14px',
+                fontWeight: "500"
+            };
+        },
+        multiValueLabel: (provided, state) => {
+            const inadimplente = state.data.inadimplente === true;
+            const inativo = state.data.status === "inativo";
+            const isVermelho = inadimplente || inativo;
+
+            return {
+                ...provided,
+                color: isVermelho ? 'red' : '#333',
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '14px',
+            };
+        },
+        placeholder: (provided) => ({
+            ...provided,
+            color: '#C6C6C6',
+            fontFamily: 'Poppins, sans-serif',
+            fontSize: '14px',
+        }),
+        dropdownIndicator: (provided) => ({
+            ...provided,
+            color: '#999',
+            padding: 4,
+        }),
+        indicatorSeparator: () => ({
+            display: 'none',
+        }),
+    };
 
 
     function formatarData(dataISO) {
@@ -220,7 +362,23 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                             <input type="text" value={especialista || ""} onChange={(e) => setEspecialista(e.target.value)} />
                         </div>
                     </div>
+                    <div className={styles.row}>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Assinatura Guru</label>
+                            <Select
+                                options={assinaturas}
+                                value={assinaturasSelecionadas}
+                                onChange={(selected) => setAssinaturasSelecionadas(selected)}
+                                placeholder="Escolher Assinatura"
+                                className={styles.inputGroup}
+                                styles={customStyles}
+                                classNamePrefix="meu-select"
+                                isSearchable
+                            />
+                        </div>
 
+                    </div>
+                    <button className={styles.rassinatura} onClick={removerAssinatura}>Remover assinatura</button>
                     <button className={styles.submitButton} onClick={saveUser} >Salvar alterações do Usuário</button>
                     <button className={styles.excluirButton} onClick={deleteUser} >Excluir</button>
                     {/* {

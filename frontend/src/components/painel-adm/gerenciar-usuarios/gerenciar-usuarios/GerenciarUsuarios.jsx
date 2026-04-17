@@ -109,7 +109,7 @@ export function GerenciarUsuarios() {
         <div className={styles.gerenciar}>
             <MenuLateral ativo={4} />
             <CriarUsuarioPopup abrir={abertoCriar} fechar={() => setAbertoCriar(false)} />
-            <EditarUsuarioPopup abrir={abertoEditar} fechar={() => setAbertoEditar(false)} idUser={idUsuarioEditar} roleUser={userRole} />
+            <EditarUsuarioPopup key={idUsuarioEditar} abrir={abertoEditar} fechar={() => setAbertoEditar(false)} idUser={idUsuarioEditar} roleUser={userRole} />
 
             <div className={styles.gerenciar1}>
                 <div className={styles.gerenciar2}>
