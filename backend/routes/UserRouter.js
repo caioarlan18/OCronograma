@@ -13,8 +13,15 @@ router.post("/esqueci-senha", userController.recuperarSenhaEmail);
 router.patch("/redefinir-senha/:id", userController.redefinirSenha);
 
 
-// ROTAS PROTEGIDAS 
 
+// ROTAS PROTEGIDAS 
+router.post("/atualizar-inadimplente", userController.atualizarInadimplente);
+// associar assinatura
+router.post("/associar-assinatura", userController.checkAdmin, userController.associarAssinatura);
+// remover assinatura
+router.delete("/remover-assinatura", userController.checkAdmin, userController.checkAdmin, userController.removerAssinatura);
+// listar todas as assinaturas
+router.get("/listar-assinaturas", userController.checkAdmin, userController.listarAssinaturas);
 // verificação de token + mostrar usuário logado
 router.get("/user/logged/:id", userController.checkToken, userController.logged);
 // editar usuário

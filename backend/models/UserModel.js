@@ -13,6 +13,17 @@ const historicoCronogramasSchema = new Schema({
     }]
 
 }, { timestamps: true });
+const pagamentoSchema = new Schema({
+    idPlataforma: {
+        type: String
+    },
+    email: {
+        type: String
+    },
+    status: {
+        type: String
+    }
+})
 
 const userSchema = new Schema({
     nome: {
@@ -52,6 +63,7 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
+    pagamento: pagamentoSchema,
     historicoCronogramas: [historicoCronogramasSchema],
     tokenAtivo: {
         type: String,

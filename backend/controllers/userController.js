@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const moment = require('moment');
 const CronogramaModel = require("../models/CronogramaModel");
+const token_guru = process.env.TOKEN_GURU;
 
 module.exports = {
 
@@ -162,8 +163,9 @@ module.exports = {
             user.email = novoEmail;
             user.validade = novaValidade;
             user.role = novoCargo;
-            user.inadimplente = inadimplente;
-            user.especialista = especialista;
+            if (typeof inadimplente !== "undefined") {
+                user.inadimplente = inadimplente;
+            } user.especialista = especialista;
             await user.save();
             return res.status(200).json({ msg: "Usuário editado com sucesso" });
         } catch (error) {
@@ -343,6 +345,114 @@ module.exports = {
             return res.status(500).json({ msg: "Ocorreu um erro", error });
 
         }
+    },
+    async associarAssinatura(req, res) {
+        try {
+            const { userId, idAssinatura } = req.body;
+            if (!userId) return res.status(400).json({ msg: "Faltando id" });
+            if (!idAssinatura) {
+                return res.status(200).json({ msg: "Suc" })
+            }
+            const user = await userModel.findById(userId);
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+            try {
+                const response = await axios.get(`https://digitalmanager.guru/api/v2/subscriptions/${idAssinatura}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token_guru}`,
+                        "Accept": "application/json"
+                    }
+                });
+
+                user.pagamento.idPlataforma = response.data.id;
+                user.pagamento.email = response.data.contact?.email;
+                user.pagamento.status = response.data.last_status;
+                user.inadimplente = response.data.last_status !== 'active';
+                await user.save();
+                res.status(200).json({ msg: "Assinatura associada com sucesso" });
+            } catch (error) {
+                return res.status(500).json({ msg: "Ocorreu um erro", error });
+            }
+
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+    },
+    async removerAssinatura(req, res) {
+        try {
+            const { userId } = req.body;
+            if (!userId) return res.status(400).json({ msg: "Faltando id" });
+            const user = await userModel.findById(userId);
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+            user.pagamento = {
+                idPlataforma: "",
+                email: "",
+                status: ""
+            };
+            await user.save();
+            res.status(200).json({ msg: "Assinatura removida com sucesso" });
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+
+        }
+
+
+    },
+    async listarAssinaturas(req, res) {
+        try {
+            let cursor = null;
+            let hasMore = true;
+            let allData = [];
+            let firstResponse = null;
+
+            while (hasMore) {
+                const url = cursor
+                    ? `https://digitalmanager.guru/api/v2/subscriptions?cursor=${cursor}`
+                    : `https://digitalmanager.guru/api/v2/subscriptions`;
+
+                const response = await axios.get(url, {
+                    headers: {
+                        "Authorization": `Bearer ${token_guru}`,
+                        "Accept": "application/json"
+                    }
+                });
+
+                const data = response.data;
+                if (!firstResponse) {
+                    firstResponse = { ...data };
+                }
+                allData = allData.concat(data.data);
+
+                hasMore = data.has_more_pages === 1;
+                cursor = data.next_cursor;
+            }
+
+            firstResponse.data = allData;
+
+            return res.status(200).json(firstResponse);
+
+        } catch (error) {
+            return res.status(500).json({
+                msg: "Ocorreu um erro",
+                error: error.response?.data || error.message
+            });
+        }
+    },
+    async atualizarInadimplente(req, res) {
+        try {
+            const { email, inadimplente } = req.body;
+            if (!email) return res.status(400).json({ msg: "Faltando email do usuário" });
+            const user = await userModel.findOne({
+                "pagamento.email": email
+            });
+            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
+            user.inadimplente = inadimplente;
+            await user.save();
+            return res.status(200).json({ msg: "Sucesso!" })
+        } catch (error) {
+            return res.status(500).json({ msg: "Ocorreu um erro", error });
+        }
+
     }
 
 
