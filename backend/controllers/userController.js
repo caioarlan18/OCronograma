@@ -370,7 +370,13 @@ module.exports = {
                 await user.save();
                 res.status(200).json({ msg: "Assinatura associada com sucesso" });
             } catch (error) {
-                return res.status(500).json({ msg: "Ocorreu um erro", error });
+                const errorInfo = {
+                    message: error.message,
+                    status: error.response?.status,
+                    data: error.response?.data,
+                };
+                console.error("Erro ao buscar assinatura:", errorInfo);
+                return res.status(500).json({ msg: "Ocorreu um erro", error: errorInfo });
             }
 
         } catch (error) {

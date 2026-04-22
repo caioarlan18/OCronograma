@@ -114,7 +114,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                 fechar();
             } catch (error) {
                 toast.error(error.response.data.msg);
-
+                console.log(error.response)
             }
         }
 

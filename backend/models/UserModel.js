@@ -63,8 +63,10 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
-    pagamento: pagamentoSchema,
-    historicoCronogramas: [historicoCronogramasSchema],
+    pagamento: {
+        type: pagamentoSchema,
+        default: () => ({})
+    }, historicoCronogramas: [historicoCronogramasSchema],
     tokenAtivo: {
         type: String,
         required: false
