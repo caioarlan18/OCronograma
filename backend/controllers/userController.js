@@ -10,7 +10,7 @@ module.exports = {
 
 
     async register(req, res) {
-        const { nome, email, senha, validade } = req.body;
+        const { nome, email, telefone, senha, validade } = req.body;
         const userExists = await userModel.findOne({ email: email })
         if (userExists) {
             return res.status(400).json({ msg: "Já existe uma conta cadastrada nesse email" });
@@ -24,6 +24,7 @@ module.exports = {
             const user = await userModel.create({
                 nome,
                 email,
+                telefone,
                 senha: senhaHash,
                 role: "aluno",
                 validade,
@@ -151,7 +152,7 @@ module.exports = {
         }
     },
     async editarUsuario(req, res) {
-        const { novoNome, novoEmail, novaValidade, novoCargo, inadimplente, especialista } = req.body;
+        const { novoNome, novoEmail, novaValidade, novoCargo, inadimplente, especialista, telefone } = req.body;
         if (!novoNome || !novoEmail || !novaValidade) return res.status(400).json({ msg: "Os campos devem estar preenchidos" });
         const { id } = req.params;
         if (!id) return res.status(400).json({ msg: "Faltando id do usuário" });
@@ -163,6 +164,7 @@ module.exports = {
             user.email = novoEmail;
             user.validade = novaValidade;
             user.role = novoCargo;
+            user.telefone = telefone
             if (typeof inadimplente !== "undefined") {
                 user.inadimplente = inadimplente;
             } user.especialista = especialista;

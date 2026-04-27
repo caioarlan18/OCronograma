@@ -24,7 +24,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
     const [pagamento, setPagamento] = useState({});
     const [assinaturas, setAssinaturas] = useState([]);
     const [assinaturasSelecionadas, setAssinaturasSelecionadas] = useState();
-
+    const [telefone, setTelefone] = useState("");
 
     //usuario adm
     useEffect(() => {
@@ -68,7 +68,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
             try {
                 const response = await api.get(`/user/read/${idUser}`)
                 setNome(response.data.nome)
-                setEmail(response.data.email)
+                setEmail(response.data.email);
+                setTelefone(response.data.telefone);
                 setValidade(response.data.validade?.split('T')[0]);
                 setStatus(response.data.status);
                 setCargo(response.data.role);
@@ -103,7 +104,8 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                     novoEmail: email,
                     novaValidade: validade,
                     novoCargo: cargo,
-                    especialista: especialista
+                    especialista: especialista,
+                    telefone: telefone
                 };
                 if (!assinaturasSelecionadas?.value) {
                     payload.inadimplente = inadimplente;
@@ -322,6 +324,7 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                             <label htmlFor="email">Email</label>
                             <input type="email" id="email" placeholder="victorsoares@gmail.com" value={email} onChange={(e) => { setEmail(e.target.value) }} />
                         </div>
+
                         <div className={styles.inputGroup}>
                             <label htmlFor="senha">Cargo</label>
                             {user.role === "administrador" && cargo !== "administrador" ?
@@ -361,6 +364,13 @@ export function EditarUsuarioPopup({ abrir, fechar, idUser }) {
                             <label htmlFor="senha">Especialista</label>
                             <input type="text" value={especialista || ""} onChange={(e) => setEspecialista(e.target.value)} />
                         </div>
+                    </div>
+                    <div className={styles.row}>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Telefone</label>
+                            <input type="text" value={telefone || ""} onChange={(e) => setTelefone(e.target.value)} />
+                        </div>
+
                     </div>
                     <div className={styles.row}>
                         <div className={styles.inputGroup}>

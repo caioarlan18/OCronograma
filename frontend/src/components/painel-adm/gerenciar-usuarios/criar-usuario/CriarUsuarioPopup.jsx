@@ -12,19 +12,22 @@ export function CriarUsuarioPopup({ abrir, fechar }) {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [validade, setValidade] = useState("");
+    const [telefone, setTelefone] = useState("");
     async function criarUser(e) {
         e.preventDefault();
         try {
             const response = await api.post("/user/register", {
                 nome,
                 email,
+                telefone,
                 senha,
                 validade
             })
             setNome("");
             setEmail("");
             setSenha("");
-            setValidade("")
+            setValidade("");
+            setTelefone("");
             toast.success(response.data.msg)
         } catch (error) {
             toast.error(error.response.data.msg)
@@ -66,21 +69,27 @@ export function CriarUsuarioPopup({ abrir, fechar }) {
                 <form className={styles.form}>
                     <div className={styles.row}>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="nome">Nome</label>
+                            <label htmlFor="nome">Nome<span style={{ color: "red" }}>*</span></label>
                             <input type="text" id="nome" placeholder="" value={nome} onChange={(e) => setNome(e.target.value)} />
                         </div>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="validade">Validade de Acesso</label>
+                            <label htmlFor="validade">Validade de Acesso<span style={{ color: "red" }}>*</span></label>
                             <input type="date" id="validade" placeholder='' value={validade} onChange={(e) => setValidade(e.target.value)} />
                         </div>
                     </div>
                     <div className={styles.row}>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="email">Email<span style={{ color: "red" }}>*</span></label>
                             <input type="email" id="email" placeholder="" required value={email} onChange={(e) => { setEmail(e.target.value) }} />
                         </div>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="senha">Senha</label>
+                            <label htmlFor="email">Telefone</label>
+                            <input type="text" id="telefone" placeholder="" value={telefone} onChange={(e) => { setTelefone(e.target.value) }} />
+                        </div>
+                    </div>
+                    <div className={styles.row}>
+                        <div className={styles.inputGroup}>
+                            <label htmlFor="senha">Senha<span style={{ color: "red" }}>*</span></label>
                             <input type="text" id="senha" placeholder="" value={senha} onChange={(e) => setSenha(e.target.value)} />
                         </div>
                     </div>

@@ -28,15 +28,15 @@ export function Suporte() {
 
                             <a
                                 className={styles.linkDestaque}
-                                href="http://wa.me/5521981780957"
+                                href="http://wa.me/5521969144126"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                (21) 98178-0957
+                                (21) 96914-4126
                             </a>
                         </li>
 
-                        <li className={styles.item}>
+                        {/* <li className={styles.item}>
                             <h2 className={styles.itemTitulo}>Mentoria Semanal</h2>
                             <p className={styles.texto}>
                                 Participe dos nossos encontros de tira-dúvidas no link abaixo:
@@ -61,15 +61,15 @@ export function Suporte() {
                                 Sábado 7h: https://meet.google.com/ian-ofrq-nbc
                             </a>
 
-                            {/* <div className={styles.boxInfo}>
+                            <div className={styles.boxInfo}>
                                 <p className={styles.infoLinha}>
                                     <strong>Tira-dúvidas:</strong> toda terça, <strong>14h</strong>
                                 </p>
                                 <p className={styles.infoLinha}>
                                     <strong>Alinhamento com a Marcelle:</strong> todo sábado, <strong>6h da manhã</strong> (mesmo link)
                                 </p>
-                            </div> */}
-                        </li>
+                            </div> 
+                        </li> */}
 
                         <li className={styles.item}>
                             <h2 className={styles.itemTitulo}>Quer solicitar a mudança do seu cronograma?</h2>
