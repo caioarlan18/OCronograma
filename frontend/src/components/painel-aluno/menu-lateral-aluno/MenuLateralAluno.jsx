@@ -77,12 +77,12 @@ export function MenuLateralAluno({ ativo }) {
                             <img src={suporticon} alt="" />
                             <p>Suporte</p>
                         </Link>
-                        <Link onClick={() => {
+                        {/* <Link onClick={() => {
                             window.open("https://chat.whatsapp.com/EvNc7LMpSaU6nLD1rXPFCy?mode=wwt")
                         }} className={ativo === 6 ? styles.ativo : styles.sidebar3}>
                             <img src={comuniticon} alt="" />
                             <p>Comunidade dos Alunos</p>
-                        </Link>
+                        </Link> */}
 
                     </div>
 

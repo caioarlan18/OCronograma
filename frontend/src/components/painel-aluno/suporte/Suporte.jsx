@@ -71,7 +71,7 @@ export function Suporte() {
                             </div> 
                         </li> */}
 
-                        <li className={styles.item}>
+                        {/* <li className={styles.item}>
                             <h2 className={styles.itemTitulo}>Quer solicitar a mudança do seu cronograma?</h2>
                             <p className={styles.texto}>Solicite aqui:</p>
 
@@ -83,7 +83,7 @@ export function Suporte() {
                             >
                                 Abrir formulário de solicitação
                             </a>
-                        </li>
+                        </li> */}
                     </ol>
 
                     <div className={styles.rodapeCard}>
