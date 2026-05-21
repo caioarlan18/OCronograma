@@ -9,6 +9,7 @@ import { MenuLateralAluno } from "../menu-lateral-aluno/MenuLateralAluno";
 import { RegistroPopup } from "../RegistroPopup/RegistroPopup";
 import { AvisoPopup } from "../avisopopup/AvisoPopup";
 import { EditarRegistroPopup } from "../editarRegistroPopup/EditarRegistroPopup";
+import { ResumoPopup } from "../RegistroPopup/ResumoPopup";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -24,6 +25,8 @@ export function PainelAluno() {
     const [checkboxMarcados, setCheckboxMarcados] = useState({});
     const ID_AVISO_ATUAL = "aviso1";
     const [showAviso, setShowAviso] = useState(false);
+    const [abrirResumo, setAbrirResumo] = useState(false);
+    const [resumoTexto, setResumoTexto] = useState("");
 
     useEffect(() => {
         const jaViu = localStorage.getItem(ID_AVISO_ATUAL);
@@ -102,6 +105,15 @@ export function PainelAluno() {
         verificarTodasMaterias();
     }, [cronograma, selectedWeek, abrirRegistro]);
 
+    function buscarResumo(conteudo) {
+        if (conteudo.resumo) {
+            setResumoTexto(conteudo.resumo);
+            setAbrirResumo(true);
+        } else {
+            toast.error("Resumo não disponível");
+        }
+    }
+
 
 
 
@@ -112,6 +124,7 @@ export function PainelAluno() {
             <RegistroPopup abrir={abrirRegistro} fechar={() => setAbrirRegistro(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria} />
             <AvisoPopup abrir={showAviso} fechar={fecharAviso} />
             <EditarRegistroPopup abrir={abrirRegistro2} fechar={() => setAbrirRegistro2(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria2} />
+            <ResumoPopup abrir={abrirResumo} fechar={() => setAbrirResumo(false)} resumo={resumoTexto} />
 
             {user.role === "aluno" && user.status === "ativo" && !user.inadimplente ?
                 (
@@ -174,6 +187,16 @@ export function PainelAluno() {
                                                         {textos[i] || "Acessar"}
                                                     </button>
                                                 ))}
+                                                {conteudo.resumo && (
+                                                    <button onClick={() => buscarResumo(conteudo)} className={styles.btnResumo}>
+                                                        Ver Resumo
+                                                    </button>
+                                                )}
+                                                {conteudo.mapa && (
+                                                    <button onClick={() => window.open(`https://supabase.blinblin.digital/storage/v1/object/public/${conteudo.mapa}`, "_blank")} className={styles.btnMapa}>
+                                                        Mapa Mental
+                                                    </button>
+                                                )}
                                             </div>
                                         );
                                     })}

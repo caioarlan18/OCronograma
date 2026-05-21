@@ -79,6 +79,8 @@ export function CriarCronograma2() {
                 areaConhecimento: materia.areaConhecimento,
                 resumoConteudo: materia.resumoConteudo,
                 link: materia.link,
+                resumo: materia.resumo,
+                mapa: materia.mapa
             };
 
             await api.put(
@@ -92,7 +94,58 @@ export function CriarCronograma2() {
             console.error(error);
         }
     };
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
 
+            reader.onload = () => {
+                const base64 = reader.result.split(',')[1];
+                resolve(base64);
+            };
+
+            reader.onerror = reject;
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function handleUploadMapa(e, index) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const materia = materias[index];
+
+        try {
+            const arquivoBase64 = await fileToBase64(file);
+
+            const updatedContent = {
+                areaConhecimento: materia.areaConhecimento,
+                resumoConteudo: materia.resumoConteudo,
+                link: materia.link,
+                resumo: materia.resumo,
+                mapaArquivo: {
+                    nome: file.name,
+                    tipo: file.type,
+                    base64: arquivoBase64
+                }
+            };
+
+            const response = await api.put(
+                `/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${materia._id}`,
+                updatedContent
+            );
+
+            const newMaterias = [...materias];
+            newMaterias[index] = response.data.conteudo;
+            setMaterias(newMaterias);
+
+            toast.success("Mapa enviado com sucesso!");
+
+        } catch (error) {
+            toast.error(error.response?.data?.msg || "Erro ao enviar mapa.");
+            console.error(error);
+        }
+    }
 
     async function excluirSemana(id) {
         if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir semana");
@@ -345,6 +398,26 @@ export function CriarCronograma2() {
                                                 onBlur={() => handleSaveMateria(i)}
 
                                             />
+                                        </div>
+                                        <div className={styles.field}>
+                                            <label className={styles.fieldTitle}>Resumo</label>
+                                            <textarea
+                                                value={conteudo.resumo || ""}
+                                                onChange={(e) => handleInputChange(e, i, 'resumo')}
+                                                onBlur={() => handleSaveMateria(i)}
+
+                                            />
+                                        </div>
+                                        <div className={styles.field}>
+                                            <label className={styles.fieldTitle}>Mapa Mental</label>
+                                            <input
+                                                type="file"
+                                                onChange={(e) => handleUploadMapa(e, i)}
+                                            />
+
+                                            {conteudo.mapa && (
+                                                <small>Arquivo enviado: {conteudo.mapa}</small>
+                                            )}
                                         </div>
 
                                         {/* <button className={styles.saveButton} onClick={() => handleSaveMateria(i)}>

@@ -215,6 +215,35 @@
     cursor: pointer;
 }
 
+.btnResumo {
+    border: 1px solid #9D9D9C;
+    background-color: transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: poppins;
+    font-size: 13px;
+    font-weight: 400;
+    color: #1E1E1E;
+    margin-top: 15px;
+    width: 203px;
+    height: 43px;
+    cursor: pointer;
+}
+
+.btnMapa {
+    border: 1px solid #9D9D9C;
+    background-color: transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: poppins;
+    font-size: 13px;
+    font-weight: 400;
+    color: #1E1E1E;
+    margin-top: 15px;
+    width: 203px;
+    height: 43px;
+    cursor: pointer;
+}
 
 .inativo {
     background-color: #F7FBFE;

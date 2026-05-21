@@ -5,7 +5,9 @@ const { Schema } = mongoose;
 const conteudoSchema = new Schema({
     areaConhecimento: { type: String },
     resumoConteudo: { type: String },
-    link: { type: String }
+    link: { type: String },
+    resumo: { type: String },
+    mapa: { type: String }
 });
 
 const diaSchema = new Schema({

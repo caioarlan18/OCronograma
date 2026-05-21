@@ -332,6 +332,33 @@ module.exports = {
         const dadosAtualizados = req.body;
 
         try {
+            if (dadosAtualizados.mapaArquivo) {
+                const responseN8n = await fetch(process.env.N8N_WEBHOOK_UPLOAD_MAPA, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        nome: dadosAtualizados.mapaArquivo.nome,
+                        tipo: dadosAtualizados.mapaArquivo.tipo,
+                        base64: dadosAtualizados.mapaArquivo.base64
+                    })
+                });
+
+                const responseData = await responseN8n.json();
+
+                const mapaId = responseData.id;
+
+                if (!mapaId) {
+                    return res.status(400).json({
+                        msg: "O n8n não retornou o ID do arquivo."
+                    });
+                }
+
+                dadosAtualizados.mapa = mapaId;
+                delete dadosAtualizados.mapaArquivo;
+            }
+
             const cronograma = await CronogramaModel.findById(cronogramaId);
             if (!cronograma) return res.status(404).json({ msg: "Cronograma não encontrado" });
 
@@ -350,9 +377,16 @@ module.exports = {
 
             await cronograma.save();
 
-            return res.status(200).json({ msg: "Conteúdo atualizado com sucesso!", conteudo });
+            return res.status(200).json({
+                msg: "Conteúdo atualizado com sucesso!",
+                conteudo
+            });
+
         } catch (error) {
-            return res.status(500).json({ msg: "Erro ao atualizar conteúdo", error });
+            return res.status(500).json({
+                msg: "Erro ao atualizar conteúdo",
+                error: error.message
+            });
         }
     },
     async associarUsuarios(req, res) {

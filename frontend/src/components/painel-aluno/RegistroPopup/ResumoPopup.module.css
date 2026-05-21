@@ -1,0 +1,54 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header h1 {
+    font-family: poppins;
+    font-weight: 500;
+    font-size: 34px;
+    color: #1E1E1E;
+    text-align: center;
+    color: #333;
+}
+
+.content {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.content p {
+    font-size: 14px;
+    font-family: poppins;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer button {
+    width: 100%;
+    font-family: poppins;
+    font-size: 13.35px;
+    color: white;
+    font-weight: 500;
+    border: 0;
+    background: linear-gradient(90deg, #8C2BE2 0%, #4D02E0 100%);
+    border-radius: 14px;
+    height: 57px;
+    cursor: pointer;
+}
+
+.footer button:hover {
+    opacity: 0.9;
+}
