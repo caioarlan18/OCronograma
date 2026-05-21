@@ -147,6 +147,24 @@ export function CriarCronograma2() {
         }
     }
 
+    async function excluirMapa(conteudoId) {
+        if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir mapa");
+        const confirmacao = window.confirm("Deseja realmente remover este mapa?");
+        if (!confirmacao) return;
+        try {
+            const updatedContent = { mapaArquivo: null, mapa: null };
+            const response = await api.put(
+                `/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${conteudoId}`,
+                updatedContent
+            );
+            setTrigger(prev => !prev);
+            toast.success(response.data?.msg || 'Mapa removido com sucesso!');
+        } catch (error) {
+            toast.error(error.response?.data?.msg || 'Erro ao remover mapa');
+            console.error(error);
+        }
+    }
+
     async function excluirSemana(id) {
         if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir semana");
         const confirmacao = window.confirm("Deseja realmente remover esta semana?");
@@ -305,20 +323,33 @@ export function CriarCronograma2() {
                                     />
                                 </div>
 
-                                <button
-                                    key={index + 4}
-                                    className={`${styles.weekButton} ${selectedWeek === index ? styles.active : ''}`}
-                                    onClick={() => {
-                                        setSelectedWeek(index);
-                                        setSelectedDay(0);
-                                    }}
+                                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                    <button
+                                        key={index + 4}
+                                        className={`${styles.weekButton} ${selectedWeek === index ? styles.active : ''}`}
+                                        onClick={() => {
+                                            setSelectedWeek(index);
+                                            setSelectedDay(0);
+                                        }}
 
-                                >
-                                    Semana {index + 1}
-                                    {index !== 0 && (
-                                        <span className={styles.plusIcon} onClick={() => excluirSemana(semana._id)}>x</span>
+                                    >
+                                        Semana {index + 1}
+                                        {index !== 0 && (
+                                            <span className={styles.plusIcon} onClick={() => excluirSemana(semana._id)}>x</span>
+                                        )}
+                                    </button>
+
+                                    {selectedWeek === index && index !== 0 && (
+                                        <button
+                                            type="button"
+                                            title="Excluir semana"
+                                            onClick={(e) => { e.stopPropagation(); excluirSemana(semana._id); }}
+                                            style={{ marginLeft: 8, background: 'transparent', border: 'none', cursor: 'pointer' }}
+                                        >
+                                            🗑️
+                                        </button>
                                     )}
-                                </button>
+                                </div>
                             </div>
 
                         ))}
@@ -333,16 +364,28 @@ export function CriarCronograma2() {
                         {cronograma?.semanas?.[selectedWeek]?.dias && (
                             <div className={styles.daySelector}>
                                 {cronograma.semanas[selectedWeek].dias.map((dia, dayIndex) => (
-                                    <button
-                                        key={dayIndex}
-                                        className={`${styles.dayButton} ${selectedDay === dayIndex ? styles.active : ''}`}
-                                        onClick={() => setSelectedDay(dayIndex)}
-                                    >
-                                        Dia {dayIndex + 1}
-                                        {dayIndex !== 0 && (
-                                            <span className={styles.plusIcon} onClick={() => excluirDia(dia._id)}>x</span>
+                                    <div key={dayIndex} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                        <button
+                                            className={`${styles.dayButton} ${selectedDay === dayIndex ? styles.active : ''}`}
+                                            onClick={() => setSelectedDay(dayIndex)}
+                                        >
+                                            Dia {dayIndex + 1}
+                                            {dayIndex !== 0 && (
+                                                <span className={styles.plusIcon} onClick={() => excluirDia(dia._id)}>x</span>
+                                            )}
+                                        </button>
+
+                                        {selectedDay === dayIndex && dayIndex !== 0 && (
+                                            <button
+                                                type="button"
+                                                title="Excluir dia"
+                                                onClick={(e) => { e.stopPropagation(); excluirDia(dia._id); }}
+                                                style={{ marginLeft: 8, background: 'transparent', border: 'none', cursor: 'pointer' }}
+                                            >
+                                                🗑️
+                                            </button>
                                         )}
-                                    </button>
+                                    </div>
                                 ))}
                                 <button className={styles.addDayButton} onClick={criarDia}>
                                     <span className={styles.plusIcon}>+</span>
@@ -416,7 +459,17 @@ export function CriarCronograma2() {
                                             />
 
                                             {conteudo.mapa && (
-                                                <small>Arquivo enviado: {conteudo.mapa}</small>
+                                                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                                    <small>Arquivo enviado: {conteudo.mapa}</small>
+                                                    <button
+                                                        type="button"
+                                                        title="Remover mapa"
+                                                        onClick={(e) => { e.stopPropagation(); excluirMapa(conteudo._id); }}
+                                                        style={{ marginLeft: 8, background: 'transparent', border: 'none', cursor: 'pointer' }}
+                                                    >
+                                                        🗑️
+                                                    </button>
+                                                </div>
                                             )}
                                         </div>
 
