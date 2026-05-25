@@ -3,11 +3,14 @@ import Modal from 'react-modal';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
+import { ResumoPopup } from '../../../painel-aluno/RegistroPopup/ResumoPopup';
 import logoCronograma from '../../../../images/logocronogramaroxa.png';
 Modal.setAppElement('#root');
 export function PreviewCronograma({ abrir, fechar, cronogramaId, gatilho }) {
     const [cronograma, setCronograma] = useState([]);
     const [selectedWeek, setSelectedWeek] = useState(0);
+    const [abrirResumo, setAbrirResumo] = useState(false);
+    const [resumoTexto, setResumoTexto] = useState("");
     useEffect(() => {
         async function getCronograma() {
             if (!cronogramaId) return;
@@ -20,6 +23,15 @@ export function PreviewCronograma({ abrir, fechar, cronogramaId, gatilho }) {
         }
         getCronograma()
     }, [cronogramaId, gatilho]);
+
+    function buscarResumo(conteudo) {
+        if (conteudo.resumo) {
+            setResumoTexto(conteudo.resumo);
+            setAbrirResumo(true);
+        } else {
+            toast.error("Resumo não disponível");
+        }
+    }
 
     return (
         <div className={styles.preview}>
@@ -94,6 +106,16 @@ export function PreviewCronograma({ abrir, fechar, cronogramaId, gatilho }) {
                                                         {textos[i] || "Acessar"}
                                                     </button>
                                                 ))}
+                                                {conteudo.resumo && (
+                                                    <button onClick={() => buscarResumo(conteudo)} className={styles.btnResumo}>
+                                                        Ver Resumo
+                                                    </button>
+                                                )}
+                                                {conteudo.mapa && (
+                                                    <button onClick={() => window.open(`https://supabase.blinblin.digital/storage/v1/object/public/${conteudo.mapa}`, "_blank")} className={styles.btnMapa}>
+                                                        Mapa Mental
+                                                    </button>
+                                                )}
                                             </div>
                                         );
                                     })}
@@ -102,6 +124,7 @@ export function PreviewCronograma({ abrir, fechar, cronogramaId, gatilho }) {
                         </div>
                     </div>
                 </div>
+                <ResumoPopup abrir={abrirResumo} fechar={() => setAbrirResumo(false)} resumo={resumoTexto} />
             </Modal>
         </div>
     );

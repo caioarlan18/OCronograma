@@ -151,12 +151,28 @@ export function CriarCronograma2() {
         if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode excluir mapa");
         const confirmacao = window.confirm("Deseja realmente remover este mapa?");
         if (!confirmacao) return;
+
+        const materia = materias.find((item) => item._id === conteudoId);
+        const nomeMapa = materia?.mapa || materia?.mapaArquivo?.nome || "";
+
         try {
             const updatedContent = { mapaArquivo: null, mapa: null };
             const response = await api.put(
                 `/cronograma/${params.idCronograma}/semana/${semanaId}/dia/${diaId}/conteudo/${conteudoId}`,
                 updatedContent
             );
+
+            if (nomeMapa) {
+                try {
+                    await api.post(
+                        'https://n8n.punchmarketing.com.br/webhook/cb8dbb60-7daf-4811-905d-c3fb3ea68a3f',
+                        { nome: nomeMapa }
+                    );
+                } catch (webhookError) {
+                    console.error('Erro ao chamar webhook de exclusão de mapa:', webhookError);
+                }
+            }
+
             setTrigger(prev => !prev);
             toast.success(response.data?.msg || 'Mapa removido com sucesso!');
         } catch (error) {
@@ -338,17 +354,6 @@ export function CriarCronograma2() {
                                             <span className={styles.plusIcon} onClick={() => excluirSemana(semana._id)}>x</span>
                                         )}
                                     </button>
-
-                                    {selectedWeek === index && index !== 0 && (
-                                        <button
-                                            type="button"
-                                            title="Excluir semana"
-                                            onClick={(e) => { e.stopPropagation(); excluirSemana(semana._id); }}
-                                            style={{ marginLeft: 8, background: 'transparent', border: 'none', cursor: 'pointer' }}
-                                        >
-                                            🗑️
-                                        </button>
-                                    )}
                                 </div>
                             </div>
 
