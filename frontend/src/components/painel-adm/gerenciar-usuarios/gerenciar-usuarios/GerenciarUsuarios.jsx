@@ -5,6 +5,8 @@ import styles from './GerenciarUsuarios.module.css';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 import { EditarUsuarioPopup } from '../editar-usuario/EditarUsuario';
+import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
+import { Pagination } from '../../../../components/common/Pagination';
 export function GerenciarUsuarios() {
     const [abertoCriar, setAbertoCriar] = useState(false);
     const [abertoEditar, setAbertoEditar] = useState(false);
@@ -20,6 +22,9 @@ export function GerenciarUsuarios() {
     const [cronograma, setCronograma] = useState({});
     const [userInadimplente, setUserInadimplente] = useState(false);
     const [semEspecialista, setSemEspecialista] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [itemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         async function getUserData() {
             try {
@@ -52,11 +57,14 @@ export function GerenciarUsuarios() {
     useEffect(() => {
         async function loadUsers() {
             try {
+                setLoading(true);
                 const response = await api.get("/user/read");
                 setUsuarios(response.data.reverse());
+                setCurrentPage(1);
             } catch (error) {
                 toast.error(error.response.data.msg);
-
+            } finally {
+                setLoading(false);
             }
         }
         loadUsers();
@@ -102,8 +110,16 @@ export function GerenciarUsuarios() {
 
         return "Carregando...";
     }
-    const [limiteUsuarios, setLimiteUsuarios] = useState(20);
-    const usuariosRenderizados = usuariosFiltrados.slice(0, limiteUsuarios);
+
+    // Calcular paginação
+    const totalPages = Math.ceil(usuariosFiltrados.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const usuariosRenderizados = usuariosFiltrados.slice(startIndex, endIndex);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     return (
         <div className={styles.gerenciar}>
@@ -143,44 +159,50 @@ export function GerenciarUsuarios() {
                         </div>
                     </div>
 
-                    <table className={styles.tabela}>
-                        <thead>
-                            <tr>
-                                <th>Nome do usuário</th>
-                                <th>Email do usuário</th>
-                                <th>Cronograma associado</th>
-                                <th>Validade de acesso</th>
-                                <th></th>
+                    {loading ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <>
+                            <table className={styles.tabela}>
+                                <thead>
+                                    <tr>
+                                        <th>Nome do usuário</th>
+                                        <th>Email do usuário</th>
+                                        <th>Cronograma associado</th>
+                                        <th>Validade de acesso</th>
+                                        <th></th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {usuariosRenderizados.map((usuario, index) => (
-                                <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
-                                    <td data-label="Nome do usuário">{usuario.nome}</td>
-                                    <td data-label="Email do usuário">{usuario.email}</td>
-                                    <td data-label="Cronograma associado">{renderNomeCronograma(usuario.cronogramaAssociado)}</td>
-                                    <td data-label="Validade de acesso">{formatarData(usuario.validade)}</td>
-                                    <td data-label="Ações">
-                                        <button className={styles.botao} onClick={() => {
-                                            if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode editar usuários");
-                                            setAbertoEditar(true);
-                                            setIdUsuarioEditar(usuario._id);
-                                        }}>Editar</button>
-                                    </td>
-                                </tr>
-                            ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {usuariosRenderizados.map((usuario, index) => (
+                                        <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
+                                            <td data-label="Nome do usuário">{usuario.nome}</td>
+                                            <td data-label="Email do usuário">{usuario.email}</td>
+                                            <td data-label="Cronograma associado">{renderNomeCronograma(usuario.cronogramaAssociado)}</td>
+                                            <td data-label="Validade de acesso">{formatarData(usuario.validade)}</td>
+                                            <td data-label="Ações">
+                                                <button className={styles.botao} onClick={() => {
+                                                    if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode editar usuários");
+                                                    setAbertoEditar(true);
+                                                    setIdUsuarioEditar(usuario._id);
+                                                }}>Editar</button>
+                                            </td>
+                                        </tr>
+                                    ))}
 
-                        </tbody>
-                    </table>
-                    {limiteUsuarios < usuariosFiltrados.length && (
-                        <div className={styles.mais}>
-                            <p onClick={() => setLimiteUsuarios(prev => prev + 20)} >
-                                Carregar mais
-                            </p>
-                        </div>
-
-
+                                </tbody>
+                            </table>
+                            {usuariosFiltrados.length > 0 && (
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onPageChange={handlePageChange}
+                                    itemsPerPage={itemsPerPage}
+                                    totalItems={usuariosFiltrados.length}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
 

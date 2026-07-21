@@ -6,11 +6,16 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
+import { LoadingSpinner } from '../../../components/common/LoadingSpinner';
+import { Pagination } from '../../../components/common/Pagination';
 export function PainelAdmFeed() {
     const navigate = useNavigate()
     const [user, setUser] = useState([]);
     const [cronogramas, setCronogramas] = useState([]);
     const [busca, setBusca] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [itemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     useEffect(() => {
@@ -28,11 +33,14 @@ export function PainelAdmFeed() {
     useEffect(() => {
         async function getCronogramas() {
             try {
+                setLoading(true);
                 const response = await api.get("/cronograma/read");
                 setCronogramas(response.data.reverse());
+                setCurrentPage(1);
             } catch (error) {
                 toast.error(error.response.data.msg);
-
+            } finally {
+                setLoading(false);
             }
         }
         getCronogramas();
@@ -47,8 +55,16 @@ export function PainelAdmFeed() {
     const cronogramasFiltrados = cronogramas.filter(cronograma =>
         cronograma.nome.toLowerCase().includes(busca.toLowerCase())
     );
-    const [limiteCronogramas, setLimiteCronogramas] = useState(20);
-    const CronogramasRenderizados = cronogramasFiltrados.slice(0, limiteCronogramas);
+
+    // Calcular paginação
+    const totalPages = Math.ceil(cronogramasFiltrados.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const CronogramasRenderizados = cronogramasFiltrados.slice(startIndex, endIndex);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
     return (
         <div className={styles.paineladm}>
             <MenuLateral ativo={1} />
@@ -69,55 +85,63 @@ export function PainelAdmFeed() {
                         <h1>Registro de Atividades ({cronogramasFiltrados.length})</h1>
                     </div>
 
-                    <table className={styles.tabela}>
-                        <thead>
-                            <tr>
-                                <th>Nome do Cronograma</th>
-                                <th>Criador</th>
-                                <th>Última atualização</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {CronogramasRenderizados.map((cronograma, index) => (
-                                <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
-                                    <td
-                                        data-label="Nome do cronograma"
-                                        data-tooltip-id={`tooltip-${index}`}
-                                        data-tooltip-content={cronograma.nome}
-                                        style={cronograma.usuariosAssociados.length === 0 ? { color: "red", cursor: "default" } : { cursor: "default" }}
-                                    >
-                                        {cronograma.nome}
-                                        <Tooltip
-                                            id={`tooltip-${index}`}
-                                            place="top"
-                                            style={{
-                                                backgroundColor: '#333',
-                                                color: '#fff',
-                                                fontSize: '13px',
-                                                maxWidth: '100%',
-                                                padding: '8px',
-                                                borderRadius: '6px',
-                                            }}
-                                        />
-                                    </td>
+                    {loading ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <>
+                            <table className={styles.tabela}>
+                                <thead>
+                                    <tr>
+                                        <th>Nome do Cronograma</th>
+                                        <th>Criador</th>
+                                        <th>Última atualização</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {CronogramasRenderizados.map((cronograma, index) => (
+                                        <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
+                                            <td
+                                                data-label="Nome do cronograma"
+                                                data-tooltip-id={`tooltip-${index}`}
+                                                data-tooltip-content={cronograma.nome}
+                                                style={cronograma.usuariosAssociados.length === 0 ? { color: "red", cursor: "default" } : { cursor: "default" }}
+                                            >
+                                                {cronograma.nome}
+                                                <Tooltip
+                                                    id={`tooltip-${index}`}
+                                                    place="top"
+                                                    style={{
+                                                        backgroundColor: '#333',
+                                                        color: '#fff',
+                                                        fontSize: '13px',
+                                                        maxWidth: '100%',
+                                                        padding: '8px',
+                                                        borderRadius: '6px',
+                                                    }}
+                                                />
+                                            </td>
 
-                                    <td data-label="usuario criador">{cronograma.userCriador}</td>
-                                    <td data-label="Data de atualização">{formatarData(cronograma.updatedAt)}</td>
-                                    <td data-label="Ações">
-                                        <button className={styles.botao} onClick={() => navigate(`/criar-cronograma2/${cronograma._id}`)}>Editar</button>
-                                    </td>
-                                </tr>
-                            ))}
+                                            <td data-label="usuario criador">{cronograma.userCriador}</td>
+                                            <td data-label="Data de atualização">{formatarData(cronograma.updatedAt)}</td>
+                                            <td data-label="Ações">
+                                                <button className={styles.botao} onClick={() => navigate(`/criar-cronograma2/${cronograma._id}`)}>Editar</button>
+                                            </td>
+                                        </tr>
+                                    ))}
 
-                        </tbody>
-                    </table>
-                    {limiteCronogramas < cronogramasFiltrados.length && (
-                        <div className={styles.mais}>
-                            <p onClick={() => setLimiteCronogramas(prev => prev + 20)} >
-                                Carregar mais
-                            </p>
-                        </div>
+                                </tbody>
+                            </table>
+                            {cronogramasFiltrados.length > 0 && (
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onPageChange={handlePageChange}
+                                    itemsPerPage={itemsPerPage}
+                                    totalItems={cronogramasFiltrados.length}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
             </div>

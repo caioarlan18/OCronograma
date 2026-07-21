@@ -9,6 +9,8 @@ import { EditarPastaPopup } from "../editar-pasta/EditarPastaPopup";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { MoverCronogramaPopup } from "../mover/MoverCronogramaPopup";
 import Swal from 'sweetalert2';
+import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
+import { Pagination } from '../../../../components/common/Pagination';
 
 export function GerenciarCronogramas() {
     const navigate = useNavigate();
@@ -22,6 +24,9 @@ export function GerenciarCronogramas() {
     const [trigger, setTrigger] = useState(false);
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [itemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         async function getUserData() {
             try {
@@ -50,11 +55,14 @@ export function GerenciarCronogramas() {
     useEffect(() => {
         async function renderCronogramas() {
             try {
+                setLoading(true);
                 const response = await api.get(`/cronograma/renderizar/${params.idPasta}`)
                 setCronogramas(response.data.reverse());
+                setCurrentPage(1);
             } catch (error) {
                 toast.error(error.response.data.msg)
-
+            } finally {
+                setLoading(false);
             }
         }
         renderCronogramas()
@@ -71,6 +79,17 @@ export function GerenciarCronogramas() {
     const cronogramasFiltrados = cronogramas.filter(cronograma =>
         cronograma.nome.toLowerCase().includes(busca.toLowerCase())
     );
+
+    // Calcular paginação
+    const totalPages = Math.ceil(cronogramasFiltrados.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const CronogramasRenderizados = cronogramasFiltrados.slice(startIndex, endIndex);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     async function duplicar(id) {
         if (user.role != "administrador" && user.role != "distribuidor") return toast.error("Baterista não pode duplicar cronogramas");
 
@@ -120,8 +139,7 @@ export function GerenciarCronogramas() {
 
         setAbrirMover(true);
     }
-    const [limiteCronogramas, setLimiteCronogramas] = useState(10);
-    const CronogramasRenderizados = cronogramasFiltrados.slice(0, limiteCronogramas);
+
     return (
         <div className={styles.gcro}>
             <MenuLateral ativo={3} />
@@ -143,50 +161,58 @@ export function GerenciarCronogramas() {
                             <h1>Cronogramas ({cronogramasFiltrados.length})</h1>
                         </div>
 
-                        <table className={styles.tabela}>
-                            <thead>
-                                <tr>
-                                    <th>Nome do Cronograma</th>
-                                    <th>Administrador</th>
-                                    <th>Última atualização</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {CronogramasRenderizados.map((cronograma, index) => (
-                                    <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
-                                        <td data-label="Nome do cronograma" style={cronograma.usuariosAssociados.length === 0 ? { color: "red", cursor: "default" } : { cursor: "default" }}>{cronograma.nome}</td>
-                                        <td data-label="usuario criador">{cronograma.userCriador}</td>
-                                        <td data-label="Data de atualização">{formatarData(cronograma.updatedAt)}</td>
-                                        <td data-label="Ações">
-                                            <DropdownMenu.Root>
-                                                <DropdownMenu.Trigger asChild>
-                                                    <button className={styles.botao}>Opções</button>
-                                                </DropdownMenu.Trigger>
+                        {loading ? (
+                            <LoadingSpinner />
+                        ) : (
+                            <>
+                                <table className={styles.tabela}>
+                                    <thead>
+                                        <tr>
+                                            <th>Nome do Cronograma</th>
+                                            <th>Administrador</th>
+                                            <th>Última atualização</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {CronogramasRenderizados.map((cronograma, index) => (
+                                            <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
+                                                <td data-label="Nome do cronograma" style={cronograma.usuariosAssociados.length === 0 ? { color: "red", cursor: "default" } : { cursor: "default" }}>{cronograma.nome}</td>
+                                                <td data-label="usuario criador">{cronograma.userCriador}</td>
+                                                <td data-label="Data de atualização">{formatarData(cronograma.updatedAt)}</td>
+                                                <td data-label="Ações">
+                                                    <DropdownMenu.Root>
+                                                        <DropdownMenu.Trigger asChild>
+                                                            <button className={styles.botao}>Opções</button>
+                                                        </DropdownMenu.Trigger>
 
-                                                <DropdownMenu.Portal>
-                                                    <DropdownMenu.Content className={styles.menuSuspenso} sideOffset={5}>
-                                                        <DropdownMenu.Item className={`${styles.opcao} ${styles.editar}`} onClick={() => navigate(`/criar-cronograma2/${cronograma._id}`)}>Editar</DropdownMenu.Item>
-                                                        <DropdownMenu.Item className={styles.opcao} onClick={() => duplicar(cronograma._id)}>Duplicar</DropdownMenu.Item>
-                                                        <DropdownMenu.Item className={styles.opcao} onClick={() => {
-                                                            mover()
-                                                            setIdCro(cronograma._id)
-                                                        }}>Mover</DropdownMenu.Item>
-                                                        <DropdownMenu.Item className={`${styles.opcao} ${styles.excluir}`} onClick={() => excluir(cronograma._id)}>Excluir</DropdownMenu.Item>
-                                                    </DropdownMenu.Content>
-                                                </DropdownMenu.Portal>
-                                            </DropdownMenu.Root>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {limiteCronogramas < cronogramasFiltrados.length && (
-                            <div className={styles.mais}>
-                                <p onClick={() => setLimiteCronogramas(prev => prev + 20)} >
-                                    Carregar mais
-                                </p>
-                            </div>
+                                                        <DropdownMenu.Portal>
+                                                            <DropdownMenu.Content className={styles.menuSuspenso} sideOffset={5}>
+                                                                <DropdownMenu.Item className={`${styles.opcao} ${styles.editar}`} onClick={() => navigate(`/criar-cronograma2/${cronograma._id}`)}>Editar</DropdownMenu.Item>
+                                                                <DropdownMenu.Item className={styles.opcao} onClick={() => duplicar(cronograma._id)}>Duplicar</DropdownMenu.Item>
+                                                                <DropdownMenu.Item className={styles.opcao} onClick={() => {
+                                                                    mover()
+                                                                    setIdCro(cronograma._id)
+                                                                }}>Mover</DropdownMenu.Item>
+                                                                <DropdownMenu.Item className={`${styles.opcao} ${styles.excluir}`} onClick={() => excluir(cronograma._id)}>Excluir</DropdownMenu.Item>
+                                                            </DropdownMenu.Content>
+                                                        </DropdownMenu.Portal>
+                                                    </DropdownMenu.Root>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                {cronogramasFiltrados.length > 0 && (
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        totalPages={totalPages}
+                                        onPageChange={handlePageChange}
+                                        itemsPerPage={itemsPerPage}
+                                        totalItems={cronogramasFiltrados.length}
+                                    />
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

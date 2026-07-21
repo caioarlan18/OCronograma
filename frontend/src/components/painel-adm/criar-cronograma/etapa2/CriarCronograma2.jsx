@@ -380,16 +380,7 @@ export function CriarCronograma2() {
                                             )}
                                         </button>
 
-                                        {selectedDay === dayIndex && dayIndex !== 0 && (
-                                            <button
-                                                type="button"
-                                                title="Excluir dia"
-                                                onClick={(e) => { e.stopPropagation(); excluirDia(dia._id); }}
-                                                style={{ marginLeft: 8, background: 'transparent', border: 'none', cursor: 'pointer' }}
-                                            >
-                                                🗑️
-                                            </button>
-                                        )}
+
                                     </div>
                                 ))}
                                 <button className={styles.addDayButton} onClick={criarDia}>
