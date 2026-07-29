@@ -448,15 +448,54 @@ module.exports = {
     },
     async atualizarInadimplente(req, res) {
         try {
-            const { email, inadimplente } = req.body;
+            const { nome, email, inadimplente, telefone } = req.body;
             if (!email) return res.status(400).json({ msg: "Faltando email do usuário" });
-            const user = await userModel.findOne({
+
+            let user = await userModel.findOne({
                 "pagamento.email": email
             });
-            if (!user) return res.status(400).json({ msg: "Usuário não encontrado" });
-            user.inadimplente = inadimplente;
+
+            if (!user) {
+                if (!nome) return res.status(400).json({ msg: "Usuário não encontrado e nome não foi fornecido" });
+
+                const generatePassword = (length = 8) => {
+                    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+                    let password = '';
+                    for (let i = 0; i < length; i++) {
+                        password += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    return password;
+                };
+
+                const senhaReal = generatePassword(8);
+                const salt = await bcrypt.genSalt(12);
+                const senhaHash = await bcrypt.hash(senhaReal, salt);
+
+                user = await userModel.create({
+                    nome,
+                    email,
+                    telefone: telefone ? String(telefone) : "",
+                    senha: senhaHash,
+                    role: "aluno",
+                    status: "ativo",
+                    inadimplente: Boolean(inadimplente),
+                    pagamento: {
+                        email,
+                        status: inadimplente ? "inactive" : "active"
+                    }
+                });
+
+                await axios.post(
+                    "https://n8n.punchmarketing.com.br/webhook/741eaf54-965c-4772-8272-d4ed6e350c24",
+                    { email, senha: senhaReal }
+                );
+
+                return res.status(201).json({ msg: "Usuário criado com sucesso", user });
+            }
+
+            user.inadimplente = Boolean(inadimplente);
             await user.save();
-            return res.status(200).json({ msg: "Sucesso!" })
+            return res.status(200).json({ msg: "Sucesso!" });
         } catch (error) {
             return res.status(500).json({ msg: "Ocorreu um erro", error });
         }
