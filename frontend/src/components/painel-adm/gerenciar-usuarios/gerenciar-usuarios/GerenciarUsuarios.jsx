@@ -121,6 +121,46 @@ export function GerenciarUsuarios() {
         setCurrentPage(page);
     };
 
+    function exportarUsuarios() {
+        const escapar = (valor) => `"${String(valor ?? '').replace(/"/g, '""')}"`;
+        const cabecalho = [
+            'Nome',
+            'Email',
+            'Telefone',
+            'Cargo',
+            'Status',
+            'Inadimplente',
+            'Validade de acesso',
+            'Data de criação'
+        ];
+        const linhas = usuariosFiltrados.map((usuario) => [
+            usuario.nome,
+            usuario.email,
+            usuario.telefone,
+            usuario.role,
+            usuario.status,
+            usuario.inadimplente ? 'Sim' : 'Não',
+            usuario.validade ? formatarData(usuario.validade) : '',
+            usuario.createdAt ? formatarData(usuario.createdAt) : ''
+        ]);
+        const csv = [cabecalho, ...linhas]
+            .map((linha) => linha.map(escapar).join(';'))
+            .join('\n');
+        const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        const hoje = new Date();
+        const dataHoje = [
+            hoje.getFullYear(),
+            String(hoje.getMonth() + 1).padStart(2, '0'),
+            String(hoje.getDate()).padStart(2, '0')
+        ].join('-');
+        link.download = `usuarios_ocronograma_${dataHoje}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
     return (
         <div className={styles.gerenciar}>
             <MenuLateral ativo={4} />
@@ -136,6 +176,9 @@ export function GerenciarUsuarios() {
                         onChange={(e) => setBusca(e.target.value)}
 
                     /> <button onClick={abrir}>+ Criar usuário</button>
+                    <button className={styles.botaoExportar} onClick={exportarUsuarios} disabled={!usuariosFiltrados.length}>
+                        Exportar CSV
+                    </button>
                 </div>
 
                 <div className={styles.container}>
