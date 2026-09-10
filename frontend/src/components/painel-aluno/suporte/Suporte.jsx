@@ -25,7 +25,6 @@ export function Suporte() {
                             <p className={styles.texto}>
                                 Fale comigo no WhatsApp abaixo 💜
                             </p>
-
                             <a
                                 className={styles.linkDestaque}
                                 href="http://wa.me/5521969144126"
@@ -33,6 +32,64 @@ export function Suporte() {
                                 rel="noreferrer"
                             >
                                 (21) 96914-4126
+                            </a>
+                        </li>
+
+                        <li className={styles.item}>
+                            <h2 className={styles.itemTitulo}>Encontro semanal</h2>
+                            <p className={styles.texto}>
+                                Quarta-feira, 9 de setembro · 14:00 – 15:00<br />
+                                Fuso horário: America/Sao_Paulo
+                            </p>
+                            <p className={styles.texto}>
+                                Como participar do Google Meet<br />
+                                Link da videochamada:{' '}
+                                <a
+                                    className={styles.link}
+                                    href="https://meet.google.com/auv-gquq-ozm"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    meet.google.com/auv-gquq-ozm
+                                </a>
+                            </p>
+                            <p className={styles.texto}>
+                                Ou disque: (BR) +55 11 4935-6583 PIN: 668 300 327#<br />
+                                Outros números de telefone:{' '}
+                                <a
+                                    className={styles.link}
+                                    href="https://tel.meet/auv-gquq-ozm?pin=3305450413156"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    tel.meet/auv-gquq-ozm
+                                </a>
+                            </p>
+                        </li>
+
+                        <li className={styles.item}>
+                            <h2 className={styles.itemTitulo}>Suporte e direcionamento</h2>
+                            <p className={styles.texto}>
+                                Solicite o seu novo cronograma:
+                            </p>
+                            <a
+                                className={styles.link}
+                                href="https://forms.gle/VwkEJo8WRLMF11g99"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Solicitar novo cronograma
+                            </a>
+                            <p className={styles.texto}>
+                                Deixe duas dúvidas aqui para serem sanadas nos encontros:
+                            </p>
+                            <a
+                                className={styles.link}
+                                href="https://forms.gle/gWqxtd7ao4ZGqMo9A"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Enviar dúvidas para os encontros
                             </a>
                         </li>
 

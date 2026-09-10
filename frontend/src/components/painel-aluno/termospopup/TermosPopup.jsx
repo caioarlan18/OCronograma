@@ -1,15 +1,18 @@
 import styles from './TermosPopup.module.css';
 import Modal from 'react-modal';
 import closeicon from '../../../images/closeicon.svg';
+import { useState } from 'react';
 
 Modal.setAppElement('#root');
 
-export function TermosPopup({ abrir, fechar }) {
+export function TermosPopup({ abrir, fechar, obrigatorio = false, onAceitar }) {
+    const [aceitou, setAceitou] = useState(false);
+
     return (
         <div className={styles.options}>
             <Modal
                 isOpen={abrir}
-                onRequestClose={fechar}
+                onRequestClose={obrigatorio ? undefined : fechar}
                 style={{
                     overlay: {
                         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -33,11 +36,11 @@ export function TermosPopup({ abrir, fechar }) {
             >
                 <div className={styles.header}>
                     <h1>Termos de uso</h1>
-                    <img src={closeicon} alt="fechar-popup" onClick={fechar} />
+                    {!obrigatorio && <img src={closeicon} alt="fechar-popup" onClick={fechar} />}
                 </div>
 
                 <div className={styles.options1}>
-                    <p><strong>Última atualização:</strong> 11 de junho de 2026</p>
+                    <p><strong>Última atualização:</strong> 10 de setembro de 2026</p>
 
                     <h2>TERMOS DE USO – “O CRONOGRAMA”</h2>
                     <p><strong>1. Aceitação dos Termos</strong> Ao acessar e utilizar a plataforma de estudos “O CRONOGRAMA”, o usuário declara que leu, compreendeu e concorda integralmente com as disposições deste Termo de Uso e com a Política de Privacidade disponível no mesmo ambiente. Caso não concorde com qualquer cláusula, deverá interromper o uso da plataforma imediatamente.</p>
@@ -73,13 +76,19 @@ export function TermosPopup({ abrir, fechar }) {
                         Nos planos trimestrais, semestrais ou anuais, o reembolso poderá ser solicitado no prazo legal de 7 (sete) dias após a contratação.<br />
                         “O CRONOGRAMA” poderá alterar valores futuros, sem afetar planos já contratados dentro do período vigente.</p>
 
-                    <p><strong>7. Responsabilidades e Limitações</strong> A plataforma envidará esforços para manter seu funcionamento contínuo, mas não se responsabiliza por interrupções decorrentes de manutenção, falhas técnicas ou eventos fora de seu controle. O desempenho do usuário depende exclusivamente de seu esforço e dedicação, não havendo garantia de aprovação em concursos ou exames.</p>
+                    <p><strong>7. Funcionamento do suporte</strong><br />
+                        Dúvidas sobre estudo e orientações relacionadas à aprovação do aluno serão tratadas em encontro semanal, com horários informados na plataforma. O aluno precisa preencher o formulário disponibilizado na plataforma para que a MENTORA possa esclarecer as dúvidas no dia do encontro. Excepcionalmente, os alunos poderão abrir a câmera e se pronunciar. Entretanto, para que os encontros sejam eficientes, os alunos falarão somente pelo chat no dia.<br />
+                        A solicitação de um novo CRONOGRAMA será feita através de um formulário disponibilizado na plataforma, e o prazo para liberação será de no máximo 3 dias úteis.<br />
+                        Após a liberação da primeira semana, o aluno somente poderá mudar de concurso no meio do cronograma em casos excepcionais, que serão analisados pela MENTORA.<br />
+                        Dúvidas sobre planos, cancelamentos e cupom de desconto do TEC devem ser enviadas para suporte@ocronograma.com. Não haverá atendimento pelo WhatsApp. Os encontros serão exclusivos para alunos ativos.</p>
 
-                    <p><strong>8. Alterações nos Termos</strong> Este Termo poderá ser alterado a qualquer momento, mediante publicação da versão atualizada. O uso continuado da plataforma implica aceitação das novas condições.</p>
+                    <p><strong>8. Responsabilidades e Limitações</strong> A plataforma envidará esforços para manter seu funcionamento contínuo, mas não se responsabiliza por interrupções decorrentes de manutenção, falhas técnicas ou eventos fora de seu controle. O desempenho do usuário depende exclusivamente de seu esforço e dedicação, não havendo garantia de aprovação em concursos ou exames.</p>
 
-                    <p><strong>9. Recomendação de Plataforma de Questões</strong> Recomendamos que o aluno utilize plataforma de questões parceira, como o TEC Concursos, para melhor aproveitamento do método e realização das questões propostas.</p>
+                    <p><strong>9. Alterações nos Termos</strong> Este Termo poderá ser alterado a qualquer momento, mediante publicação da versão atualizada. O uso continuado da plataforma implica aceitação das novas condições.</p>
 
-                    <p><strong>10. Foro</strong> Fica eleito o foro da comarca do Rio de Janeiro para dirimir quaisquer controvérsias decorrentes deste Termo.</p>
+                    <p><strong>10. Recomendação de Plataforma de Questões</strong> Recomendamos que o aluno utilize plataforma de questões parceira, como o TEC Concursos, para melhor aproveitamento do método e realização das questões propostas.</p>
+
+                    <p><strong>11. Foro</strong> Fica eleito o foro da comarca do Rio de Janeiro para dirimir quaisquer controvérsias decorrentes deste Termo.</p>
 
                     <hr />
 
@@ -124,6 +133,17 @@ export function TermosPopup({ abrir, fechar }) {
                     <h3>8. Contato</h3>
                     <p>Para dúvidas ou solicitações, envie um e-mail para: <strong>suporte@ocronograma.com</strong></p>
                 </div>
+                {obrigatorio && (
+                    <div className={styles.aceite}>
+                        <label>
+                            <input type="checkbox" checked={aceitou} onChange={(event) => setAceitou(event.target.checked)} />
+                            Li e aceito os Termos de Uso e a Política de Privacidade.
+                        </label>
+                        <button type="button" disabled={!aceitou} onClick={onAceitar}>
+                            Aceitar e continuar
+                        </button>
+                    </div>
+                )}
             </Modal>
         </div>
     );

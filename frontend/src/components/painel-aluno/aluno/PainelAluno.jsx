@@ -7,9 +7,9 @@ import trespontos from '../../../images/3pontos.svg';
 import { OptionsPopup } from "../opcoespopup/OptionsPopup";
 import { MenuLateralAluno } from "../menu-lateral-aluno/MenuLateralAluno";
 import { RegistroPopup } from "../RegistroPopup/RegistroPopup";
-import { AvisoPopup } from "../avisopopup/AvisoPopup";
 import { EditarRegistroPopup } from "../editarRegistroPopup/EditarRegistroPopup";
 import { ResumoPopup } from "../RegistroPopup/ResumoPopup";
+import { TermosPopup } from "../termospopup/TermosPopup";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -23,21 +23,18 @@ export function PainelAluno() {
     const [idMateria, setIdMateria] = useState("");
     const [idMateria2, setIdMateria2] = useState("");
     const [checkboxMarcados, setCheckboxMarcados] = useState({});
-    const ID_AVISO_ATUAL = "aviso1";
-    const [showAviso, setShowAviso] = useState(false);
+    const ID_TERMOS_ATUAIS = "termos-uso-2026-09-10";
+    const [termosVerificados, setTermosVerificados] = useState(false);
     const [abrirResumo, setAbrirResumo] = useState(false);
     const [resumoTexto, setResumoTexto] = useState("");
 
     useEffect(() => {
-        const jaViu = localStorage.getItem(ID_AVISO_ATUAL);
-        if (!jaViu) {
-            setShowAviso(true);
-        }
+        setTermosVerificados(localStorage.getItem(ID_TERMOS_ATUAIS) === "true");
     }, []);
 
-    function fecharAviso() {
-        localStorage.setItem(ID_AVISO_ATUAL, "true");
-        setShowAviso(false);
+    function aceitarTermos() {
+        localStorage.setItem(ID_TERMOS_ATUAIS, "true");
+        setTermosVerificados(true);
     }
     useEffect(() => {
         async function getUserData() {
@@ -122,7 +119,7 @@ export function PainelAluno() {
             <MenuLateralAluno ativo={2} />
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
             <RegistroPopup abrir={abrirRegistro} fechar={() => setAbrirRegistro(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria} />
-            <AvisoPopup abrir={showAviso} fechar={fecharAviso} />
+            <TermosPopup abrir={!termosVerificados} obrigatorio onAceitar={aceitarTermos} />
             <EditarRegistroPopup abrir={abrirRegistro2} fechar={() => setAbrirRegistro2(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria2} />
             <ResumoPopup abrir={abrirResumo} fechar={() => setAbrirResumo(false)} resumo={resumoTexto} />
 

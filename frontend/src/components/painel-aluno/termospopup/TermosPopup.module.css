@@ -99,6 +99,51 @@
     margin: 20px 0;
 }
 
+.aceite {
+    display: grid;
+    gap: 14px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e5e5;
+    font-family: Poppins, sans-serif;
+}
+
+.aceite label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    cursor: pointer;
+}
+
+.aceite input {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    margin-top: 2px;
+    accent-color: #4d02e0;
+}
+
+.aceite button {
+    width: 100%;
+    min-height: 44px;
+    border: 0;
+    border-radius: 7px;
+    background: #4d02e0;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.aceite button:disabled {
+    background: #b9b9b9;
+    cursor: not-allowed;
+}
+
 @media (max-width: 600px) {
     .header h1 {
         font-size: 22px;
