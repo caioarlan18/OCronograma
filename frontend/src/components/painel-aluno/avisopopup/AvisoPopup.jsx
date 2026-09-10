@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 Modal.setAppElement('#root');
 
-export function AvisoPopup({ abrir, fechar }) {
+export function AvisoPopup({ abrir, onAceitar }) {
     const [entendi, setEntendi] = useState(false);
 
     return (
@@ -35,20 +35,35 @@ export function AvisoPopup({ abrir, fechar }) {
                 }}
             >
                 <div className={styles.header}>
-                    <h1>Aviso importante</h1>
+                    <h1>💜 Uma novidade importante sobre o nosso suporte!</h1>
                 </div>
                 <div className={styles.options1}>
                     <p>
-                        Querido aluno 💜 Marcelle Souza aqui!
+                        Turma, quero contar uma mudança que fizemos para deixar o acompanhamento de vocês ainda mais organizado e eficiente. 🥰
                         <br /><br />
-                        A partir de agora, todo o nosso atendimento será feito exclusivamente pelo WhatsApp oficial da empresa.
+                        A partir de agora, todas as dúvidas relacionadas ao concurso, estudos, planejamento, estratégia de preparação e orientações da mentoria deverão ser enviadas pelo nosso formulário de dúvidas.
                         <br /><br />
-                        Essa mudança vai nos ajudar a oferecer um suporte mais rápido, organizado e com ainda mais qualidade pra você! 🚀
+                        📚 Por que estamos fazendo isso?
                         <br /><br />
-                        Salve o novo número e fale com a gente por lá sempre que precisar:
-                        📱 <a href="https://wa.me/5521981780957">(21) 98178-0957</a>
+                        Porque assim conseguimos reunir todas as dúvidas em um único lugar e levá-las para os nossos encontros semanais de suporte, garantindo que cada questão seja analisada com calma e que ninguém fique sem resposta.
                         <br /><br />
-                        Obrigada pela compreensão e por fazer parte do Ocronograma! 💪✨
+                        ✨ E se você não puder participar do encontro?
+                        <br /><br />
+                        Sem problema! A sua dúvida será respondida e a orientação será enviada para o e-mail cadastrado no formulário. 💌
+                        <br /><br />
+                        📌 IMPORTANTE: questões relacionadas a boleto, mensalidade e cupom do TEC não precisam passar pelo formulário. Esses assuntos podem continuar sendo enviados diretamente para:
+                        <br /><br />
+                        📧 <a href="mailto:suporte@ocronograma.com">suporte@ocronograma.com</a>
+                        <br /><br />
+                        📝 E para solicitar um novo cronograma, também teremos um formulário específico. Dessa forma, conseguimos organizar cada solicitação e preparar o cronograma de vocês da melhor maneira possível.
+                        <br /><br />
+                        Conto com a colaboração de vocês nessa nova organização! 💜
+                        <br /><br />
+                        Essa mudança foi pensada justamente para que o nosso suporte fique mais organizado, mais eficiente e, principalmente, para que vocês tenham a segurança de que suas dúvidas serão acompanhadas e respondidas.
+                        <br /><br />
+                        Estamos juntos nessa caminhada! 🚀📚
+                        <br />
+                        Vamos em busca da aprovação! 💜
 
                     </p>
                 </div>
@@ -59,7 +74,7 @@ export function AvisoPopup({ abrir, fechar }) {
 
                 </div>
                 <div className={styles.options1}>
-                    <button style={entendi ? {} : { background: '#5a535342' }} onClick={() => entendi ? fechar() : null}>Estudar</button>
+                    <button style={entendi ? {} : { background: '#5a535342' }} onClick={() => entendi ? onAceitar() : null}>Concordo e continuar</button>
                 </div>
 
 

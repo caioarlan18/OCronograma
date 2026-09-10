@@ -10,6 +10,7 @@ import { RegistroPopup } from "../RegistroPopup/RegistroPopup";
 import { EditarRegistroPopup } from "../editarRegistroPopup/EditarRegistroPopup";
 import { ResumoPopup } from "../RegistroPopup/ResumoPopup";
 import { TermosPopup } from "../termospopup/TermosPopup";
+import { AvisoPopup } from "../avisopopup/AvisoPopup";
 export function PainelAluno() {
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -24,17 +25,25 @@ export function PainelAluno() {
     const [idMateria2, setIdMateria2] = useState("");
     const [checkboxMarcados, setCheckboxMarcados] = useState({});
     const ID_TERMOS_ATUAIS = "termos-uso-2026-09-10";
+    const ID_AVISO_SUPORTE_ATUAL = "aviso-suporte-formulario-2026-09-10";
     const [termosVerificados, setTermosVerificados] = useState(false);
+    const [avisoSuporteVerificado, setAvisoSuporteVerificado] = useState(false);
     const [abrirResumo, setAbrirResumo] = useState(false);
     const [resumoTexto, setResumoTexto] = useState("");
 
     useEffect(() => {
         setTermosVerificados(localStorage.getItem(ID_TERMOS_ATUAIS) === "true");
+        setAvisoSuporteVerificado(localStorage.getItem(ID_AVISO_SUPORTE_ATUAL) === "true");
     }, []);
 
     function aceitarTermos() {
         localStorage.setItem(ID_TERMOS_ATUAIS, "true");
         setTermosVerificados(true);
+    }
+
+    function aceitarAvisoSuporte() {
+        localStorage.setItem(ID_AVISO_SUPORTE_ATUAL, "true");
+        setAvisoSuporteVerificado(true);
     }
     useEffect(() => {
         async function getUserData() {
@@ -120,6 +129,7 @@ export function PainelAluno() {
             <OptionsPopup abrir={abrirPopup} fechar={() => setAbrirPopup(false)} />
             <RegistroPopup abrir={abrirRegistro} fechar={() => setAbrirRegistro(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria} />
             <TermosPopup abrir={!termosVerificados} obrigatorio onAceitar={aceitarTermos} />
+            <AvisoPopup abrir={!avisoSuporteVerificado} onAceitar={aceitarAvisoSuporte} />
             <EditarRegistroPopup abrir={abrirRegistro2} fechar={() => setAbrirRegistro2(false)} materia={areaRegistro} idcronograma={cronogramaId} idMateria={idMateria2} />
             <ResumoPopup abrir={abrirResumo} fechar={() => setAbrirResumo(false)} resumo={resumoTexto} />
 
@@ -214,7 +224,7 @@ export function PainelAluno() {
                                         <p>Carregando informações... Se nenhum cronograma for exibido, pode ser que nenhum esteja vinculado à sua conta neste momento.</p>
                                     </div>
                                     <div className={styles.ctt}>
-                                        <button onClick={() => window.open("https://api.whatsapp.com/send/?phone=5521981780957&text=Venho+do+sistema+OCronograma+e+preciso+de+ajuda.&type=phone_number&app_absent=0", "_blank")}>Falar com suporte</button>
+                                        <button onClick={() => window.open("mailto:suporte@ocronograma.com")}>Falar com suporte</button>
                                     </div>
                                 </div>
 
@@ -255,7 +265,7 @@ export function PainelAluno() {
                                         <p>Renove agora o seu plano e volte a estudar com o seu cronograma</p>
                                     </div>
                                     <div className={styles.ctt}>
-                                        <button onClick={() => window.open("https://api.whatsapp.com/send/?phone=5521981780957&text=Venho+do+sistema+OCronograma+e+preciso+de+ajuda.&type=phone_number&app_absent=0", "_blank")}>Falar com suporte</button>
+                                        <button onClick={() => window.open("mailto:suporte@ocronograma.com")}>Falar com suporte</button>
                                     </div>
                                 </div>
                             </div>

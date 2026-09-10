@@ -41,14 +41,14 @@ export function AvisoPermaPopup({ abrir, fechar }) {
                     <p>
                         Querido aluno 💜 Marcelle Souza aqui!
                         <br /><br />
-                        A partir de agora, todo o nosso atendimento será feito exclusivamente pelo WhatsApp oficial da empresa.
+                        A partir de agora, todo o nosso atendimento será feito exclusivamente pelo e-mail oficial da empresa.
                         <br /><br />
                         Essa mudança vai nos ajudar a oferecer um suporte mais rápido, organizado e com ainda mais qualidade pra você! 🚀
                         <br /><br />
-                        Salve o novo número e fale com a gente por lá sempre que precisar:
-                        📱 <a href="https://wa.me/5521981780957">(21) 98178-0957</a>
+                        Fale com a gente por e-mail sempre que precisar:
+                        📧 <a href="mailto:suporte@ocronograma.com">suporte@ocronograma.com</a>
                         <br /><br />
-                        Obrigada pela compreensão e por fazer parte do Ocronograma! 💪✨
+                        Obrigada pela compreensão e por fazer parte do Ocronograma! 💪✨
 
                     </p>
                 </div>

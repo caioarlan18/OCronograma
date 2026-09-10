@@ -42,7 +42,7 @@ export function FaleConoscoPopup({ abrir, fechar }) {
                 </div>
                 <div className={styles.options1}>
                     <h1>Equipe de Suporte</h1>
-                    <a href="http://wa.me/5521981780957" target='_blank'>(21) 98178-0957</a>
+                    <a href="mailto:suporte@ocronograma.com">suporte@ocronograma.com</a>
                 </div>
                 {/* <div className={styles.options1}>
                     <h1>Marcelle Souza</h1>

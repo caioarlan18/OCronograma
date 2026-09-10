@@ -23,26 +23,20 @@ export function Suporte() {
                         <li className={styles.item}>
                             <h2 className={styles.itemTitulo}>Suporte/Direcionamento/Dúvidas</h2>
                             <p className={styles.texto}>
-                                Fale comigo no WhatsApp abaixo 💜
+                                Fale comigo no e-mail abaixo 💜
                             </p>
                             <a
                                 className={styles.linkDestaque}
-                                href="http://wa.me/5521969144126"
-                                target="_blank"
-                                rel="noreferrer"
+                                href="mailto:suporte@ocronograma.com"
                             >
-                                (21) 96914-4126
+                                suporte@ocronograma.com
                             </a>
                         </li>
 
                         <li className={styles.item}>
                             <h2 className={styles.itemTitulo}>Encontro semanal</h2>
                             <p className={styles.texto}>
-                                Quarta-feira, 9 de setembro · 14:00 – 15:00<br />
-                                Fuso horário: America/Sao_Paulo
-                            </p>
-                            <p className={styles.texto}>
-                                Como participar do Google Meet<br />
+                                ENCONTRO SEMANAL: TODA QUARTA- FEIRA 14H<br />
                                 Link da videochamada:{' '}
                                 <a
                                     className={styles.link}
@@ -51,18 +45,6 @@ export function Suporte() {
                                     rel="noreferrer"
                                 >
                                     meet.google.com/auv-gquq-ozm
-                                </a>
-                            </p>
-                            <p className={styles.texto}>
-                                Ou disque: (BR) +55 11 4935-6583 PIN: 668 300 327#<br />
-                                Outros números de telefone:{' '}
-                                <a
-                                    className={styles.link}
-                                    href="https://tel.meet/auv-gquq-ozm?pin=3305450413156"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    tel.meet/auv-gquq-ozm
                                 </a>
                             </p>
                         </li>
