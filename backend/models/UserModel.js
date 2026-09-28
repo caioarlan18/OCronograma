@@ -74,6 +74,10 @@ const userSchema = new Schema({
     tokenAtivo: {
         type: String,
         required: false
+    },
+    ultimoAcesso: {
+        type: Date,
+        required: false
     }
 }, { timestamps: true })
 

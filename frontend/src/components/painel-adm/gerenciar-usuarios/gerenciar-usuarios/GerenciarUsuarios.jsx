@@ -12,9 +12,14 @@ export function GerenciarUsuarios() {
     const [abertoEditar, setAbertoEditar] = useState(false);
     const [idUsuarioEditar, setIdUsuarioEditar] = useState("");
     const [usuarios, setUsuarios] = useState([]);
+    const [cronogramas, setCronogramas] = useState([]);
     const [userRole, setUserRole] = useState("");
     const [busca, setBusca] = useState("");
     const [userInactive, setUserInactive] = useState(false);
+    const [semAcessoDuasSemanas, setSemAcessoDuasSemanas] = useState(false);
+    const [semanaNenhumaFinalizada, setSemanaNenhumaFinalizada] = useState(false);
+    const [filtrarMaisSemanasFinalizadas, setFiltrarMaisSemanasFinalizadas] = useState(false);
+    const [limiteSemanasFinalizadas, setLimiteSemanasFinalizadas] = useState('0');
     const [vencimentoproximo, setVencimentoProximo] = useState(false);
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
@@ -58,8 +63,12 @@ export function GerenciarUsuarios() {
         async function loadUsers() {
             try {
                 setLoading(true);
-                const response = await api.get("/user/read");
-                setUsuarios(response.data.reverse());
+                const [usuariosResponse, cronogramasResponse] = await Promise.all([
+                    api.get("/user/read"),
+                    api.get("/cronograma/read")
+                ]);
+                setUsuarios(usuariosResponse.data.reverse());
+                setCronogramas(cronogramasResponse.data);
                 setCurrentPage(1);
             } catch (error) {
                 toast.error(error.response.data.msg);
@@ -78,6 +87,42 @@ export function GerenciarUsuarios() {
         return `${dia}/${mes}/${ano}`;
     }
 
+    function alunoSemAcessoRecente(usuario) {
+        if (usuario.role !== 'aluno' || !usuario.ultimoAcesso) return false;
+        const diasSemAcesso = Date.now() - new Date(usuario.ultimoAcesso).getTime();
+        return diasSemAcesso > 14 * 24 * 60 * 60 * 1000;
+    }
+
+    function progressoSemanal(usuario) {
+        if (usuario.role !== 'aluno') return null;
+        if (!usuario.cronogramaAssociado) return null;
+
+        const cronogramaAluno = cronogramas.find(
+            (cronogramaItem) => String(cronogramaItem._id) === String(usuario.cronogramaAssociado)
+        );
+        if (!cronogramaAluno) return { indisponivel: true };
+
+        const historico = (usuario.historicoCronogramas || []).find(
+            (item) => String(item.idCronograma) === String(cronogramaAluno._id)
+        );
+        const materiasRegistradas = new Set(
+            (historico?.questions || [])
+                .filter((question) => {
+                    const temAcertos = question.acertos !== null && question.acertos !== undefined && question.acertos !== '';
+                    const temErros = question.erros !== null && question.erros !== undefined && question.erros !== '';
+                    return temAcertos && temErros && Number.isFinite(Number(question.acertos)) && Number.isFinite(Number(question.erros));
+                })
+                .map((question) => String(question.idMateria))
+        );
+        const semanas = (cronogramaAluno.semanas || []).filter((semana) => semana.visible);
+        const concluidas = semanas.filter((semana) => {
+            const materias = (semana.dias || []).flatMap((dia) => dia.conteudos || []);
+            return materias.length > 0 && materias.every((materia) => materiasRegistradas.has(String(materia._id)));
+        }).length;
+
+        return { concluidas, total: semanas.length };
+    }
+
     const usuariosFiltrados = usuarios.filter(usuario => {
         const correspondeBusca =
             usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
@@ -85,30 +130,29 @@ export function GerenciarUsuarios() {
             usuario.especialista?.toLowerCase().includes(busca.toLowerCase());
 
         const correspondeStatus = userInactive ? usuario.status.includes("inativo") : true;
+        const correspondeInatividade = semAcessoDuasSemanas ? alunoSemAcessoRecente(usuario) : true;
+        const progresso = semanaNenhumaFinalizada || filtrarMaisSemanasFinalizadas
+            ? progressoSemanal(usuario)
+            : null;
+        const correspondeSemanasZeradas = !semanaNenhumaFinalizada || progresso?.concluidas === 0;
+        const limiteSemanas = Number(limiteSemanasFinalizadas);
+        const correspondeMaisSemanas = !filtrarMaisSemanasFinalizadas || (
+            Number.isFinite(limiteSemanas) && progresso?.concluidas > limiteSemanas
+        );
         const inadimplente = userInadimplente ? usuario.inadimplente : true;
         const withoutEsp = semEspecialista ? !usuario.especialista || usuario.especialista.trim() === '' : true;
-        return correspondeBusca && correspondeStatus && inadimplente && withoutEsp;
+        return correspondeBusca && correspondeStatus && correspondeInatividade && correspondeSemanasZeradas && correspondeMaisSemanas && inadimplente && withoutEsp;
     });
 
     if (vencimentoproximo) {
         usuariosFiltrados.sort((a, b) => new Date(a.validade) - new Date(b.validade));
     }
-    const [nomesCronogramas, setNomesCronogramas] = useState({});
-
     function renderNomeCronograma(id) {
         if (!id) return "Nenhum";
-        if (nomesCronogramas[id]) return nomesCronogramas[id];
-
-        // Buscando apenas uma vez por ID
-        api.get(`/cronograma/read/${id}`)
-            .then(res => {
-                setNomesCronogramas(prev => ({ ...prev, [id]: res.data.nome }));
-            })
-            .catch(() => {
-                setNomesCronogramas(prev => ({ ...prev, [id]: "Cronograma não encontrado" }));
-            });
-
-        return "Carregando...";
+        const cronogramaEncontrado = cronogramas.find(
+            (item) => String(item._id) === String(id)
+        );
+        return cronogramaEncontrado?.nome || "Cronograma não encontrado";
     }
 
     // Calcular paginação
@@ -131,7 +175,8 @@ export function GerenciarUsuarios() {
             'Status',
             'Inadimplente',
             'Validade de acesso',
-            'Data de criação'
+            'Data de criação',
+            'Último acesso'
         ];
         const linhas = usuariosFiltrados.map((usuario) => [
             usuario.nome,
@@ -141,7 +186,8 @@ export function GerenciarUsuarios() {
             usuario.status,
             usuario.inadimplente ? 'Sim' : 'Não',
             usuario.validade ? formatarData(usuario.validade) : '',
-            usuario.createdAt ? formatarData(usuario.createdAt) : ''
+            usuario.createdAt ? formatarData(usuario.createdAt) : '',
+            usuario.ultimoAcesso ? formatarData(usuario.ultimoAcesso) : 'Não registrado'
         ]);
         const csv = [cabecalho, ...linhas]
             .map((linha) => linha.map(escapar).join(';'))
@@ -189,6 +235,53 @@ export function GerenciarUsuarios() {
                             <label htmlFor="">Usuários inativos</label>
                         </div>
                         <div className={styles.filtros}>
+                            <input
+                                type="checkbox"
+                                checked={semAcessoDuasSemanas}
+                                onChange={(event) => {
+                                    setSemAcessoDuasSemanas(event.target.checked);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                            <label>Sem acesso há mais de 14 dias</label>
+                        </div>
+                        <div className={styles.filtros}>
+                            <input
+                                type="checkbox"
+                                checked={semanaNenhumaFinalizada}
+                                onChange={(event) => {
+                                    setSemanaNenhumaFinalizada(event.target.checked);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                            <label>Nenhuma semana finalizada</label>
+                        </div>
+                        <div className={styles.filtrosProgresso}>
+                            <input
+                                type="checkbox"
+                                checked={filtrarMaisSemanasFinalizadas}
+                                onChange={(event) => {
+                                    setFiltrarMaisSemanasFinalizadas(event.target.checked);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                            <label htmlFor="limite-semanas-finalizadas">Mais de</label>
+                            <input
+                                id="limite-semanas-finalizadas"
+                                className={styles.campoSemanas}
+                                type="number"
+                                min="0"
+                                step="1"
+                                value={limiteSemanasFinalizadas}
+                                onChange={(event) => {
+                                    setLimiteSemanasFinalizadas(event.target.value);
+                                    setCurrentPage(1);
+                                }}
+                                aria-label="Número de semanas concluídas"
+                            />
+                            <span>semanas concluídas</span>
+                        </div>
+                        <div className={styles.filtros}>
                             <input type="checkbox" onClick={() => setVencimentoProximo(!vencimentoproximo)} />
                             <label htmlFor="">Mais perto do vencimento</label>
                         </div>
@@ -220,7 +313,23 @@ export function GerenciarUsuarios() {
                                 <tbody>
                                     {usuariosRenderizados.map((usuario, index) => (
                                         <tr key={index} className={index % 2 === 0 ? styles.par : styles.impar}>
-                                            <td data-label="Nome do usuário">{usuario.nome}</td>
+                                            <td data-label="Nome do usuário">
+                                                {usuario.nome}
+                                                <span className={styles.alertaInatividade}>
+                                                    {usuario.ultimoAcesso
+                                                        ? `Último acesso: ${formatarData(usuario.ultimoAcesso)}`
+                                                        : 'Acesso não registrado'}
+                                                </span>
+                                                {(() => {
+                                                    const progresso = progressoSemanal(usuario);
+                                                    if (!progresso) return null;
+                                                    let textoProgresso = 'Progresso indisponível';
+                                                    if (!progresso.indisponivel) {
+                                                        textoProgresso = `${progresso.concluidas}/${progresso.total} semanas concluídas`;
+                                                    }
+                                                    return <span className={styles.tarjaProgresso}>{textoProgresso}</span>;
+                                                })()}
+                                            </td>
                                             <td data-label="Email do usuário">{usuario.email}</td>
                                             <td data-label="Cronograma associado">{renderNomeCronograma(usuario.cronogramaAssociado)}</td>
                                             <td data-label="Validade de acesso">{formatarData(usuario.validade)}</td>

@@ -79,6 +79,7 @@
 .header {
     padding: 20px 0px 20px 50px;
     display: flex;
+    flex-wrap: wrap;
     gap: 30px;
     align-items: center;
 }
@@ -94,6 +95,25 @@
     font-size: 12px;
     font-weight: 400;
     color: #444;
+}
+
+.filtrosProgresso {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #444;
+    font-family: poppins;
+    font-size: 12px;
+}
+
+.campoSemanas {
+    width: 58px;
+    height: 28px;
+    padding: 2px 5px;
+    border: 1px solid #c9c4d8;
+    border-radius: 4px;
+    color: #333;
+    font: inherit;
 }
 
 
@@ -154,4 +174,27 @@
     font-family: poppins;
     font-weight: 600;
     font-size: 10px;
+}
+
+.alertaInatividade {
+    display: table;
+    margin-top: 5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #fff0d6;
+    color: #875400;
+    font-size: 10px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.tarjaProgresso {
+    display: table;
+    margin-top: 5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #e1f3eb;
+    color: #246346;
+    font-size: 10px;
+    font-weight: 600;
 }

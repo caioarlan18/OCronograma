@@ -55,6 +55,7 @@ module.exports = {
                 id: user._id
             }, secret);
             user.tokenAtivo = token;
+            user.ultimoAcesso = new Date();
             await user.save();
             return res.status(200).json({ msg: "Logado com sucesso", token, id: user._id });
         } catch (err) {
