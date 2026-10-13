@@ -21,6 +21,9 @@ export function GerenciarUsuarios() {
     const [filtrarMaisSemanasFinalizadas, setFiltrarMaisSemanasFinalizadas] = useState(false);
     const [limiteSemanasFinalizadas, setLimiteSemanasFinalizadas] = useState('0');
     const [vencimentoproximo, setVencimentoProximo] = useState(false);
+    const [somentePagantes, setSomentePagantes] = useState(false);
+    const [somenteAtivos, setSomenteAtivos] = useState(false);
+    const [somenteNovosUsuarios, setSomenteNovosUsuarios] = useState(false);
     const id = localStorage.getItem("id") || sessionStorage.getItem("id");
     const [user, setUser] = useState([]);
     const [cronogramaId, setCronogramaId] = useState("");
@@ -77,7 +80,7 @@ export function GerenciarUsuarios() {
             }
         }
         loadUsers();
-    }, [abertoCriar, abertoEditar]);
+    }, []);
 
     function formatarData(dataISO) {
         const data = new Date(dataISO);
@@ -123,6 +126,8 @@ export function GerenciarUsuarios() {
         return { concluidas, total: semanas.length };
     }
 
+    const agora = Date.now();
+    const inicioUltimoMes = agora - 30 * 24 * 60 * 60 * 1000;
     const usuariosFiltrados = usuarios.filter(usuario => {
         const correspondeBusca =
             usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
@@ -140,8 +145,14 @@ export function GerenciarUsuarios() {
             Number.isFinite(limiteSemanas) && progresso?.concluidas > limiteSemanas
         );
         const inadimplente = userInadimplente ? usuario.inadimplente : true;
+        const correspondePagamento = !somentePagantes || usuario.inadimplente === false;
+        const correspondeAtivo = !somenteAtivos || usuario.status === "ativo";
+        const dataUltimoAcesso = new Date(usuario.ultimoAcesso).getTime();
+        const correspondeDataEntrada = !somenteNovosUsuarios || (
+            Number.isFinite(dataUltimoAcesso) && dataUltimoAcesso >= inicioUltimoMes && dataUltimoAcesso <= agora
+        );
         const withoutEsp = semEspecialista ? !usuario.especialista || usuario.especialista.trim() === '' : true;
-        return correspondeBusca && correspondeStatus && correspondeInatividade && correspondeSemanasZeradas && correspondeMaisSemanas && inadimplente && withoutEsp;
+        return correspondeBusca && correspondeStatus && correspondeInatividade && correspondeSemanasZeradas && correspondeMaisSemanas && inadimplente && correspondePagamento && correspondeAtivo && correspondeDataEntrada && withoutEsp;
     });
 
     if (vencimentoproximo) {
@@ -288,6 +299,39 @@ export function GerenciarUsuarios() {
                         <div className={styles.filtros}>
                             <input type="checkbox" onClick={() => setUserInadimplente(!userInadimplente)} />
                             <label htmlFor="">Inadimplentes</label>
+                        </div>
+                        <div className={styles.filtros}>
+                            <input
+                                type="checkbox"
+                                checked={somentePagantes}
+                                onChange={(event) => {
+                                    setSomentePagantes(event.target.checked);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                            <label>Pagantes (não inadimplentes)</label>
+                        </div>
+                        <div className={styles.filtros}>
+                            <input
+                                type="checkbox"
+                                checked={somenteAtivos}
+                                onChange={(event) => {
+                                    setSomenteAtivos(event.target.checked);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                            <label>Ativos (vigentes)</label>
+                        </div>
+                        <div className={styles.filtros}>
+                            <input
+                                type="checkbox"
+                                checked={somenteNovosUsuarios}
+                                onChange={(event) => {
+                                    setSomenteNovosUsuarios(event.target.checked);
+                                    setCurrentPage(1);
+                                }}
+                            />
+                            <label>Entraram no sistema no último mês</label>
                         </div>
                         <div className={styles.filtros}>
                             <input type="checkbox" onClick={() => setSemEspecialista(!semEspecialista)} />
