@@ -19,6 +19,13 @@ export function Login() {
             });
             const id = response.data.id;
             const token = response.data.token;
+            // Remove qualquer sessão antiga dos dois storages: o axios lê localStorage primeiro,
+            // então um token antigo lá causava 401 "Token inválido" mesmo após um login novo.
+            localStorage.removeItem("id");
+            localStorage.removeItem("token");
+            sessionStorage.removeItem("id");
+            sessionStorage.removeItem("token");
+
             if (!marcado) {
                 sessionStorage.setItem("id", id);
                 sessionStorage.setItem("token", token);
