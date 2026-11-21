@@ -41,15 +41,15 @@ module.exports = {
         if (!email || !senha) {
             return res.status(401).json({ msg: "Dados faltando" });
         }
-        const user = await userModel.findOne({ email: email, });
-        if (!user) {
-            return res.status(400).json({ msg: "Email ou senha incorretos" });
-        }
-        const checkSenha = await bcrypt.compare(senha, user.senha);
-        if (!checkSenha) {
-            return res.status(400).json({ msg: "Senha incorreta" });
-        }
         try {
+            const user = await userModel.findOne({ email: email, });
+            if (!user) {
+                return res.status(400).json({ msg: "Email ou senha incorretos" });
+            }
+            const checkSenha = await bcrypt.compare(senha, user.senha);
+            if (!checkSenha) {
+                return res.status(400).json({ msg: "Senha incorreta" });
+            }
             const secret = process.env.SECRET;
             const token = jwt.sign({
                 id: user._id
