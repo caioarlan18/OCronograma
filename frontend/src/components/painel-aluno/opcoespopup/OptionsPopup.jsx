@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import iconetermos from '../../../images/termosicon.svg';
 import faqicon from '../../../images/faq.svg';
 import suporteicon from '../../../images/suporteicon.svg';
-import { FaleConoscoPopup } from '../faleconosco-popup/FaleConoscoPopUp';
+import { FaleConoscoPopup } from '../faleconosco-popup/FaleConoscoPopup';
 import { GuiaDeUso } from '../guiapopup/GuiaDeUso';
 import { TermosPopup } from '../termospopup/TermosPopup';
 

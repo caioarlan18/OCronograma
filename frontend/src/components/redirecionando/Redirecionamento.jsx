@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../utils/mensagemErro';
 import api from "../../axiosConfig/axios";
 import { useNavigate } from "react-router-dom";
 import styles from './Redirecionamento.module.css';
@@ -14,7 +15,7 @@ export function Redirecionamento() {
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();

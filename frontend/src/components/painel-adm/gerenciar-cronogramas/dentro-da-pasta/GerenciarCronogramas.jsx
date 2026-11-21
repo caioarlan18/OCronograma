@@ -4,6 +4,7 @@ import styles from './GerenciarCronogramas.module.css';
 import api from './../../../../axiosConfig/axios';
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../../../utils/mensagemErro';
 import pastaAberta from '../../../../images/iconepastaaberta.svg';
 import { EditarPastaPopup } from "../editar-pasta/EditarPastaPopup";
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -34,7 +35,7 @@ export function GerenciarCronogramas() {
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();

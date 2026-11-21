@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import closeicon from '../../../../images/closeicon.svg';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../../../utils/mensagemErro';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -19,7 +20,7 @@ export function EditarPastaPopup({ abrir, fechar, pastaId }) {
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();

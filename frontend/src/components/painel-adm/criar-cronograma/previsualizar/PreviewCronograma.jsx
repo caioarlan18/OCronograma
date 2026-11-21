@@ -2,6 +2,7 @@ import styles from './PreviewCronograma.module.css';
 import Modal from 'react-modal';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../../../utils/mensagemErro';
 import { useEffect, useState } from 'react';
 import { ResumoPopup } from '../../../painel-aluno/RegistroPopup/ResumoPopup';
 import logoCronograma from '../../../../images/logocronogramaroxa.png';
@@ -18,7 +19,7 @@ export function PreviewCronograma({ abrir, fechar, cronogramaId, gatilho }) {
                 const response = await api.get(`/cronograma/read/${cronogramaId}`);
                 setCronograma(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getCronograma()

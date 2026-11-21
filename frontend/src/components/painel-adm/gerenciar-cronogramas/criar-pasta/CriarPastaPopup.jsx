@@ -4,6 +4,7 @@ import closeicon from '../../../../images/closeicon.svg';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
 
+import { mensagemErro } from '../../../../utils/mensagemErro';
 import { useEffect, useState } from 'react';
 Modal.setAppElement('#root');
 
@@ -18,7 +19,7 @@ export function CriarPastaPopup({ abrir, fechar, finish }) {
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();

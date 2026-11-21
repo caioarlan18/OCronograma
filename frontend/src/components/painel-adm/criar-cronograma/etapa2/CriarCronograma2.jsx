@@ -4,6 +4,7 @@ import styles from './CriarCronograma2.module.css';
 import { useParams } from 'react-router-dom';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../../../utils/mensagemErro';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import interrogacao from '../../../../images/interrogacao.svg';
@@ -51,7 +52,7 @@ export function CriarCronograma2() {
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();

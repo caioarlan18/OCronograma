@@ -3,6 +3,7 @@ import styles from './EstatisticasAluno.module.css';
 import { PieChart, Pie, Cell } from 'recharts';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../../utils/mensagemErro';
 import api from '../../../axiosConfig/axios';
 
 function agrupaESoma(arr) {
@@ -40,7 +41,7 @@ export function EstatisticasAluno() {
                 setUser(response.data);
                 setCronogramaId(response.data.cronogramaAssociado);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();
@@ -53,7 +54,7 @@ export function EstatisticasAluno() {
                 const response = await api.get(`/user/historicoAtual/${id}/${cronogramaId}`);
                 setHistoricoAtual(response.data.questions);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getHistoricoAtual();

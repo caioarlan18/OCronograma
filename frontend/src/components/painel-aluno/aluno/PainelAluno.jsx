@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../../utils/mensagemErro';
 import api from "../../../axiosConfig/axios";
 import styles from './PainelAluno.module.css';
 import logoCronograma from '../../../images/logocronogramaroxa.png';
@@ -52,7 +53,7 @@ export function PainelAluno() {
                 setUser(response.data);
                 setCronogramaId(response.data.cronogramaAssociado);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();
@@ -65,7 +66,7 @@ export function PainelAluno() {
                 const response = await api.get(`/cronograma/read/${cronogramaId}`);
                 setCronograma(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getCronograma()

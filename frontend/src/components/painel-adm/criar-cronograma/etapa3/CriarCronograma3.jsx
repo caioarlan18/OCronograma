@@ -4,6 +4,7 @@ import styles from './CriarCronograma3.module.css';
 import { useEffect, useState } from "react";
 import api from '../../../../axiosConfig/axios';
 import toast from "react-hot-toast";
+import { mensagemErro } from '../../../../utils/mensagemErro';
 import Select from 'react-select';
 import { CriarUsuarioPopup } from "../../gerenciar-usuarios/criar-usuario/CriarUsuarioPopup";
 
@@ -23,7 +24,7 @@ export function CriarCronograma3() {
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();

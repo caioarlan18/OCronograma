@@ -4,6 +4,7 @@ import { CriarUsuarioPopup } from '../criar-usuario/CriarUsuarioPopup';
 import styles from './GerenciarUsuarios.module.css';
 import api from '../../../../axiosConfig/axios';
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../../../utils/mensagemErro';
 import { EditarUsuarioPopup } from '../editar-usuario/EditarUsuario';
 import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
 import { Pagination } from '../../../../components/common/Pagination';
@@ -39,7 +40,7 @@ export function GerenciarUsuarios() {
                 const response = await api.get(`/user/read/${id}`);
                 setUser(response.data);
             } catch (error) {
-                toast.error(error);
+                toast.error(mensagemErro(error));
             }
         }
         getUserData();
