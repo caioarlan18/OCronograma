@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../../axiosConfig/axios';
 import toast from 'react-hot-toast';
+import { mensagemErro } from '../../utils/mensagemErro';
 import { useNavigate } from 'react-router-dom';
 export function Login() {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ export function Login() {
 
             navigate("/redirecionamento");
         } catch (error) {
-            toast.error(error.response.data.msg)
+            toast.error(mensagemErro(error))
         }
     }
     return (
