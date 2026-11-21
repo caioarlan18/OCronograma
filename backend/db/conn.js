@@ -5,7 +5,8 @@ const dbConfig = `mongodb+srv://${dbUser}:${dbPass}@cluster0.eewcak6.mongodb.net
 
 async function main() {
     try {
-        await mongoose.connect(dbConfig);
+        // family: 4 força IPv4 (o Fly.io pode falhar ao conectar no Atlas por IPv6)
+        await mongoose.connect(dbConfig, { family: 4, serverSelectionTimeoutMS: 15000 });
         console.log("Conectado ao banco");
     } catch (error) {
         console.log(`Erro, ${error}`);
